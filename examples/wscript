@@ -1,0 +1,27 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    obj = bld.create_ns3_program('oran-data-repository-example', ['oran'])
+    obj.source = 'oran-data-repository-example.cc'
+
+    obj = bld.create_ns3_program('oran-keep-alive-example', ['oran', 'mobility'])
+    obj.source = 'oran-keep-alive-example.cc'
+
+    obj = bld.create_ns3_program('oran-lte-2-lte-distance-handover-example', ['oran', 'network', 'lte'])
+    obj.source = 'oran-lte-2-lte-distance-handover-example.cc'
+
+    obj = bld.create_ns3_program('oran-lte-2-lte-distance-handover-helper-example', ['oran', 'network', 'lte'])
+    obj.source = 'oran-lte-2-lte-distance-handover-helper-example.cc'
+
+    obj = bld.create_ns3_program('oran-lte-2-lte-distance-handover-lm-processing-delay-example', ['oran', 'network', 'lte'])
+    obj.source = 'oran-lte-2-lte-distance-handover-lm-processing-delay-example.cc'
+
+    obj = bld.create_ns3_program('oran-lte-2-lte-distance-handover-lm-query-trigger-example', ['oran', 'network', 'lte'])
+    obj.source = 'oran-lte-2-lte-distance-handover-lm-query-trigger-example.cc'
+
+    obj = bld.create_ns3_program('oran-random-walk-example', ['oran', 'mobility'])
+    obj.source = 'oran-random-walk-example.cc'
+
+    obj = bld.create_ns3_program('oran-multiple-net-devices-example', ['oran', 'network', 'lte'])
+    obj.source = 'oran-multiple-net-devices-example.cc'
+
