@@ -7,8 +7,7 @@
 
 #include "oran-lm.h"
 #include "oran-data-repository.h"
-
-#include <torch/script.h>
+#include <ns3/onnx-module.h>
 
 namespace ns3 {
 
@@ -38,7 +37,11 @@ public:
   virtual std::vector<Ptr<OranCommand> > Run (void) override;
 
 private:
-  torch::jit::script::Module m_model;
+  // TODO EPB: Guard this
+  Ort::Env env;
+  Ort::Session session{env, "saved_trained_classification_pytorch.onnx", Ort::SessionOptions{}};
+  Ort::MemoryInfo memoryInfo{Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeCPU)};
+  Ort::AllocatorWithDefaultOptions allocator;
 
   std::vector<OranLmLte2LteMlHandover::UeInfo> GetUeInfos (Ptr<OranDataRepository> data) const;
   std::vector<OranLmLte2LteMlHandover::EnbInfo> GetEnbInfos (Ptr<OranDataRepository> data) const;

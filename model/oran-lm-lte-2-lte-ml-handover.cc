@@ -27,16 +27,6 @@ OranLmLte2LteMlHandover::OranLmLte2LteMlHandover (void)
   NS_LOG_FUNCTION (this);
 
   m_name = "OranLmLte2LteMlHandover";
-
-  try
-    {
-      m_model = torch::jit::load ("saved_pytorch_short_trained2.pt");
-    }
-  catch (const c10::Error& e)
-    {
-      NS_ABORT_MSG ("Error loading the trained model");
-      
-    }
 }
 
 OranLmLte2LteMlHandover::~OranLmLte2LteMlHandover (void)
@@ -167,7 +157,6 @@ OranLmLte2LteMlHandover::GetHandoverCommands (
       loss[ueInfo.nodeId] = ueInfo.loss;
     }
 
-  std::vector<torch::jit::IValue> inputs;
   std::vector<float> inputv = {
     distanceEnb1[1], distanceEnb2[1], loss[1], 
     distanceEnb1[2], distanceEnb2[2], loss[2], 
@@ -190,10 +179,44 @@ OranLmLte2LteMlHandover::GetHandoverCommands (
       ")"
       );
 
-  inputs.push_back (torch::from_blob (inputv.data (), {1, 12}).to (torch::kFloat32));
-  at::Tensor output = torch::softmax (m_model.forward(inputs).toTensor(), 1);
+  const auto inputShape = session.GetInputTypeInfo(0UL).GetTensorTypeAndShapeInfo().GetShape();
+  const auto inputTensor = Ort::Value::CreateTensor<float>(
+      memoryInfo,
+      inputv.data(), inputv.size(),
+      inputShape.data(), inputShape.size()
+  );
 
-  int configuration = output.argmax (1).item ().toInt ();
+  const auto inputName = session.GetInputNameAllocated(0UL, allocator);
+  std::array<const char *, 1> inputNames{inputName.get()};
+
+  const auto outputName = session.GetOutputNameAllocated(0UL, allocator);
+  std::array<const char *, 1> outputNames{outputName.get()};
+  const auto output = session.Run(
+      Ort::RunOptions{},
+      inputNames.data(), &inputTensor, 1UL,
+      outputNames.data(), 1
+  );
+
+  // We get 4 floats back from the network
+  // each with the fitting amount for each
+  // possible class.
+  // We select the class from the index
+  // with the highest 'fitting' value
+  const auto outputData = output[0].GetTensorData<float>();
+  const auto count = output[0].GetTensorTypeAndShapeInfo().GetElementCount();
+  auto maxValue = *outputData;
+  auto maxIndex = 0UL;
+
+  // ONNX gives us a C Style array back
+  // TODO EPB: Maybe provide an output tensor with std::array
+  for (auto i = 0UL; i < count; i++) {
+      if (*(outputData+i) > maxValue) {
+            maxValue = *(outputData+i);
+            maxIndex = i;
+      }
+  }
+
+  int configuration = static_cast<int>(maxIndex);
   LogLogicToRepository ("ML Chooses configuration " + std::to_string (configuration));
 
   //std::cout << Simulator::Now ().GetSeconds () << " CONFIG " << configuration << std::endl;

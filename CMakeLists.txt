@@ -115,6 +115,7 @@ build_lib(
     ${libnetwork}
     ${liblte}
     ${libsqlite3}
+    ${libonnx} #TODO: EPB Make this optional
   TEST_SOURCES
     test/oran-test-suite.cc
 )
