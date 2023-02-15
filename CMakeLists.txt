@@ -32,6 +32,14 @@ if(NOT ${ENABLE_SQLITE})
   return()
 endif()
 
+set(onnx_header_files
+    onnx/cpu_provider_factory.h
+    onnx/onnxruntime_c_api.h
+    onnx/onnxruntime_cxx_api.h
+    onnx/onnxruntime_run_options_config_keys.h
+    onnx/onnxruntime_session_options_config_keys.h
+    onnx/provider_options.h
+    )
 
 build_lib(
   LIBNAME oran
@@ -110,14 +118,20 @@ build_lib(
     model/psc-video-streaming.h
     model/psc-video-streaming-distributions.h
     helper/oran-helper.h
+    ${onnx_header_files}
   LIBRARIES_TO_LINK
     ${libcore}
     ${libnetwork}
     ${liblte}
     ${libsqlite3}
-    ${libonnx} #TODO: EPB Make this optional
   TEST_SOURCES
     test/oran-test-suite.cc
 )
 
-target_compile_definitions(liboran PUBLIC ENABLE_ORAN)
+target_compile_definitions(${liboran} PUBLIC ENABLE_ORAN)
+
+target_link_libraries(${liboran} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/onnx/lib/libonnxruntime.so)
+
+# This seems to only work with core modules if it's a cached value
+set(HAS_LIBONNX TRUE CACHE BOOL "Flag indicating the ONNX module is present")
+

@@ -7,7 +7,7 @@
 
 #include "oran-lm.h"
 #include "oran-data-repository.h"
-#include <ns3/onnx-module.h>
+#include <ns3/onnxruntime_cxx_api.h>
 
 namespace ns3 {
 
