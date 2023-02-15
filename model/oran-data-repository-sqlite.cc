@@ -313,6 +313,38 @@ OranDataRepositorySqlite::SaveLteUeCellInfo (uint64_t e2NodeId, uint16_t cellId,
     }
 }
 
+void
+OranDataRepositorySqlite::SaveAppLoss (uint64_t e2NodeId, double appLoss, Time t)
+{
+  NS_LOG_FUNCTION (this << e2NodeId << appLoss << t);
+
+  if (m_active)
+    {
+      if (IsNodeRegistered (e2NodeId)) 
+        {
+          int rc;
+          std::string query;
+          sqlite3_stmt* stmt = nullptr;
+
+          query = "INSERT INTO nodeapploss (nodeid, loss, simulationtime)"
+            " VALUES (?, ?, ?)"
+            ";";
+
+          sqlite3_prepare_v2 (m_db, query.c_str (), -1, &stmt, 0);
+
+          sqlite3_bind_int64  (stmt, 1, e2NodeId);
+          sqlite3_bind_double (stmt, 2, appLoss);
+          sqlite3_bind_int64  (stmt, 3, t.GetTimeStep ());
+
+          rc = sqlite3_step (stmt);
+
+          CheckQueryReturnCode (stmt, rc, FormatBoundArgsList (e2NodeId, appLoss, t.GetTimeStep ()));
+          sqlite3_finalize (stmt);
+        }
+    }
+}
+
+
 std::map<Time, Vector>
 OranDataRepositorySqlite::GetNodePositions (uint64_t e2NodeId, Time fromTime, Time toTime, uint64_t maxEntries)
 {
@@ -410,6 +442,44 @@ OranDataRepositorySqlite::GetLteUeE2NodeIds (void)
     }
   return e2NodeIds;
 }
+
+double
+OranDataRepositorySqlite::GetAppLoss (uint64_t e2NodeId)
+{
+  NS_LOG_FUNCTION (this << e2NodeId);
+
+  double loss = 0;
+
+  if (m_active)
+    {
+      if (IsNodeRegistered (e2NodeId))
+        {
+          int rc;
+          std::string query;
+          sqlite3_stmt* stmt = nullptr;
+
+          query = "SELECT loss"
+            " FROM nodeapploss"
+            " WHERE nodeid = ?"
+            " ORDER BY entryid DESC LIMIT 1"
+            ";";
+
+          sqlite3_prepare_v2 (m_db, query.c_str (), -1, &stmt, 0);
+
+          sqlite3_bind_int64 (stmt, 1, e2NodeId);
+
+          while ((rc = sqlite3_step (stmt)) == SQLITE_ROW)
+            {
+              loss = sqlite3_column_double (stmt, 0);
+            }
+
+          CheckQueryReturnCode (stmt, rc, FormatBoundArgsList (e2NodeId));
+          sqlite3_finalize (stmt);
+        }
+    }
+  return loss;
+}
+
 
 uint64_t
 OranDataRepositorySqlite::GetLteUeE2NodeIdFromCellInfo (uint16_t cellId, uint16_t rnti)
@@ -735,6 +805,8 @@ OranDataRepositorySqlite::InitDb (void)
   RunCreateStatement (m_createStmtsStrings[INDEX_LTE_UE_CELL_NODEID]);
   RunCreateStatement (m_createStmtsStrings[INDEX_LTE_UE_CELL_CELLID]);
 
+  RunCreateStatement (m_createStmtsStrings[TABLE_APPLOSS_COMMAND]);
+
   // E2 Terminator Commands
   RunCreateStatement (m_createStmtsStrings[TABLE_TERMINATOR_COMMAND]);
 
@@ -845,6 +917,15 @@ OranDataRepositorySqlite::InitStatements (void)
     "simulationtime INTEGER                           NOT NULL, "
     "cmdname        TEXT                              NOT NULL, "
     "FOREIGN KEY(targetid) REFERENCES node(nodeid));";
+
+  m_createStmtsStrings[TABLE_APPLOSS_COMMAND] = "CREATE TABLE IF NOT EXISTS nodeapploss ("
+    "entryid        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+    "nodeid         INTEGER                           NOT NULL, "
+    "loss           REAL                              NOT NULL, "
+    "simulationtime INTEGER                           NOT NULL, "
+    "FOREIGN KEY(nodeid) REFERENCES node(nodeid)              );"
+  ;
+
 
   // Query Statements
   m_queryStmtsStrings [CHECK_NODE_REGISTERED] = "SELECT registered "

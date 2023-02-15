@@ -45,6 +45,7 @@
 #include "oran-report.h"
 #include "oran-report-location.h"
 #include "oran-report-lte-ue-cell-info.h"
+#include "oran-report-apploss.h"
 #include "oran-e2-node-terminator.h"
 #include "oran-e2-node-terminator-lte-ue.h"
 #include "oran-e2-node-terminator-lte-enb.h"
@@ -198,7 +199,14 @@ OranNearRtRicE2Terminator::ReceiveReport (Ptr<OranReport> report)
               lteUeCellInfoRpt->GetRnti(),
               lteUeCellInfoRpt->GetTime ());
         }
-
+      else if (report->GetInstanceTypeId () == TypeId::LookupByName ("ns3::OranReportAppLoss"))
+        {
+          Ptr<OranReportAppLoss> appLossRpt = report->GetObject<OranReportAppLoss> ();
+          m_data->SaveAppLoss (appLossRpt->GetReporterE2NodeId (), 
+              appLossRpt->GetLoss (), 
+              appLossRpt->GetTime ());
+        }
+ 
       m_nearRtRic->NotifyReportReceived (report);
     }
 }

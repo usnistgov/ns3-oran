@@ -168,6 +168,7 @@ public:
    * \param t The time at which this cell information was reported by the node.
    */
   virtual void SaveLteUeCellInfo (uint64_t e2NodeId, uint16_t cellId, uint16_t rnti, Time t) = 0;
+  virtual void SaveAppLoss (uint64_t e2NodeId, double appLoss, Time t) = 0;
 
   /* Data Access API */
   /**
@@ -224,6 +225,7 @@ public:
    * \return The collection of last registration times.
    */
   virtual std::vector<std::tuple<uint64_t, Time> > GetLastRegistrationRequests (void) = 0;
+  virtual double GetAppLoss (uint64_t e2NodeId) = 0;
   /* Logging API */
   /**
    * Log a Command when it is issued by the E2 Terminator.

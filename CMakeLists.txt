@@ -40,15 +40,19 @@ build_lib(
     model/oran-lm.cc
     model/oran-lm-noop.cc
     model/oran-lm-lte-2-lte-distance-handover.cc
+    model/oran-lm-lte-2-lte-ml-handover.cc
     model/oran-cmm.cc
+    model/oran-cmm-handover.cc
     model/oran-cmm-noop.cc
     model/oran-cmm-single-command-per-node.cc
     model/oran-command.cc
     model/oran-command-lte-2-lte-handover.cc
     model/oran-report.cc
+    model/oran-report-apploss.cc
     model/oran-report-location.cc
     model/oran-report-lte-ue-cell-info.cc
     model/oran-reporter.cc
+    model/oran-reporter-apploss.cc
     model/oran-reporter-location.cc
     model/oran-reporter-lte-ue-cell-info.cc
     model/oran-data-repository.cc
@@ -66,21 +70,27 @@ build_lib(
     model/oran-query-trigger.cc
     model/oran-query-trigger-noop.cc
     model/oran-query-trigger-custom.cc
+    model/psc-video-streaming.cc
+    model/psc-video-streaming-distributions.cc
     helper/oran-helper.cc
   HEADER_FILES
     model/oran-near-rt-ric.h
     model/oran-lm.h
     model/oran-lm-noop.h
     model/oran-lm-lte-2-lte-distance-handover.h
+    model/oran-lm-lte-2-lte-ml-handover.h
     model/oran-cmm.h
+    model/oran-cmm-handover.h
     model/oran-cmm-noop.h
     model/oran-cmm-single-command-per-node.h
     model/oran-command.h
     model/oran-command-lte-2-lte-handover.h
     model/oran-report.h
+    model/oran-report-apploss.h
     model/oran-report-location.h
     model/oran-report-lte-ue-cell-info.h
     model/oran-reporter.h
+    model/oran-reporter-apploss.h
     model/oran-reporter-location.h
     model/oran-reporter-lte-ue-cell-info.h
     model/oran-data-repository.h
@@ -97,6 +107,8 @@ build_lib(
     model/oran-report-trigger-location-change.h
     model/oran-query-trigger.h
     model/oran-query-trigger-custom.h
+    model/psc-video-streaming.h
+    model/psc-video-streaming-distributions.h
     helper/oran-helper.h
   LIBRARIES_TO_LINK
     ${libcore}

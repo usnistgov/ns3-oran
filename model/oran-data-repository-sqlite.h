@@ -92,6 +92,7 @@ public:
   uint64_t DeregisterNode (uint64_t e2NodeId) override;
   void SavePosition (uint64_t e2NodeId, Vector pos, Time t) override;
   void SaveLteUeCellInfo (uint64_t e2NodeId, uint16_t cellId, uint16_t rnti, Time t) override;
+  void SaveAppLoss (uint64_t e2NodeId, double appLoss, Time t) override;
 
   std::map <Time, Vector> GetNodePositions (uint64_t e2NodeId, 
       Time fromTime, Time toTime, uint64_t maxEntries = 1) override;
@@ -101,6 +102,8 @@ public:
   std::tuple<bool, uint16_t> GetLteEnbCellInfo (uint64_t e2NodeId) override;
   std::vector<uint64_t> GetLteEnbE2NodeIds (void) override;
   std::vector<std::tuple<uint64_t, Time> > GetLastRegistrationRequests (void) override;
+  double GetAppLoss (uint64_t e2NodeId) override;
+
   void LogCommandE2Terminator (Ptr<OranCommand> cmd) override;
   void LogCommandLm (std::string lm, Ptr<OranCommand> cmd) override;
   void LogActionLm (std::string lm, std::string logstr) override;
@@ -164,7 +167,8 @@ protected:
     TABLE_NODE,               //!< Table with E2 Node Information
     TABLE_NODE_LOCATION,      //!< Table with Node Locations
     TABLE_NODE_REGISTRATION,  //!< Table with Node Registrations
-    TABLE_TERMINATOR_COMMAND  //!< Table with logs of E2 Terminator Commands
+    TABLE_TERMINATOR_COMMAND, //!< Table with logs of E2 Terminator Commands
+    TABLE_APPLOSS_COMMAND     //!< Table with logs of application loss Commands
   };
 
   /**
