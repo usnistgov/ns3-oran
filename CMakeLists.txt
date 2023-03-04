@@ -33,7 +33,9 @@ if(NOT ${ENABLE_SQLITE})
 endif()
 
 find_external_library(DEPENDENCY_NAME Torch
-                      HEADER_NAME torch/script.h torch.h
+                      HEADER_NAME
+                        torch/script.h
+                        torch.h
                       LIBRARY_NAME torch
                       SEARCH_PATHS $ENV{LIBTORCHPATH})
 
@@ -92,7 +94,6 @@ build_lib(
     model/oran-lm.cc
     model/oran-lm-noop.cc
     model/oran-lm-lte-2-lte-distance-handover.cc
-    model/oran-lm-lte-2-lte-onnx-handover.cc
     model/oran-cmm.cc
     model/oran-cmm-handover.cc
     model/oran-cmm-noop.cc
@@ -123,14 +124,13 @@ build_lib(
     model/oran-query-trigger-noop.cc
     model/oran-query-trigger-custom.cc
     helper/oran-helper.cc
-    ${oran_onnx_sources}
+    ${oran_onnxruntime_sources}
     ${oran_torch_sources}
   HEADER_FILES
     model/oran-near-rt-ric.h
     model/oran-lm.h
     model/oran-lm-noop.h
     model/oran-lm-lte-2-lte-distance-handover.h
-    model/oran-lm-lte-2-lte-onnx-handover.h
     model/oran-cmm.h
     model/oran-cmm-handover.h
     model/oran-cmm-noop.h
@@ -160,7 +160,7 @@ build_lib(
     model/oran-query-trigger.h
     model/oran-query-trigger-custom.h
     helper/oran-helper.h
-    ${oran_onnx_headers}
+    ${oran_onnxruntime_headers}
     ${oran_torch_headers}
   LIBRARIES_TO_LINK
     ${libcore}
