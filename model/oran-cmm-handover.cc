@@ -97,7 +97,7 @@ OranCmmHandover::Filter (std::map<std::tuple<std::string, bool>, std::vector<Ptr
       for (auto cmd : commandSet.second)
         {
           Ptr<OranCommandLte2LteHandover> handoverCmd = cmd->GetObject<OranCommandLte2LteHandover> ();
-          if (handoverCmd != 0)
+          if (handoverCmd != nullptr)
             {
               bool found = false;
               for (auto pendingCmd : m_pendingCmds)

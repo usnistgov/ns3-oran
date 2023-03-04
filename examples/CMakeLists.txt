@@ -100,3 +100,13 @@ build_lib_example(
     ${liblte}
 )
 
+build_lib_example(
+  NAME oran-lte-2-lte-ml-handover-example
+  SOURCE_FILES oran-lte-2-lte-ml-handover-example.cc
+  LIBRARIES_TO_LINK
+    ${liboran}
+    ${libnetwork}
+    ${liblte}
+    ${libmobility}
+)
+
