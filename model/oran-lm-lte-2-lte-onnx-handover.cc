@@ -101,7 +101,7 @@ OranLmLte2LteOnnxHandover::SetOnnxModelPath (std::string onnxModelPath)
       << " can be copied from the example folder to the working directory.");
   f.close ();
 
-  m_session = Ort::Session (m_env, "saved_trained_classification_pytorch.onnx", Ort::SessionOptions{});
+  m_session = Ort::Session (m_env, onnxModelPath.c_str (), Ort::SessionOptions{});
 }
 
 
