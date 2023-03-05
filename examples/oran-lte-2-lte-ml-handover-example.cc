@@ -297,7 +297,7 @@ main (int argc, char *argv[])
           std::remove (dbFileName.c_str ());
         }
 
-      ObjectFactory lmFactory ("ns3::OranLmNoop");
+      TypeId defaultLmTid = TypeId::LookupByName ("ns3::OranLmNoop");
 
       Ptr<OranLm> defaultLm = nullptr;
       Ptr<OranDataRepository> dataRepository = CreateObject<OranDataRepositorySqlite> ();
@@ -307,18 +307,23 @@ main (int argc, char *argv[])
  
       if (useOnnx == true)
         {
-          lmFactory.SetTypeId ("ns3::OranLmLte2LteOnnxHandover");
+          NS_ABORT_MSG_IF (!TypeId::LookupByNameFailSafe ("ns3::OranLmLte2LteOnnxHandover", &defaultLmTid),
+              "ONNX LM not found. Were the ONNX headers and libraries found during the config operation?");
         }
       else if (useTorch == true)
         {
-          lmFactory.SetTypeId ("ns3::OranLmLte2LteTorchHandover");
+
+          NS_ABORT_MSG_IF (!TypeId::LookupByNameFailSafe ("ns3::OranLmLte2LteTorchHandover", &defaultLmTid),
+              "Torch LM not found. Were the Torch headers and libraries found during the config operation?");
         }
       else if (useDistance == true)
         {
-          lmFactory.SetTypeId ("ns3::OranLte2LteDistanceHandover");
+          defaultLmTid = TypeId::LookupByName ("ns3::OranLte2LteDistanceHandover");
         }
 
-      defaultLm = lmFactory.Create<OranLm> ();
+      ObjectFactory defaultLmFactory;
+      defaultLmFactory.SetTypeId (defaultLmTid);
+      defaultLm = defaultLmFactory.Create<OranLm> ();
 
       dataRepository->SetAttribute ("DatabaseFile", StringValue (dbFileName));
       defaultLm->SetAttribute ("Verbose", BooleanValue (verbose));

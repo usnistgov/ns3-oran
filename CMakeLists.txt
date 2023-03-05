@@ -51,10 +51,10 @@ if(${Torch_FOUND})
   set(torch_libraries ${Torch_LIBRARIES})
   set(oran_torch_sources
       model/oran-lm-lte-2-lte-torch-handover.cc
-    )
+  )
   set(oran_torch_headers
       model/oran-lm-lte-2-lte-torch-handover.h
-    )
+  )
 endif()
 
 find_external_library(DEPENDENCY_NAME OnnxRuntime
@@ -80,12 +80,11 @@ if(${OnnxRuntime_FOUND})
   set(onnxruntime_libraries ${OnnxRuntime_LIBRARIES})
   set(oran_onnxruntime_sources
       model/oran-lm-lte-2-lte-onnx-handover.cc
-    )
+  )
   set(oran_onnxruntime_headers
       model/oran-lm-lte-2-lte-onnx-handover.h
-    )
+  )
 endif()
-
 
 build_lib(
   LIBNAME oran
