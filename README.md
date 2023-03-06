@@ -5,7 +5,7 @@ model behavior based on the [O-RAN](https://www.o-ran.org) speciications.
 # Table of Contents
 * [Model Description](#model-description)
 * [Features](#features)
-* [Requirements](#requirements)
+* [Minimum Requirements](#requirements)
   * [Optional Dependencies](#optional-dependencies)
 * [Installation](#installation)
   * [Clone (Recommended)](#clone-recommended)
@@ -84,15 +84,14 @@ This release of the `oran` module contains the following features:
 - Integration with [ONNX Runtime](https://onnxruntime.ai/) and
   [PyTorch](https://pytorch.org/) to support Machine Learning (ML)
 
-# Requirements
+# Minimum Requirements
 * A C++ compliant compiler
-    * GCC 7.3.0 or higher
-    * Clang 6.0.0 or higher
+  * GCC 7.3.0
 * SQLite 3.7.17
 
 ## Optional Dependencies
-* ONNX Runtime 1.14.1 or higher
-* PyTorch 1.13.1 or higher
+* ONNX Runtime 1.14.1
+* PyTorch 1.13.1
 
 # Installation
 ## Clone (Recommended)
