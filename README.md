@@ -306,12 +306,12 @@ to demonstrate the use of both ONNX and PyTorch, respectively:
 - OranLmLte2LteTorchHandover
 
 OranLmLte2LteOnnxHandover is defined by the files:
-- 'model/oran-lte-2-lte-onnx-handover.h'
-- 'model/oran-lte-2-lte-onnx-handover.cc'
+- 'model/oran-lm-lte-2-lte-onnx-handover.h'
+- 'model/oran-lm-lte-2-lte-onnx-handover.cc'
 
 OranLmLte2LteTorchHandover is defined by the files:
-- 'model/oran-lte-2-lte-torch-handover.h'
-- 'model/oran-lte-2-lte-torch-handover.cc'
+- 'model/oran-lm-lte-2-lte-torch-handover.h'
+- 'model/oran-lm-lte-2-lte-torch-handover.cc'
 
 There is also an example that we will discuss later that demonstrates the use
 of these two classes using existing ML models included with this module.
