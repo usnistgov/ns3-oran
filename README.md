@@ -6,6 +6,7 @@ model behavior based on the [O-RAN](https://www.o-ran.org) speciications.
 * [Model Description](#model-description)
 * [Features](#features)
 * [Requirements](#requirements)
+  * [Optional Dependencies](#optional-dependencies)
 * [Installation](#installation)
   * [Clone (Recommended)](#clone-recommended)
   * [Download ZIP](#download-zip)
@@ -88,6 +89,10 @@ This release of the `oran` module contains the following features:
     * GCC 7.3.0 or higher
     * Clang 6.0.0 or higher
 * SQLite3
+
+## Optional Dependencies
+* ONNX Runtime 1.14.1
+* PyTorch 1.13.1
 
 # Installation
 ## Clone (Recommended)
@@ -295,13 +300,13 @@ simulate O-RAN based solutions that leverage ML may due so using this module.
 It does however require the extra step of making at least one of these
 libraries accessible to our module so that we can link and compile against it.
 This also means that while these tools may be installed and accessible system
-wide, this is not a requirement. It is also possible to have a locally
-compiled version of the library and source files in a user's working space.
-Please note that when using these tools with our module, the expectation is
-that the user will have already trained and created an ML model outside of
-the O-RAN simulations, but once this done, that model may be used via the
-ONNX or PyTorch C++ API from the simulation. We provide a class for each tool
-to demonstrate the use of both ONNX and PyTorch, respectively:
+wide, this is not a requirement as it is possible to have a locally compiled
+version of the library and source files in a user's working space. Please note
+that when using these tools with our module, the expectation is that the user
+will have already trained and created an ML model outside of the O-RAN
+simulations, but once this done, that model may be used via the ONNX or
+PyTorch C++ API from the simulation. We provide a class for each tool to
+demonstrate the use of both ONNX and PyTorch, respectively:
 - OranLmLte2LteOnnxHandover
 - OranLmLte2LteTorchHandover
 
@@ -317,14 +322,17 @@ There is also an example that we will discuss later that demonstrates the use
 of these two classes using existing ML models included with this module.
 
 ## ONNX
-At the time that this documentation is being created, ONNX does not have
-official packages on many linux distributions. However, the use of ONNX for
-this module is attractive since models that are created using other tools,
-such as PyTorch, can be exported to ONNX. To integrate ONNX with this module,
-one simply needs to download the ONNX libraries that are distrubited on the
-ONNX webiste ([https://onnxruntime.ai/](https://onnxruntime.ai/)), and export
-the location of the extracted library to an environment variable. For
-example,
+At the time that this documentation was created, not very many linux
+distributions provide ONNX packages. However, the use of ONNX for this module
+is attractive since models that are created using other tools, such as
+PyTorch, can be exported to ONNX. Therfore, integration with ONNX was desired
+with the hopes that it can be used to provide the flexibility needed to
+support more than one type of ML model without having to integrate each
+individually. To make use of the ONNX support provided with this module, one
+simply needs to download the ONNX libraries that are distributed on the ONNX
+webiste ([https://onnxruntime.ai/](https://onnxruntime.ai/)), and export the
+location of the extracted library to the `LIBONNXPATH` environment variable.
+For example,
 
 ```shell
 # Change to home directory
@@ -343,7 +351,7 @@ export LIBONNXPATH="/home/$(whoami)/onnxruntime-linux-x64-1.14.1"
 ```
 
 At this point, the user should be able to navigate to their working directory
-of ns-3 and run 
+of `ns-3` and run 
 
 ```shell
 ./ns3 configure
@@ -360,7 +368,7 @@ Therefore, a user should simply be able to install the desired
 the user cannot or does not wish to install the package, one simply can
 download the PyTorch libraries that are distrubited on the PyTorch webiste
 ([https://pytorch.org/](https://pytorch.org/)), and export the location of the
-extracted library to an environment variable. For example,
+extracted library to the `LIBTORCHPATH` environment variable. For example,
 
 ```shell
 # Change to home directory
@@ -378,7 +386,7 @@ export LIBTORCHPATH="/home/$(whoami)/libtorch"
 
 ```
 A this point, the accessibility of the library can be verified by navigating
-to the working directory of ns-3 and running the following command.
+to the working directory of `ns-3` and running the following command.
 
 ```shell
 ./ns3 configure
@@ -505,25 +513,28 @@ with the Near-RT RIC separately.
 ```
 
 ## ML Handover Example
-Note that in order to run this example using the flag --use-onnx-lm, the ONNX
-libraires must be found during the configuration, and it is assumed that the
-ML model file "saved_trained_model_pytorch.onnx" has been copied from the
-example directory to the working directory. In order to run this example
-using the flag --use-torch-lm, the PyTorch libraires must be found during
-the configuration, and it is assumed that the ML model file
-"saved_trained_model_pytorch.pt" has been copied from the example directory
-to the working directory.
+Note that in order to run this example using the flag, `--use-onnx-lm`, the
+ONNX libraires must be found during the configuration of `ns-3`, and it is
+assumed that the ML model file "saved_trained_model_pytorch.onnx" has been
+copied from the example directory to the working directory. In order to run
+this example using the flag, `--use-torch-lm`, the PyTorch libraires must be
+found during the configuration of `ns-3`, and it is assumed that the ML model
+file "saved_trained_model_pytorch.pt" has been copied from the example
+directory to the working directory.
 
-This example showcases how existing ONNX and PyTorch ML Models
-can be used to initiate handovers based on location and packet loss data. It
-consists of four UEs and two eNBs, where UE 1 and UE 4 are configured to move
-only within coverage of either eNB 1 or eNB 2, respectively, while UE 2 and
-UE 3 move around in area where the coverage area of eNB 1 and eNB 2 overlap.
-As the simulation progresses and UE 2 and UE 3 move, the distances of all
-four UE as well as the recorded packet loss for each UE is fed to an ML model
-that returns a desired configuration that indicates which eNB UE 1 and UE 2
-should be attached to to minimize packet loss. The models that we provide are
-for demonstrate purposes only and have not been thoroughly developed.
+This example showcases how pretrained ONNX and PyTorch ML Models can be used
+to initiate handovers based on location and packet loss data. It consists of
+four UEs and two eNBs, where UE 1 and UE 4 are configured to move only within
+coverage of eNB 1 or eNB 2, respectively, while UE 2 and UE 3 move around in
+an area where the coverage of eNB 1 and eNB 2 overlap. As the simulation
+progresses with UEs moving and receiving data, the distances of all four UEs
+as well as the recorded packet loss for each UE are fed to an ML model that
+returns a desired configuration that indicates which eNB UE 2 and UE 3 should
+be attached to to minimize the overall packet loss. The models that we provide
+are for demonstrate purposes only and have not been thoroughly developed. It
+should also be noted that "saved_trained_model_pytorch.onnx" is the same
+version of "saved_trained_model_pytorch.pt" thath has been exported to the
+ONNX format.
 
 ```shell
 ./ns3 run "oran-lte-2-lte-ml-handover-example"
@@ -532,9 +543,9 @@ for demonstrate purposes only and have not been thoroughly developed.
 Without going into too many details, there is also a script included in the
 examples folder called,
 "oran-lte-2-lte-ml-handover-example-generate-training-data.sh," that can be
-used as a start to generate data using this same example
-that can be used to train an ML model. Furthermore, once the training data has
-been generated, the file "oran-lte-2-lte-ml-handover-example-classifier.py"
-that is also included in the example folder, can be used to produce an ML
-model using the training data that is generated.
+used as a start to generate data using this same example to train an ML model.
+Furthermore, once the training data has been generated, the file
+"oran-lte-2-lte-ml-handover-example-classifier.py" that is also included in
+the example folder, can be used to produce a PyTorch ML model using the
+training data that is generated.
 
