@@ -514,16 +514,16 @@ the configuration, and it is assumed that the ML model file
 "saved_trained_model_pytorch.pt" has been copied from the example directory
 to the working directory.
 
-This example showcases how PyTorch or ONNX can be used to initiate handovers.
-Based on location and packet loss data. It consists of four UEs and two eNBs,
-where UE 1 and UE 4 are configured to move only within coverage of either
-eNB 1 or eNB 2, respectively, while UE 2 and UE 3 move around in area where
-the coverage area of eNB 1 and eNB 2 overlap. As the simulation progresses
-and UE 2 and UE 3 move, the distances of all four UE as well as the recorded
-packet loss for each UE is fed to an ML model that returns a desired
-configuration that indicates which eNB UE 1 and  UE 2 are attached to.
-The models that we provide are for demonstrate purposes only and have not been
-thoroughly developed.
+This example showcases how existing ONNX and PyTorch ML Models
+can be used to initiate handovers based on location and packet loss data. It
+consists of four UEs and two eNBs, where UE 1 and UE 4 are configured to move
+only within coverage of either eNB 1 or eNB 2, respectively, while UE 2 and
+UE 3 move around in area where the coverage area of eNB 1 and eNB 2 overlap.
+As the simulation progresses and UE 2 and UE 3 move, the distances of all
+four UE as well as the recorded packet loss for each UE is fed to an ML model
+that returns a desired configuration that indicates which eNB UE 1 and UE 2
+should be attached to to minimize packet loss. The models that we provide are
+for demonstrate purposes only and have not been thoroughly developed.
 
 ```shell
 ./ns3 run "oran-lte-2-lte-ml-handover-example"
