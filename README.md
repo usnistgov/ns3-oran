@@ -511,7 +511,7 @@ with the Near-RT RIC separately.
 ./ns3 run "oran-multiple-net-devices-example"
 ```
 
-## ML Handover Example
+## LTE to LTE ML Handover Example
 Note that in order to run this example using the flag, `--use-onnx-lm`, the
 ONNX libraires must be found during the configuration of `ns-3`, and it is
 assumed that the ML model file "saved_trained_model_pytorch.onnx" has been
