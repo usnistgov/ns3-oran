@@ -81,18 +81,18 @@ This release of the `oran` module contains the following features:
 - Generation and execution of LTE-to-LTE handover Commands
 - Activation and deactivation for individual components and RIC
 - Periodic node registration and de-registration with the RIC
-- Integration with [ONNX runtime](https://onnxruntime.ai/) and
+- Integration with [ONNX Runtime](https://onnxruntime.ai/) and
   [PyTorch](https://pytorch.org/) to support Machine Learning (ML)
 
 # Requirements
 * A C++ compliant compiler
     * GCC 7.3.0 or higher
     * Clang 6.0.0 or higher
-* SQLite3
+* SQLite 3.7.17
 
 ## Optional Dependencies
-* ONNX Runtime 1.14.1
-* PyTorch 1.13.1
+* ONNX Runtime 1.14.1 or higher
+* PyTorch 1.13.1 or higher
 
 # Installation
 ## Clone (Recommended)
