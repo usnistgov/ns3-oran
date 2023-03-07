@@ -327,11 +327,11 @@ is attractive since models that are created using other tools, such as
 PyTorch, can be exported to ONNX. Therfore, integration with ONNX was desired
 with the hopes that it can be used to provide the flexibility needed to
 support more than one type of ML model without having to integrate each
-individually. To make use of the ONNX support provided with this module, one
-simply needs to download the ONNX libraries that are distributed on the ONNX
-webiste ([https://onnxruntime.ai/](https://onnxruntime.ai/)), and export the
-location of the extracted library to the `LIBONNXPATH` environment variable.
-For example,
+individually. To make use of ONNX with this module, one simply needs to
+download the ONNX libraries that are distributed on the ONNX webiste
+([https://onnxruntime.ai/](https://onnxruntime.ai/)), and export the location
+of the extracted library to the `LIBONNXPATH` environment variable. For
+example,
 
 ```shell
 # Change to home directory
@@ -532,8 +532,8 @@ returns a desired configuration that indicates which eNB UE 2 and UE 3 should
 be attached to to minimize the overall packet loss. The models that we provide
 are for demonstrate purposes only and have not been thoroughly developed. It
 should also be noted that "saved_trained_model_pytorch.onnx" is the same
-version of "saved_trained_model_pytorch.pt" thath has been exported to the
-ONNX format.
+trained model as "saved_trained_model_pytorch.pt" only it  has been exported
+to the ONNX format.
 
 ```shell
 ./ns3 run "oran-lte-2-lte-ml-handover-example"
