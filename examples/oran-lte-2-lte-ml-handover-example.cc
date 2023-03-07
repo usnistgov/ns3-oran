@@ -95,10 +95,10 @@ int
 main (int argc, char *argv[])
 {
   bool verbose = false;
-  bool useOnnx = true;
+  bool useOnnx = false;
   bool useTorch = false;
   bool useOran = true;
-  bool useDistance = false;
+  bool useDistance = true;
   uint32_t startConfig = 1;
   double lmQueryInterval = 1;
   double txDelay = 0;
@@ -330,7 +330,7 @@ main (int argc, char *argv[])
         }
       else if (useDistance == true)
         {
-          defaultLmTid = TypeId::LookupByName ("ns3::OranLte2LteDistanceHandover");
+          defaultLmTid = TypeId::LookupByName ("ns3::OranLmLte2LteDistanceHandover");
         }
 
       ObjectFactory defaultLmFactory;
