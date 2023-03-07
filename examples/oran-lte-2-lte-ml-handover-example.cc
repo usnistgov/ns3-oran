@@ -95,10 +95,10 @@ int
 main (int argc, char *argv[])
 {
   bool verbose = false;
+  bool useOran = true;
   bool useOnnx = false;
   bool useTorch = false;
-  bool useOran = true;
-  bool useDistance = true;
+  bool useDistance = false;
   uint32_t startConfig = 1;
   double lmQueryInterval = 1;
   double txDelay = 0;
