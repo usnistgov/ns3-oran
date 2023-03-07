@@ -29,6 +29,8 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include <fstream>
+
 #include <ns3/simulator.h>
 #include <ns3/log.h>
 #include <ns3/abort.h>
