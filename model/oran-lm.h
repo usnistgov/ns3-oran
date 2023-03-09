@@ -33,6 +33,7 @@
 #define ORAN_LM_H
 
 #include <vector>
+#include <string_view>
 
 #include <ns3/object.h>
 #include <ns3/random-variable-stream.h>
@@ -97,7 +98,7 @@ public:
    *
    * \param name The name of this Logic Module.
    */
-  void SetName (std::string name);
+  void SetName (std::string_view name);
   /**
    * Prompts this Logical Module to execute its logic and generate any
    * necessary commands.
@@ -125,7 +126,7 @@ protected:
    *
    * \param msg The string to log to the Data Repository
    */
-  void LogLogicToRepository (std::string msg) const;
+  void LogLogicToRepository (const std::string &msg) const;
   /**
    * Finish running the logic module.
    */

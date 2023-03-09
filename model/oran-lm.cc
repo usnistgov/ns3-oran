@@ -129,7 +129,7 @@ OranLm::GetName (void) const
 }
 
 void
-OranLm::SetName (std::string name)
+OranLm::SetName (std::string_view name)
 {
   NS_LOG_FUNCTION (this << name);
 
@@ -214,7 +214,7 @@ OranLm::DoDispose (void)
 }
 
 void
-OranLm::LogLogicToRepository (std::string msg) const
+OranLm::LogLogicToRepository (const std::string &msg) const
 {
   NS_LOG_FUNCTION (this << msg);
 
