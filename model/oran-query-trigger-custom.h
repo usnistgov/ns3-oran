@@ -63,19 +63,19 @@ public:
   /**
    * Destructor of the OranQueryTriggerCustom class.
    */
-  virtual ~OranQueryTriggerCustom (void);
+  ~OranQueryTriggerCustom (void) override;
   /**
    * Indicates if a report should trigger query to the Logic Modules.
    *
    * \param report The report to consider.
    * \returns True, if a query to the Logic Modules should occur.
    */
-  virtual bool QueryLms (Ptr<OranReport> report) override;
+  bool QueryLms (Ptr<OranReport> report) override;
 protected:
   /**
    * Dispose of the object.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
 private:
   /**
    * A custom callback to trigger LM queries.

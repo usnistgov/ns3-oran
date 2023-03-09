@@ -69,9 +69,9 @@ public:
   /**
    * Destructor of the OranReporter class.
    */
-  virtual ~OranReporter (void);
+  ~OranReporter (void) override;
   /**
-   * Activate the reporter and start peridically generating Reports
+   * Activate the reporter and start periodically generating Reports
    * for the E2 Node Terminator.
    */
   virtual void Activate (void);
@@ -102,7 +102,7 @@ protected:
   /**
    * Dispose of the Reporter.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * Collect values and metrics from the models, and generate reports
    * with them.

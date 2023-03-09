@@ -69,7 +69,7 @@ public:
   /**
    * The destructor of the OranLm class.
    */
-  virtual ~OranLm (void);
+  ~OranLm (void) override;
   /**
    * Activate the Logic Module
    */

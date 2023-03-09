@@ -73,7 +73,7 @@ public:
   /**
    * The destructor of the OranCmm class.
    */
-  virtual ~OranCmm (void);
+  ~OranCmm (void) override;
   /**
    * Activates the Conflict Mitigation Module.
    */
@@ -116,7 +116,7 @@ protected:
   /**
    * Disposes of the object.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * Log a message to the data storage.
    *

@@ -12,8 +12,8 @@ class OranReportAppLoss : public OranReport
 public:
   static TypeId GetTypeId (void);
   OranReportAppLoss (void);
-  ~OranReportAppLoss (void);
-  virtual std::string ToString (void) const override;
+  ~OranReportAppLoss (void) override;
+  std::string ToString (void) const override;
 
   double GetLoss (void) const;
 

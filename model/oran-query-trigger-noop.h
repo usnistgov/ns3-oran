@@ -63,7 +63,7 @@ public:
   /**
    * Destructor of the OranQueryTriggerNoop class.
    */
-  virtual ~OranQueryTriggerNoop (void);
+  ~OranQueryTriggerNoop (void) override;
   /**
    * Indicates if a report should trigger query to the Logic Modules.
    * As this is a No-Operation trigger, it always returns false.
@@ -71,7 +71,7 @@ public:
    * \param report The report to consider.
    * \returns True, if a query to the Logic Modules should occur.
    */
-  virtual bool QueryLms (Ptr<OranReport> report) override;
+  bool QueryLms (Ptr<OranReport> report) override;
 }; // class OranQueryTriggerNoop
 
 } // namespace ns3

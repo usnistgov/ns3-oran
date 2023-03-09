@@ -18,13 +18,13 @@ class OranReporterAppLoss : public OranReporter
 public:
   static TypeId GetTypeId (void);
   OranReporterAppLoss (void);
-  virtual ~OranReporterAppLoss (void);
+  ~OranReporterAppLoss (void) override;
 
   void AddTx (Ptr<const Packet> p);
   void AddRx (Ptr<const Packet> p, const Address &from);
 
 protected:
-  virtual std::vector<Ptr<OranReport> > GenerateReports (void) override;
+  std::vector<Ptr<OranReport> > GenerateReports (void) override;
 
 private:
   uint64_t m_txcount;

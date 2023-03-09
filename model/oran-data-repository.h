@@ -73,7 +73,7 @@ public:
   /**
    * The destructor of the OranDataRepository class.
    */
-  virtual ~OranDataRepository (void);
+  ~OranDataRepository (void) override;
   /**
    * Activate the data storage.
    */
@@ -258,7 +258,7 @@ protected:
   /**
    * Disposes of the object.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
 
   /**
    * Flag to keep track of the active status.

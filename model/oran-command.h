@@ -61,7 +61,7 @@ public:
   /**
    * The destructor of the OranCommand class.
    */
-  virtual ~OranCommand (void);
+  ~OranCommand (void) override;
   /**
    * Get a string representation of this command.
    *

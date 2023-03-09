@@ -57,14 +57,14 @@ public:
   /**
    * Destructor of the OranE2NodeTerminatorWired class.
    */
-  virtual ~OranE2NodeTerminatorWired (void);
+  ~OranE2NodeTerminatorWired (void) override;
   /**
    * Get the E2 Node Type. For this Terminator this method always returns the
    * WIRED node type
    *
    * \return the E2 Node Type.
    */
-  virtual OranNearRtRic::NodeType GetNodeType (void) const;
+  OranNearRtRic::NodeType GetNodeType (void) const override;
   /**
    * Receive a Command. All Commands are silently discarded.
    *
@@ -72,7 +72,7 @@ public:
    *
    * \param command The received command.
    */
-  virtual void ReceiveCommand (Ptr<OranCommand> command) override;
+  void ReceiveCommand (Ptr<OranCommand> command) override;
 }; // class OranE2NodeTerminatorWired
 
 } // namespace ns3

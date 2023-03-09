@@ -59,20 +59,20 @@ public:
   /**
    * Destructor of the OranE2NodeTerminatorLteUe class.
    */
-  virtual ~OranE2NodeTerminatorLteUe (void);
+  ~OranE2NodeTerminatorLteUe (void) override;
   /**
    * Get the E2 Node Type. For this Terminator, this method always returns
    * the LTE UE node type
    *
    * \return the E2 Node Type.
    */
-  virtual OranNearRtRic::NodeType GetNodeType (void) const;
+  OranNearRtRic::NodeType GetNodeType (void) const override;
   /**
    * Receive a Command. All Commands are silently ignored.
    *
    * \param command The received command.
    */
-  virtual void ReceiveCommand (Ptr<OranCommand> command) override;
+  void ReceiveCommand (Ptr<OranCommand> command) override;
   /**
    * Get the NetDevice of the LTE UE.
    *

@@ -44,7 +44,7 @@ namespace ns3 {
 /**
  * \ingroup oran
  *
- * A Data Repository implemenation that uses an SQLite database as 
+ * A Data Repository implementation that uses an SQLite database as
  * the storage backend.
  *
  * The database used as the backend may be created new, or it may be an existing
@@ -71,7 +71,7 @@ public:
   /**
    * The destructor of the OranDataRepositorySqlite class.
    */
-  virtual ~OranDataRepositorySqlite (void);
+  ~OranDataRepositorySqlite (void) override;
  /**
    * Activate the data storage. If the database is not open, 
    * this method will call OpenDb.

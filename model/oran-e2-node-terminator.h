@@ -71,7 +71,7 @@ public:
   /**
    * The destructor of the OranE2NodeTerminator class.
    */
-  virtual ~OranE2NodeTerminator (void);
+  ~OranE2NodeTerminator (void) override;
   /**
    * Activate the E2 Terminator. This method will activate
    * all the Reporters associated with this Terminator and will start
@@ -153,7 +153,7 @@ protected:
   /**
    * Dispose of the object.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * Send the Reports.
    */

@@ -60,7 +60,7 @@ public:
   /**
    * The destructor of the OranCmmHandover class.
    */
-  virtual ~OranCmmHandover (void);
+  ~OranCmmHandover (void) override;
   /**
    * Prompts this conflict mitigation module to execute its logic
    * and filter the input commands. This is a No Operation module,

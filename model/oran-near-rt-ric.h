@@ -126,7 +126,7 @@ public:
   /**
    * Destructor of the OranNearRtRic class.
    */
-  virtual ~OranNearRtRic (void);
+  ~OranNearRtRic (void) override;
   /**
    * Activate the RIC.
    *

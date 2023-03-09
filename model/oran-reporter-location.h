@@ -62,14 +62,14 @@ public:
   /**
    * Destructor of the OranReporterLocation class.
    */
-  virtual ~OranReporterLocation (void);
+  ~OranReporterLocation (void) override;
 protected:
   /**
    * Capture the position of the node and instantiate an OranReportLocation
    *
    * \return The generated Report.
    */
-  virtual std::vector<Ptr<OranReport> > GenerateReports (void) override;
+  std::vector<Ptr<OranReport> > GenerateReports (void) override;
 }; // class OranReporterLocation
 
 } // namespace ns3
