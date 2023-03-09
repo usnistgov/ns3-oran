@@ -1,8 +1,9 @@
 # ORAN ns-3 Module
 A module that can be used in [ns-3](https://www.nsnam.org/) to simulate and 
-model behavior based on the [O-RAN](https://www.o-ran.org) speciications.
+model behavior based on the [O-RAN](https://www.o-ran.org) specifications.
 
 # Table of Contents
+* [Project Overview](#project-overview)
 * [Model Description](#model-description)
 * [Features](#features)
 * [Minimum Requirements](#requirements)
@@ -33,6 +34,19 @@ model behavior based on the [O-RAN](https://www.o-ran.org) speciications.
   * [Data Repository Example](#data-repository-example)
   * [Multiple Network Devices Example](#multiple-network-devices-example)
   * [LTE to LTE ML Handover Example](#lte-to-lte-ml-handover-example)
+
+# Project Overview
+This project has been developed by the National Institute of Standards and Technology (NIST)
+Communications Technology Lab (CTL) Wireless Networks Division (WND).
+
+This project includes open source, third party dependencies. For details of the licenses of these
+dependencies see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)
+
+Certain equipment, instruments, software, or materials, commercial or non-commercial, are used in this project. Such
+usage is not intended to imply recommendation or endorsement of any product or service by NIST, nor is it intended to
+imply that the software, materials, or equipment identified are necessarily the best available for the purpose.
+
+This project is considered feature complete, and will be maintained on a 'best effort' basis.
 
 # Model Description
 The `oran` module for `ns-3` implements the classes required to model a 
