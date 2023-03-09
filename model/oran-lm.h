@@ -153,7 +153,7 @@ protected:
   /**
    * Flag to keep track of the active status
    */
-  bool m_active;
+  bool m_active{false};
 private:
   /**
    * The finish run event.

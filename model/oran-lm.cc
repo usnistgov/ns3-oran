@@ -72,10 +72,7 @@ OranLm::GetTypeId (void)
 }
 
 OranLm::OranLm (void)
-  : Object (),
-    m_name (""),
-    m_active (false),
-    m_finishRunEvent (EventId ())
+  : Object ()
 {
   NS_LOG_FUNCTION (this);
 }
