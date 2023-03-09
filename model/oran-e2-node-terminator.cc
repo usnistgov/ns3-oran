@@ -291,7 +291,7 @@ OranE2NodeTerminator::DoSendReports (void)
     {
       NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to send a report to a null Near-RT RIC");
 
-      for (auto r : m_reports)
+      for (const auto &r : m_reports)
         {
           Simulator::Schedule (
               Seconds (m_transmissionDelayRv->GetValue ()),

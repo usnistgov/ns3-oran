@@ -132,7 +132,7 @@ OranReporter::PerformReport (void)
         {
           std::vector<Ptr<OranReport> > reports = GenerateReports ();
 
-          for (auto r : reports)
+          for (const auto &r : reports)
             {
               m_terminator->StoreReport (r);
             }

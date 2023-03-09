@@ -236,7 +236,7 @@ OranNearRtRicE2Terminator::ProcessCommands (std::vector<Ptr<OranCommand> > comma
 
   if (m_active) 
     {
-      for (auto cmd : commands) 
+      for (const auto &cmd : commands)
         {
           SendCommand (cmd);
         }
