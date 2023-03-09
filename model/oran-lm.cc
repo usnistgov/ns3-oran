@@ -170,7 +170,7 @@ OranLm::CancelRun (void)
       std::string msg = "Run canceld for cycle " + std::to_string (m_cycle.GetTimeStep ())
         + " with " + std::to_string (m_commands.size ()) + " command(s) lost";
 
-      if (m_commands.size () > 0)
+      if (!m_commands.empty())
         {
           msg += " {";
 
