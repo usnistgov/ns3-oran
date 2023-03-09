@@ -119,7 +119,7 @@ protected:
   /**
    * Dispose of the object.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * Log a string to the Data Repository
    *
