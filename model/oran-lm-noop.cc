@@ -80,9 +80,7 @@ OranLmNoop::Run (void)
   NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to run LM (" + m_name + ") with NULL Near-RT RIC");
 
   LogLogicToRepository ("No action taken");
-
-  std::vector <Ptr <OranCommand>> commands;
-  return commands;
+  return {};
 }
 
 } // namespace ns3
