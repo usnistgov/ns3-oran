@@ -4,6 +4,7 @@ model behavior based on the [O-RAN](https://www.o-ran.org) specifications.
 
 # Table of Contents
 * [Project Overview](#project-overview)
+  * [Contact](#contact)
 * [Model Description](#model-description)
 * [Features](#features)
 * [Minimum Requirements](#requirements)
@@ -47,6 +48,11 @@ usage is not intended to imply recommendation or endorsement of any product or s
 imply that the software, materials, or equipment identified are necessarily the best available for the purpose.
 
 This project is considered feature complete, and will be maintained on a 'best effort' basis.
+
+## Contact
+To report a bug, please open a [GitHub Issue](https://github.com/usnistgov/ns3-oran/issues/new).
+The point of contact for this project is Evan Black ([evan.black@nist.gov](mailto:evan.black@nist.gov))
+
 
 # Model Description
 The `oran` module for `ns-3` implements the classes required to model a 
@@ -561,4 +567,3 @@ Furthermore, once the training data has been generated, the file
 "oran-lte-2-lte-ml-handover-example-classifier.py" that is also included in
 the example folder, can be used to produce a PyTorch ML model using the
 training data that is generated.
-
