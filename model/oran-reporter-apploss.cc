@@ -70,7 +70,7 @@ OranReporterAppLoss::GenerateReports (void)
       if (m_rxcount <= m_txcount && m_txcount > 0) 
         {
           //loss = 1 - (m_rxcount * 1.0 / m_txcount);
-          loss = (m_txcount - m_rxcount) * 1.0 / m_txcount;
+          loss = static_cast<double>(m_txcount - m_rxcount) / static_cast<double>(m_txcount);
         }
 
       Ptr<OranReportAppLoss> lossReport = CreateObject<OranReportAppLoss> ();
