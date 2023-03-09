@@ -187,7 +187,7 @@ OranLmLte2LteDistanceHandover::GetHandoverCommands (
       double min = DBL_MAX; // The minimum distance recorded.
       uint64_t oldCellNodeId; // The ID of the cell currently serving the UE.
       uint16_t newCellId = ueInfo.cellId; // The ID of the closest cell.
-      for (auto enbInfo : enbInfos)
+      for (const auto &enbInfo : enbInfos)
         {
           // Calculate the distance between the UE and eNB.
           double dist = std::sqrt (
