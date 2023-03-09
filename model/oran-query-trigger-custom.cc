@@ -73,7 +73,7 @@ OranQueryTriggerCustom::QueryLms (Ptr<OranReport> report)
 {
   NS_LOG_FUNCTION (this << report);
 
-  return m_customCb.IsNull () ? false : m_customCb (report);
+  return !m_customCb.IsNull() && m_customCb(report);
 }
 
 void
