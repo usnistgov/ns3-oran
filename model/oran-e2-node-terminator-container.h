@@ -54,11 +54,11 @@ public:
   /**
    * Constructor of the ORanE2NodeTerminatorContainer.
    */
-  OranE2NodeTerminatorContainer (void);
+  OranE2NodeTerminatorContainer (void) = default;
   /**
    * Destructor of the OranE2NodeTerminatorContainer.
    */
-  virtual ~OranE2NodeTerminatorContainer (void);
+  virtual ~OranE2NodeTerminatorContainer (void) = default;
   /**
    * Activate all of the E2 Node Terminators in the container.
    */

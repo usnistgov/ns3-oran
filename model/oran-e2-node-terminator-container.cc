@@ -33,16 +33,6 @@
 
 namespace ns3 {
 
-OranE2NodeTerminatorContainer::OranE2NodeTerminatorContainer (void)
-  : m_e2NodeTerminators (std::vector<Ptr<OranE2NodeTerminator> > ())
-{
-}
-
-OranE2NodeTerminatorContainer::~OranE2NodeTerminatorContainer (void)
-{
-  m_e2NodeTerminators.clear ();
-}
-
 void
 OranE2NodeTerminatorContainer::Activate (void)
 {
