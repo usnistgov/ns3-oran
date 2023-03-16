@@ -66,7 +66,7 @@ public:
   OranLmLte2LteTorchHandover (void);
   ~OranLmLte2LteTorchHandover (void) override;
   std::vector<Ptr<OranCommand> > Run (void) override;
-  void SetTorchModelPath (std::string torchModelPath);
+  void SetTorchModelPath (const std::string &torchModelPath);
 
 private:
   torch::jit::script::Module m_model;

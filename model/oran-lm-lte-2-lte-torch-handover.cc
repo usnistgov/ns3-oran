@@ -94,7 +94,7 @@ OranLmLte2LteTorchHandover::Run (void)
 }
 
 void
-OranLmLte2LteTorchHandover::SetTorchModelPath (std::string torchModelPath)
+OranLmLte2LteTorchHandover::SetTorchModelPath (const std::string &torchModelPath)
 {
   std::ifstream f (torchModelPath.c_str ());
   NS_ABORT_MSG_IF (!f.good (),
@@ -119,7 +119,7 @@ OranLmLte2LteTorchHandover::GetUeInfos (Ptr<OranDataRepository> data) const
   NS_LOG_FUNCTION (this << data);
 
   std::vector<UeInfo> ueInfos;
-  for (auto ueId : data->GetLteUeE2NodeIds ())
+  for (const auto ueId : data->GetLteUeE2NodeIds ())
     {
       UeInfo ueInfo;
       ueInfo.nodeId = ueId;
@@ -153,7 +153,7 @@ OranLmLte2LteTorchHandover::GetEnbInfos (Ptr<OranDataRepository> data) const
   NS_LOG_FUNCTION (this << data);
 
   std::vector<EnbInfo> enbInfos;
-  for (auto enbId : data->GetLteEnbE2NodeIds())
+  for (const auto enbId : data->GetLteEnbE2NodeIds())
     {
       EnbInfo enbInfo;
       enbInfo.nodeId = enbId;
@@ -195,9 +195,9 @@ OranLmLte2LteTorchHandover::GetHandoverCommands (
   std::map<uint16_t, float> distanceEnb2;
   std::map<uint16_t, float> loss;
 
-  for (auto ueInfo : ueInfos)
+  for (const auto ueInfo : ueInfos)
     {
-      for (auto enbInfo : enbInfos) 
+      for (const auto enbInfo : enbInfos)
         {
           float d = std::sqrt (
               std::pow (ueInfo.position.x - enbInfo.position.x, 2) +
@@ -245,7 +245,7 @@ OranLmLte2LteTorchHandover::GetHandoverCommands (
   int configuration = output.argmax (1).item ().toInt ();
   LogLogicToRepository ("ML Chooses configuration " + std::to_string (configuration));
 
-  for (auto ueInfo : ueInfos)
+  for (const auto ueInfo : ueInfos)
     {
       if (ueInfo.nodeId == 2)
         {

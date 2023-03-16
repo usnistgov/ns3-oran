@@ -66,7 +66,7 @@ public:
   OranLmLte2LteOnnxHandover (void);
   ~OranLmLte2LteOnnxHandover (void) override;
   std::vector<Ptr<OranCommand> > Run (void) override;
-  void SetOnnxModelPath (std::string onnxModelPath);
+  void SetOnnxModelPath (const std::string &onnxModelPath);
 
 private:
   Ort::Env m_env;

@@ -94,7 +94,7 @@ OranLmLte2LteOnnxHandover::Run (void)
 }
 
 void
-OranLmLte2LteOnnxHandover::SetOnnxModelPath (std::string onnxModelPath)
+OranLmLte2LteOnnxHandover::SetOnnxModelPath (const std::string &onnxModelPath)
 {
   std::ifstream f (onnxModelPath.c_str ());
   NS_ABORT_MSG_IF (!f.good (),
