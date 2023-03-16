@@ -364,6 +364,14 @@ OranE2NodeTerminator::GetE2NodeId (void) const
   return m_e2NodeId;
 }
 
+Ptr<OranNearRtRic>
+OranE2NodeTerminator::GetNearRtRic (void) const
+{
+  NS_LOG_FUNCTION (this);
+
+  return m_nearRtRic;
+}
+
 Ptr<Node>
 OranE2NodeTerminator::GetNode (void) const
 {
