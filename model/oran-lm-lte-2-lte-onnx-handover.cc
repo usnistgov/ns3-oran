@@ -98,7 +98,7 @@ OranLmLte2LteOnnxHandover::SetOnnxModelPath (std::string onnxModelPath)
 {
   std::ifstream f (onnxModelPath.c_str ());
   NS_ABORT_MSG_IF (!f.good (),
-      "Torch model file \"" << onnxModelPath <<  "\" not found."
+      "ONNX model file \"" << onnxModelPath <<  "\" not found."
       << " Sample model \"saved_trained_classification_pytorch.onnx\""
       << " can be copied from the example folder to the working directory.");
   f.close ();
