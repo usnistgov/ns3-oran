@@ -64,8 +64,8 @@ protected:
 public:
   static TypeId GetTypeId (void);
   OranLmLte2LteOnnxHandover (void);
-  ~OranLmLte2LteOnnxHandover (void);
-  virtual std::vector<Ptr<OranCommand> > Run (void) override;
+  ~OranLmLte2LteOnnxHandover (void) override;
+  std::vector<Ptr<OranCommand> > Run (void) override;
   void SetOnnxModelPath (std::string onnxModelPath);
 
 private:

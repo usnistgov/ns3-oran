@@ -64,8 +64,8 @@ protected:
 public:
   static TypeId GetTypeId (void);
   OranLmLte2LteTorchHandover (void);
-  ~OranLmLte2LteTorchHandover (void);
-  virtual std::vector<Ptr<OranCommand> > Run (void) override;
+  ~OranLmLte2LteTorchHandover (void) override;
+  std::vector<Ptr<OranCommand> > Run (void) override;
   void SetTorchModelPath (std::string torchModelPath);
 
 private:
