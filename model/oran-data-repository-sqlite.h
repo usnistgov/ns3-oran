@@ -125,24 +125,24 @@ protected:
    */
   enum StatementType {
     CHECK_NODE_REGISTERED = 0,         //!< Query if a node is registered
-    GET_ALL_LAST_REGISTRATION_TIMES,
-    GET_LTE_ALL_ENB_E2NODEIDS,
-    GET_LTE_ALL_UE_E2NODEIDS,
-    GET_LTE_CELLID_FROM_E2NODEID,
-    GET_LTE_UE_CELLINFO,
-    GET_LTE_UE_E2NODEID_FROM_CELLINFO,
-    GET_NODE_ALL_POSITIONS,
-    INSERT_LTE_ENB_NODE,
-    INSERT_LTE_UE_CELL,
-    INSERT_LTE_UE_NODE,
-    INSERT_NODE_ADD,
-    INSERT_NODE_UPDATE,
-    INSERT_NODE_LOCATION,
-    INSERT_NODE_REGISTRATION,
-    LOG_CMM_ACTION,
-    LOG_E2TERMINATOR_COMMAND,
-    LOG_LM_ACTION,
-    LOG_LM_COMMAND
+    GET_ALL_LAST_REGISTRATION_TIMES,   //!< Get node registation times  
+    GET_LTE_ALL_ENB_E2NODEIDS,         //!< Get all LTE eNB E2 IDs
+    GET_LTE_ALL_UE_E2NODEIDS,          //!< Get all LTE UE E2 IDs
+    GET_LTE_CELLID_FROM_E2NODEID,      //!< Get the cell ID of an LTE eNB from its E2 Node ID
+    GET_LTE_UE_CELLINFO,               //!< Get the cell information associated with LTE UE
+    GET_LTE_UE_E2NODEID_FROM_CELLINFO, //!< Get the E2 ID of a UE from the cell information
+    GET_NODE_ALL_POSITIONS,            //!< The location of all nodes E2 nodes
+    INSERT_LTE_ENB_NODE,               //!< Add an LTE eNB E2 node
+    INSERT_LTE_UE_CELL,                //!< Add LTE UE cell information for an E2 node
+    INSERT_LTE_UE_NODE,                //!< Add an LTE UE E2 node
+    INSERT_NODE_ADD,                   //!< Add an E2 node
+    INSERT_NODE_UPDATE,                //!< Update an E2 node's information
+    INSERT_NODE_LOCATION,              //!< Add an E2 node's location
+    INSERT_NODE_REGISTRATION,          //!< Add an E2 node registration request
+    LOG_CMM_ACTION,                    //!< Log a CM module action
+    LOG_E2TERMINATOR_COMMAND,          //!< Log an E2 terminator command from the RIC
+    LOG_LM_ACTION,                     //!< Log an LM action
+    LOG_LM_COMMAND                     //!< Log an LM command
   };
   /**
    * Enumeration with the type of SQL CREATE TABLE statements
@@ -174,7 +174,6 @@ protected:
   /**
    * Checks that a query was executed successfully. This method checks the return codeof a query,
    * and if there was an error, the simulation is aborted.
-   *
    *
    * \param stmt The query that was executed.
    * \param rc The return code.

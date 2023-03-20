@@ -44,22 +44,59 @@ namespace ns3 {
 class Packet;
 class Address;
 
+/**
+ * \ingroup oran
+ *
+ * A Reporter that captures the application packet loss of the node.
+ */
 class OranReporterAppLoss : public OranReporter
 {
 public:
+  /**
+   * Get the TypeId of the OranReporterAppLoss class.
+   *
+   * \return The TypeId.
+   */
   static TypeId GetTypeId (void);
-  OranReporterAppLoss (void);
+  /**
+   * Constructor of the OranReporterAppLoss class.
+   */
+   OranReporterAppLoss (void);
+  /**
+   * Destructor of the OranReporterAppLoss class.
+   */
   ~OranReporterAppLoss (void) override;
-
+  /**
+   * Records the transmission of a packet.
+   *
+   * \param p The packet.
+   */
   void AddTx (Ptr<const Packet> p);
+  /**
+   * Records the reception of a packet from a given address.
+   *
+   * \param p The packet.
+   * \param from The address that the packet is from.
+   */
   void AddRx (Ptr<const Packet> p, const Address &from);
 
 protected:
+  /**
+   * Capture the application packet loss and instantiate an OranReportAppLoss.
+   *
+   * \return The generated Report.
+   */
   std::vector<Ptr<OranReport> > GenerateReports (void) override;
 
 private:
-  uint64_t m_txcount;
-  uint64_t m_rxcount;
+  /**
+   * The number of transmitted packets.
+   */
+  uint64_t m_tx;
+  /**
+   * The number of recived packets.
+   */
+  uint64_t m_rx;
 };
 
 } // namespace ns3

@@ -65,7 +65,7 @@ public:
   ~OranReporterLocation (void) override;
 protected:
   /**
-   * Capture the position of the node and instantiate an OranReportLocation
+   * Capture the position of the node and instantiate an OranReportLocation.
    *
    * \return The generated Report.
    */

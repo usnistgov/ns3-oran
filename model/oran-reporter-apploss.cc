@@ -61,8 +61,8 @@ OranReporterAppLoss::OranReporterAppLoss (void)
 {
   NS_LOG_FUNCTION (this);
   
-  m_txcount = 0;
-  m_rxcount = 0;
+  m_tx = 0;
+  m_rx = 0;
 }
 
 OranReporterAppLoss::~OranReporterAppLoss (void)
@@ -75,7 +75,7 @@ OranReporterAppLoss::AddTx (Ptr<const Packet> p)
 {
   NS_LOG_FUNCTION (this << p);
 
-  m_txcount ++;
+  m_tx ++;
 }
 
 void
@@ -83,7 +83,7 @@ OranReporterAppLoss::AddRx (Ptr<const Packet> p, const Address &from )
 {
   NS_LOG_FUNCTION (this << p << from);
 
-  m_rxcount ++; 
+  m_rx ++; 
 }
 
 std::vector <Ptr<OranReport> >
@@ -98,10 +98,10 @@ OranReporterAppLoss::GenerateReports (void)
       NS_ABORT_MSG_IF (m_terminator == nullptr, "Attempting to generate reports in reporter with NULL E2 Terminator");
      
       double loss = 0;
-      if (m_rxcount <= m_txcount && m_txcount > 0) 
+      if (m_rx <= m_tx && m_tx > 0) 
         {
-          //loss = 1 - (m_rxcount * 1.0 / m_txcount);
-          loss = static_cast<double>(m_txcount - m_rxcount) / static_cast<double>(m_txcount);
+          //loss = 1 - (m_rx * 1.0 / m_tx);
+          loss = static_cast<double>(m_tx - m_rx) / static_cast<double>(m_tx);
         }
 
       Ptr<OranReportAppLoss> lossReport = CreateObject<OranReportAppLoss> ();
@@ -110,8 +110,8 @@ OranReporterAppLoss::GenerateReports (void)
       lossReport->SetAttribute ("Loss", DoubleValue (loss));
 
       reports.push_back (lossReport);
-      m_txcount = 0;
-      m_rxcount = 0;
+      m_tx = 0;
+      m_rx = 0;
     }
 
   return reports;

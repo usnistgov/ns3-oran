@@ -38,18 +38,45 @@
 
 namespace ns3 {
 
+/**
+ * \ingroup oran
+ *
+ * Report with the application packet loss of a node at a given time.
+ */
 class OranReportAppLoss : public OranReport
 {
 public:
+  /**
+   * Get the TypeId of the OranReportAppLoss class.
+   *
+   * \return The TypeId.
+   */
   static TypeId GetTypeId (void);
-  OranReportAppLoss (void);
+  /**
+   * Constructor of the OranReportAppLoss class.
+   */
+   OranReportAppLoss (void);
+  /**
+   * Destructor of the OranReportAppLoss class.
+   */
   ~OranReportAppLoss (void) override;
-  std::string ToString (void) const override;
-
-  double GetLoss (void) const;
-
+  /**
+   * Get a string representation of this Report
+   *
+   * \return A string representation of this Report.
+   */
+   std::string ToString (void) const override;
+   /**
+    * Gets the reported application packet loss.
+    *
+    * \return The reported application packet loss.
+    */
+   double GetLoss (void) const;
 private:
-  double m_loss;
+   /**
+    * The application packet loss.
+    */
+   double m_loss;
 }; // class OranReportAppLoss
 
 } // namespace ns3

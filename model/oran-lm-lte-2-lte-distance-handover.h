@@ -47,7 +47,6 @@ namespace ns3 {
 class OranLmLte2LteDistanceHandover : public OranLm
 {
 protected:
-  // Structures for managing easily the data retrieved from the Data Repository
   /**
    * UE related information.
    */
@@ -55,7 +54,7 @@ protected:
   {
     uint64_t nodeId; //!< The node ID.
     uint16_t cellId; //!< The cell ID.
-    uint16_t rnti; //!< The RNTI ID.
+    uint16_t rnti;   //!< The RNTI ID.
     Vector position; //!< The physical position.
   };
   /**
