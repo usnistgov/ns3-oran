@@ -59,7 +59,7 @@ public:
   /**
    * Destructor of the OranQueryTrigger class.
    */
-  virtual ~OranQueryTrigger (void);
+  ~OranQueryTrigger (void) override;
   /**
    * Indicates if a report should trigger query to the Logic Modules.
    *

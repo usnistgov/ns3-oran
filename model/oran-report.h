@@ -63,7 +63,7 @@ public:
   /**
    * Destructor of the OranReport class.
    */
-  virtual ~OranReport (void);
+  ~OranReport (void) override;
   /**
    * Get a string representation of this Report.
    *

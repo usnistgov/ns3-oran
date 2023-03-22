@@ -65,21 +65,21 @@ public:
   /**
    * Destructor of the OranReportTriggerLteUeHandover class.
    */
-  virtual ~OranReportTriggerLteUeHandover (void);
+  ~OranReportTriggerLteUeHandover (void) override;
   /**
    * Activates this trigger for the given reporter.
    * \param reporter The reporter to link to.
    */
-  virtual void Activate (Ptr<OranReporter> reporter) override;
+  void Activate (Ptr<OranReporter> reporter) override;
   /**
    * Deactivates this trigger and unlinks it from the current reporter.
    */
-  virtual void Deactivate (void) override;
+  void Deactivate (void) override;
 protected:
   /**
    * Dispose of the Report.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * The callback for receiving the HandoverEndOk event from an LTE UE.
    * \param imsi The IMSI of the UE.

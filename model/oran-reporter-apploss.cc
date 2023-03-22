@@ -29,61 +29,92 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#ifndef ORAN_QUERY_TRIGGER_CUSTOM_H
-#define ORAN_QUERY_TRIGGER_CUSTOM_H
+#include <ns3/simulator.h>
+#include <ns3/log.h>
+#include <ns3/abort.h>
+#include <ns3/double.h>
+#include <ns3/uinteger.h>
 
-#include <ns3/object.h>
-#include <ns3/ptr.h>
+#include <ns3/packet.h>
+#include <ns3/address.h>
 
-#include "oran-report.h"
-#include "oran-query-trigger.h"
+#include "oran-reporter-apploss.h"
+#include "oran-report-apploss.h"
 
 namespace ns3 {
 
-class OranReporter;
+NS_LOG_COMPONENT_DEFINE ("OranReporterAppLoss");
+NS_OBJECT_ENSURE_REGISTERED (OranReporterAppLoss);
 
-/**
- * \ingroup oran
- *
- * Class for triggering LM queries in the Near-RT RIC based on user-provided methods.
- */
-class OranQueryTriggerCustom : public OranQueryTrigger
+TypeId
+OranReporterAppLoss::GetTypeId (void)
 {
-public:
-  /**
-   * Get the TypeId of the OranQueryTriggerCustom class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranQueryTriggerCustom class.
-   */
-  OranQueryTriggerCustom (void);
-  /**
-   * Destructor of the OranQueryTriggerCustom class.
-   */
-  ~OranQueryTriggerCustom (void) override;
-  /**
-   * Indicates if a report should trigger query to the Logic Modules.
-   *
-   * \param report The report to consider.
-   * \returns True, if a query to the Logic Modules should occur.
-   */
-  bool QueryLms (Ptr<OranReport> report) override;
-protected:
-  /**
-   * Dispose of the object.
-   */
-  void DoDispose (void) override;
-private:
-  /**
-   * A custom callback to trigger LM queries.
-   */
-  Callback<bool, Ptr<OranReport> > m_customCb;
-}; // class OranQueryTriggerCustom
+  static TypeId tid = TypeId ("ns3::OranReporterAppLoss")
+    .SetParent<OranReporter> ()
+    .AddConstructor<OranReporterAppLoss> ()
+  ;
+
+  return tid;
+}
+
+OranReporterAppLoss::OranReporterAppLoss (void)
+{
+  NS_LOG_FUNCTION (this);
+  
+  m_tx = 0;
+  m_rx = 0;
+}
+
+OranReporterAppLoss::~OranReporterAppLoss (void)
+{
+  NS_LOG_FUNCTION (this);
+}
+
+void
+OranReporterAppLoss::AddTx (Ptr<const Packet> p)
+{
+  NS_LOG_FUNCTION (this << p);
+
+  m_tx ++;
+}
+
+void
+OranReporterAppLoss::AddRx (Ptr<const Packet> p, const Address &from )
+{
+  NS_LOG_FUNCTION (this << p << from);
+
+  m_rx ++; 
+}
+
+std::vector <Ptr<OranReport> >
+OranReporterAppLoss::GenerateReports (void)
+{
+  NS_LOG_FUNCTION (this);
+
+  std::vector<Ptr<OranReport> > reports;
+
+  if (m_active)
+    {
+      NS_ABORT_MSG_IF (m_terminator == nullptr, "Attempting to generate reports in reporter with NULL E2 Terminator");
+     
+      double loss = 0;
+      if (m_rx <= m_tx && m_tx > 0) 
+        {
+          //loss = 1 - (m_rx * 1.0 / m_tx);
+          loss = static_cast<double>(m_tx - m_rx) / static_cast<double>(m_tx);
+        }
+
+      Ptr<OranReportAppLoss> lossReport = CreateObject<OranReportAppLoss> ();
+      lossReport->SetAttribute ("ReporterE2NodeId", UintegerValue (m_terminator->GetE2NodeId ()));
+      lossReport->SetAttribute ("Time", TimeValue (Simulator::Now ()));
+      lossReport->SetAttribute ("Loss", DoubleValue (loss));
+
+      reports.push_back (lossReport);
+      m_tx = 0;
+      m_rx = 0;
+    }
+
+  return reports;
+}
 
 } // namespace ns3
-
-#endif /* ORAN_QUERY_TRIGGER_CUSTOM_H */
-

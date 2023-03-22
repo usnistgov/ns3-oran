@@ -29,61 +29,66 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#ifndef ORAN_QUERY_TRIGGER_CUSTOM_H
-#define ORAN_QUERY_TRIGGER_CUSTOM_H
-
-#include <ns3/object.h>
-#include <ns3/ptr.h>
+#include <ns3/log.h>
+#include <ns3/abort.h>
+#include <ns3/double.h>
 
 #include "oran-report.h"
-#include "oran-query-trigger.h"
+#include "oran-report-apploss.h"
 
 namespace ns3 {
 
-class OranReporter;
+NS_LOG_COMPONENT_DEFINE ("OranReportAppLoss");
+NS_OBJECT_ENSURE_REGISTERED (OranReportAppLoss);
 
-/**
- * \ingroup oran
- *
- * Class for triggering LM queries in the Near-RT RIC based on user-provided methods.
- */
-class OranQueryTriggerCustom : public OranQueryTrigger
+TypeId
+OranReportAppLoss::GetTypeId (void)
 {
-public:
-  /**
-   * Get the TypeId of the OranQueryTriggerCustom class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranQueryTriggerCustom class.
-   */
-  OranQueryTriggerCustom (void);
-  /**
-   * Destructor of the OranQueryTriggerCustom class.
-   */
-  ~OranQueryTriggerCustom (void) override;
-  /**
-   * Indicates if a report should trigger query to the Logic Modules.
-   *
-   * \param report The report to consider.
-   * \returns True, if a query to the Logic Modules should occur.
-   */
-  bool QueryLms (Ptr<OranReport> report) override;
-protected:
-  /**
-   * Dispose of the object.
-   */
-  void DoDispose (void) override;
-private:
-  /**
-   * A custom callback to trigger LM queries.
-   */
-  Callback<bool, Ptr<OranReport> > m_customCb;
-}; // class OranQueryTriggerCustom
+  static TypeId tid = TypeId ("ns3::OranReportAppLoss")
+    .SetParent<OranReport> ()
+    .AddConstructor<OranReportAppLoss> ()
+    .AddAttribute ("Loss", "App Loss Rate",
+                  DoubleValue (),
+                  MakeDoubleAccessor (&OranReportAppLoss::m_loss),
+                  MakeDoubleChecker<double> ())
+    ;
 
-} // namespace ns3
+  return tid;
+}
 
-#endif /* ORAN_QUERY_TRIGGER_CUSTOM_H */
+OranReportAppLoss::OranReportAppLoss (void)
+{
+  NS_LOG_FUNCTION (this);
+}
 
+OranReportAppLoss::~OranReportAppLoss (void)
+{
+  NS_LOG_FUNCTION (this);
+}
+
+std::string 
+OranReportAppLoss::ToString (void) const
+{
+  NS_LOG_FUNCTION (this);
+
+  std::stringstream ss;
+  Time time = GetTime ();
+
+  ss << "OranReportAppLoss("
+     << "E2NodeId=" << GetReporterE2NodeId ()
+     << ";Time=" << time.As (Time::S)
+     << ";Loss=" << m_loss
+     << ")";
+
+  return ss.str ();
+}
+
+double 
+OranReportAppLoss::GetLoss (void) const
+{
+  NS_LOG_FUNCTION (this);
+
+  return m_loss;
+}
+
+}

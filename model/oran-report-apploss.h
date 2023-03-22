@@ -29,90 +29,56 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#ifndef ORAN_E2_NODE_TERMINATOR_CONTAINER_H
-#define ORAN_E2_NODE_TERMINATOR_CONTAINER_H
+#ifndef ORAN_REPORT_APPLOSS
+#define ORAN_REPORT_APPLOSS
 
-#include <vector>
+#include <string>
 
-#include "oran-e2-node-terminator.h"
+#include "oran-report.h"
 
 namespace ns3 {
 
 /**
  * \ingroup oran
  *
- * A Container for E2 Node Terminator. This Container allows the Activation and
- * Deactivation of all Terminators in it at once.
+ * Report with the application packet loss of a node at a given time.
  */
-class OranE2NodeTerminatorContainer
+class OranReportAppLoss : public OranReport
 {
 public:
   /**
-   * Declaration of container iterator.
-   */
-  typedef std::vector<Ptr<OranE2NodeTerminator> >::const_iterator Iterator;
-  /**
-   * Constructor of the ORanE2NodeTerminatorContainer.
-   */
-  OranE2NodeTerminatorContainer (void) = default;
-  /**
-   * Destructor of the OranE2NodeTerminatorContainer.
-   */
-  virtual ~OranE2NodeTerminatorContainer (void) = default;
-  /**
-   * Activate all of the E2 Node Terminators in the container.
-   */
-  void Activate (void);
-  /**
-   * Get an iterator referencing the first element.
+   * Get the TypeId of the OranReportAppLoss class.
    *
-   * \return The iterator.
+   * \return The TypeId.
    */
-  Iterator Begin (void) const;
+  static TypeId GetTypeId (void);
   /**
-   * Deactivate all of the E2 Node Terminators in the container.
+   * Constructor of the OranReportAppLoss class.
    */
-  void Deactivate (void);
+   OranReportAppLoss (void);
   /**
-   * Get an iterator referencing the last element.
-   *
-   * \return The iterator.
+   * Destructor of the OranReportAppLoss class.
    */
-  Iterator End (void) const;
+  ~OranReportAppLoss (void) override;
   /**
-   * Get the number of elements in the container.
+   * Get a string representation of this Report
    *
-   * \return The number of elements.
+   * \return A string representation of this Report.
    */
-  uint32_t GetN (void) const;
-  /**
-   * Get an element from the container.
-   *
-   * \param i The index of the element to return.
-   *
-   * \return The element.
-   */
-  Ptr<OranE2NodeTerminator> Get (uint32_t i) const;
-  /**
-   * Add the elements of another container to this container.
-   *
-   * \param other The other container.
-   */
-  void Add (OranE2NodeTerminatorContainer other);
-  /**
-   * Add an element to this container.
-   *
-   * \param e2NodeTerminator The element to add.
-   */
-  void Add (Ptr<OranE2NodeTerminator> e2NodeTerminator);
+   std::string ToString (void) const override;
+   /**
+    * Gets the reported application packet loss.
+    *
+    * \return The reported application packet loss.
+    */
+   double GetLoss (void) const;
 private:
-  /**
-   * The underlying container.
-   */
-  std::vector<Ptr<OranE2NodeTerminator> > m_e2NodeTerminators;
-}; // class OranE2NodeTerminatorContainer
+   /**
+    * The application packet loss.
+    */
+   double m_loss;
+}; // class OranReportAppLoss
 
 } // namespace ns3
 
-#endif // ORAN_E2_NODE_TERMINATOR_CONTAINER_H
-
+#endif  //ORAN_REPORT_APPLOSS

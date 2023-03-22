@@ -64,7 +64,7 @@ public:
   /**
    * The destructor of the OranCmmSingleCommandPerNode class.
    */
-  virtual ~OranCmmSingleCommandPerNode (void);
+  ~OranCmmSingleCommandPerNode (void) override;
   /**
    * Prompts this Conflict Mitigation Module to execute its logic
    * and filter the input commands. This module makes sure only one

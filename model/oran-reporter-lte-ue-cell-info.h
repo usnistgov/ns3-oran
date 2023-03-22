@@ -63,7 +63,7 @@ public:
   /**
    * Destructor of the OranReporterLteUeCellInfo class.
    */
-  virtual ~OranReporterLteUeCellInfo (void);
+  ~OranReporterLteUeCellInfo (void) override;
 protected:
   /**
    * Get the Cell ID of the attached LTE cell, and generate an
@@ -71,7 +71,7 @@ protected:
    *
    * \return The generated Report.
    */
-  virtual std::vector<Ptr<OranReport> > GenerateReports (void) override;
+  std::vector<Ptr<OranReport> > GenerateReports (void) override;
 }; // class OranReporterLteUeCellInfo
 
 } // namespace ns3

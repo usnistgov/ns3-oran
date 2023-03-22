@@ -33,6 +33,7 @@
 #define ORAN_LM_H
 
 #include <vector>
+#include <string_view>
 
 #include <ns3/object.h>
 #include <ns3/random-variable-stream.h>
@@ -69,7 +70,7 @@ public:
   /**
    * The destructor of the OranLm class.
    */
-  virtual ~OranLm (void);
+  ~OranLm (void) override;
   /**
    * Activate the Logic Module
    */
@@ -97,7 +98,7 @@ public:
    *
    * \param name The name of this Logic Module.
    */
-  void SetName (std::string name);
+  void SetName (std::string_view name);
   /**
    * Prompts this Logical Module to execute its logic and generate any
    * necessary commands.
@@ -119,13 +120,13 @@ protected:
   /**
    * Dispose of the object.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * Log a string to the Data Repository
    *
    * \param msg The string to log to the Data Repository
    */
-  void LogLogicToRepository (std::string msg) const;
+  void LogLogicToRepository (const std::string &msg) const;
   /**
    * Finish running the logic module.
    */
@@ -152,7 +153,7 @@ protected:
   /**
    * Flag to keep track of the active status
    */
-  bool m_active;
+  bool m_active{false};
 private:
   /**
    * The finish run event.

@@ -291,7 +291,7 @@ OranE2NodeTerminator::DoSendReports (void)
     {
       NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to send a report to a null Near-RT RIC");
 
-      for (auto r : m_reports)
+      for (const auto &r : m_reports)
         {
           Simulator::Schedule (
               Seconds (m_transmissionDelayRv->GetValue ()),
@@ -362,6 +362,14 @@ OranE2NodeTerminator::GetE2NodeId (void) const
   NS_LOG_FUNCTION (this);
 
   return m_e2NodeId;
+}
+
+Ptr<OranNearRtRic>
+OranE2NodeTerminator::GetNearRtRic (void) const
+{
+  NS_LOG_FUNCTION (this);
+
+  return m_nearRtRic;
 }
 
 Ptr<Node>

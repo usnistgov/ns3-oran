@@ -68,7 +68,7 @@ public:
   /**
    * Destructor of the OranNearRtRicE2Terminator class.
    */
-  virtual ~OranNearRtRicE2Terminator (void);
+  ~OranNearRtRicE2Terminator (void) override;
   /**
    * Activate the E2 Terminator.
    */
@@ -128,7 +128,7 @@ protected:
   /**
    * Dispose of the object.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
 private:
   /**
    * Flag to keep track of active status

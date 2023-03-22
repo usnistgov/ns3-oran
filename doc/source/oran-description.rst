@@ -30,6 +30,7 @@ This release of the ``oran`` module contains the following features:
   - Logic Module and Conflict Mitigation logic logging to the data repository.
   - Periodic or report-triggered invocation of the Logic Module's algorithms.
   - Simulated processing delay for each Logic Module.
+  - Integration with `ONNX Runtime`_ and `PyTorch`_ to support Machine Learning (ML)
 
 - Periodic reporting of metrics from the simulation nodes to the Near-RT RIC.
 - Periodic or event-triggered generation of reports.
@@ -42,3 +43,5 @@ This release of the ``oran`` module contains the following features:
 
 .. _O-RAN: https://www.o-ran.org/
 .. _Sqlite: https://www.sqlite.org
+.. _ONNX Runtime: https://onnxruntime.ai/
+.. _PyTorch: https://pytorch.org/

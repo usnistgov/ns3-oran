@@ -62,7 +62,7 @@ public:
   /**
    * The destructor of the OranCmmNoop class.
    */
-  virtual ~OranCmmNoop (void);
+  ~OranCmmNoop (void) override;
   /**
    * Prompts this Conflict Mitigation Module to execute its logic
    * and filter the input commands. This is a No Operation module,

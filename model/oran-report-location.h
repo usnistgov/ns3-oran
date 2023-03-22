@@ -62,13 +62,13 @@ public:
   /**
    * Destructor of the OranReportLocation class.
    */
-  virtual ~OranReportLocation (void);
+  ~OranReportLocation (void) override;
   /**
    * Get a string representation of this Report
    *
    * \return A string representation of this Report.
    */
-  virtual std::string ToString (void) const override;
+  std::string ToString (void) const override;
 private:
   /**
    * The reported location

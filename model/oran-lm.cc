@@ -72,10 +72,7 @@ OranLm::GetTypeId (void)
 }
 
 OranLm::OranLm (void)
-  : Object (),
-    m_name (""),
-    m_active (false),
-    m_finishRunEvent (EventId ())
+  : Object ()
 {
   NS_LOG_FUNCTION (this);
 }
@@ -129,7 +126,7 @@ OranLm::GetName (void) const
 }
 
 void
-OranLm::SetName (std::string name)
+OranLm::SetName (std::string_view name)
 {
   NS_LOG_FUNCTION (this << name);
 
@@ -173,7 +170,7 @@ OranLm::CancelRun (void)
       std::string msg = "Run canceld for cycle " + std::to_string (m_cycle.GetTimeStep ())
         + " with " + std::to_string (m_commands.size ()) + " command(s) lost";
 
-      if (m_commands.size () > 0)
+      if (!m_commands.empty())
         {
           msg += " {";
 
@@ -214,7 +211,7 @@ OranLm::DoDispose (void)
 }
 
 void
-OranLm::LogLogicToRepository (std::string msg) const
+OranLm::LogLogicToRepository (const std::string &msg) const
 {
   NS_LOG_FUNCTION (this << msg);
 

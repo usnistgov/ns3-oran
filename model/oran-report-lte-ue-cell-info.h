@@ -59,13 +59,13 @@ public:
   /**
    * Destructor of the OranReportLteUeCellInfo class.
    */
-  virtual ~OranReportLteUeCellInfo (void);
+  ~OranReportLteUeCellInfo (void) override;
   /**
    * Get a string representation of this Report.
    *
    * \return A string representation of this Report.
    */
-  virtual std::string ToString (void) const override;
+  std::string ToString (void) const override;
 private:
   /**
    * The reported cell ID.

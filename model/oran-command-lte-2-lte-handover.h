@@ -59,9 +59,9 @@ public:
   /**
    * The destructor of the OranCommandLte2LteHandover class.
    */
-  virtual ~OranCommandLte2LteHandover (void);
+  ~OranCommandLte2LteHandover (void) override;
 
-  virtual std::string ToString (void) const override;
+  std::string ToString (void) const override;
 private:
   /**
    * The ID of the cell to handover to.

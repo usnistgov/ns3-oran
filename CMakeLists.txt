@@ -32,6 +32,59 @@ if(NOT ${ENABLE_SQLITE})
   return()
 endif()
 
+find_external_library(DEPENDENCY_NAME Torch
+                      HEADER_NAME
+                        torch/script.h
+                        torch.h
+                      LIBRARY_NAME torch
+                      SEARCH_PATHS $ENV{LIBTORCHPATH})
+
+if(${Torch_FOUND})
+  include_directories(${Torch_INCLUDE_DIRS})
+  link_libraries(${Torch_LIBRARIES})
+endif()
+
+set(torch_libraries)
+set(oran_torch_sources)
+set(oran_torch_headers)
+if(${Torch_FOUND})
+  set(torch_libraries ${Torch_LIBRARIES})
+  set(oran_torch_sources
+      model/oran-lm-lte-2-lte-torch-handover.cc
+  )
+  set(oran_torch_headers
+      model/oran-lm-lte-2-lte-torch-handover.h
+  )
+endif()
+
+find_external_library(DEPENDENCY_NAME OnnxRuntime
+                      HEADER_NAME
+                        cpu_provider_factory.h
+                        onnxruntime_c_api.h
+                        onnxruntime_cxx_api.h
+                        onnxruntime_run_options_config_keys.h
+                        onnxruntime_session_options_config_keys.h
+                        provider_options.h
+                      LIBRARY_NAME onnxruntime
+                      SEARCH_PATHS $ENV{LIBONNXPATH})
+
+if(${OnnxRuntime_FOUND})
+  include_directories(${OnnxRuntime_INCLUDE_DIRS})
+  link_libraries(${OnnxRuntime_LIBRARIES})
+endif()
+
+set(onnxruntime_libraries)
+set(oran_onnxruntime_sources)
+set(oran_onnxruntime_headers)
+if(${OnnxRuntime_FOUND})
+  set(onnxruntime_libraries ${OnnxRuntime_LIBRARIES})
+  set(oran_onnxruntime_sources
+      model/oran-lm-lte-2-lte-onnx-handover.cc
+  )
+  set(oran_onnxruntime_headers
+      model/oran-lm-lte-2-lte-onnx-handover.h
+  )
+endif()
 
 build_lib(
   LIBNAME oran
@@ -41,14 +94,17 @@ build_lib(
     model/oran-lm-noop.cc
     model/oran-lm-lte-2-lte-distance-handover.cc
     model/oran-cmm.cc
+    model/oran-cmm-handover.cc
     model/oran-cmm-noop.cc
     model/oran-cmm-single-command-per-node.cc
     model/oran-command.cc
     model/oran-command-lte-2-lte-handover.cc
     model/oran-report.cc
+    model/oran-report-apploss.cc
     model/oran-report-location.cc
     model/oran-report-lte-ue-cell-info.cc
     model/oran-reporter.cc
+    model/oran-reporter-apploss.cc
     model/oran-reporter-location.cc
     model/oran-reporter-lte-ue-cell-info.cc
     model/oran-data-repository.cc
@@ -67,20 +123,25 @@ build_lib(
     model/oran-query-trigger-noop.cc
     model/oran-query-trigger-custom.cc
     helper/oran-helper.cc
+    ${oran_onnxruntime_sources}
+    ${oran_torch_sources}
   HEADER_FILES
     model/oran-near-rt-ric.h
     model/oran-lm.h
     model/oran-lm-noop.h
     model/oran-lm-lte-2-lte-distance-handover.h
     model/oran-cmm.h
+    model/oran-cmm-handover.h
     model/oran-cmm-noop.h
     model/oran-cmm-single-command-per-node.h
     model/oran-command.h
     model/oran-command-lte-2-lte-handover.h
     model/oran-report.h
+    model/oran-report-apploss.h
     model/oran-report-location.h
     model/oran-report-lte-ue-cell-info.h
     model/oran-reporter.h
+    model/oran-reporter-apploss.h
     model/oran-reporter-location.h
     model/oran-reporter-lte-ue-cell-info.h
     model/oran-data-repository.h
@@ -98,13 +159,18 @@ build_lib(
     model/oran-query-trigger.h
     model/oran-query-trigger-custom.h
     helper/oran-helper.h
+    ${oran_onnxruntime_headers}
+    ${oran_torch_headers}
   LIBRARIES_TO_LINK
     ${libcore}
     ${libnetwork}
     ${liblte}
     ${libsqlite3}
+    ${onnx_libraries}
+    ${torch_libraries}
   TEST_SOURCES
     test/oran-test-suite.cc
 )
 
-target_compile_definitions(liboran PUBLIC ENABLE_ORAN)
+target_compile_definitions(${liboran} PUBLIC ENABLE_ORAN)
+

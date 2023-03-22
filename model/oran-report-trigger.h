@@ -60,7 +60,7 @@ public:
   /**
    * Destructor of the OranReportTrigger class.
    */
-  virtual ~OranReportTrigger (void);
+  ~OranReportTrigger (void) override;
   /**
    * Activates this trigger for and links it to the given reporter.
    * \param reporter The reporter to link to.
@@ -82,7 +82,7 @@ protected:
   /**
    * Dispose of the Report.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * Triggers a report.
    */

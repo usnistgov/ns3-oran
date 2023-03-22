@@ -1,25 +1,29 @@
 # ORAN ns-3 Module
 A module that can be used in [ns-3](https://www.nsnam.org/) to simulate and 
-model behavior based on the [O-RAN](https://www.o-ran.org) speciications.
+model behavior based on the [O-RAN](https://www.o-ran.org) specifications.
 
 # Table of Contents
+* [Project Overview](#project-overview)
+  * [Contact](#contact)
 * [Model Description](#model-description)
 * [Features](#features)
-* [Requirements](#requirements)
+* [Minimum Requirements](#requirements)
+  * [Optional Dependencies](#optional-dependencies)
 * [Installation](#installation)
   * [Clone (Recommended)](#clone-recommended)
   * [Download ZIP](#download-zip)
   * [Connecting the Module Quickly](#connecting-the-module-quickly)
     * [Cmake](#cmake-quick-connect)
-    * [Waf](#waf-quick-connect)
     * [Code](#code-quick-connect)
   * [Connecting the Module Safely](#connecting-the-module-safely)
     * [Cmake](#cmake-safe-connect)
-    * [Waf](#waf-safe-connect)
     * [Code](#code-safe-connect)
 * [Updating](#updating)
   * [Clone](#clone)
   * [ZIP](#zip)
+* [ML Support](#ml-support)
+  * [ONNX](#onnx)
+  * [PyTorch](#pytorch)
 * [Documentation](#documentation)
 * [Running the Examples](#running-the-examples)
   * [Random Walk Example](#random-walk-example)
@@ -30,6 +34,25 @@ model behavior based on the [O-RAN](https://www.o-ran.org) speciications.
   * [Keep-Alive Example](#keep-alive-example)
   * [Data Repository Example](#data-repository-example)
   * [Multiple Network Devices Example](#multiple-network-devices-example)
+  * [LTE to LTE ML Handover Example](#lte-to-lte-ml-handover-example)
+
+# Project Overview
+This project has been developed by the National Institute of Standards and Technology (NIST)
+Communications Technology Lab (CTL) Wireless Networks Division (WND).
+
+This project includes open source, third party dependencies. For details of the licenses of these
+dependencies see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)
+
+Certain equipment, instruments, software, or materials, commercial or non-commercial, are used in this project. Such
+usage is not intended to imply recommendation or endorsement of any product or service by NIST, nor is it intended to
+imply that the software, materials, or equipment identified are necessarily the best available for the purpose.
+
+This project is considered feature complete, and will be maintained on a 'best effort' basis.
+
+## Contact
+To report a bug, please open a [GitHub Issue](https://github.com/usnistgov/ns3-oran/issues/new).
+The point of contact for this project is Evan Black ([evan.black@nist.gov](mailto:evan.black@nist.gov))
+
 
 # Model Description
 The `oran` module for `ns-3` implements the classes required to model a 
@@ -78,12 +101,17 @@ This release of the `oran` module contains the following features:
 - Generation and execution of LTE-to-LTE handover Commands
 - Activation and deactivation for individual components and RIC
 - Periodic node registration and de-registration with the RIC
+- Integration with [ONNX Runtime](https://onnxruntime.ai/) and
+  [PyTorch](https://pytorch.org/) to support Machine Learning (ML)
 
-# Requirements
+# Minimum Requirements
 * A C++ compliant compiler
-    * GCC 7.3.0 or higher
-    * Clang 6.0.0 or higher
-* SQLite3
+  * GCC 7.3.0
+* SQLite 3.7.17
+
+## Optional Dependencies
+* ONNX Runtime 1.14.1
+* PyTorch 1.13.1
 
 # Installation
 ## Clone (Recommended)
@@ -115,8 +143,6 @@ git clone git@github.com:usnistgov/ns3-oran.git oran
 ./ns3 configure --enable-examples
 ./ns3
 ```
-Note: If you are using a version of `ns-3` without CMake, replace `./ns3 ` 
-with `./waf`.
 
 ## Download ZIP
 If, for whatever reason, `git` is not available, download the
@@ -145,7 +171,7 @@ mv ns3-oran-master oran
 
 ## Connecting the Module Quickly
 If you are linking your module/program to the `oran` module add the following 
-to your `CMakeLists.txt`(CMake) or `wscript`(Waf).
+to your `CMakeLists.txt`(CMake).
 
 ### CMake (Quick Connect)
 For CMake, add `oran`'s target `${liboran}` to your `libraries_to_link` list.
@@ -171,32 +197,6 @@ build_lib(
     ${liboran}
     # ...
 )
-```
-
-### Waf (Quick Connect)
-For waf, add `oran`'s module name `oran` to the dependency list.
-
-```python
-# Program
-obj = bld.create_ns3_program('program-name', ['oran', '''...'''])
-
-
-# Module
-module = bld.create_ns3_module('module-name', ['oran', '''...'''])
-```
-
-### Code (Quick Connect)
-You may now include and use the `oran` module in your code.
-
-```cpp
-#include <ns3/oran-module.h>
-//...
-
-int main ()
-{
-  auto oranHelper = CreateObject<OranHelper> ();
-  // ...
-}
 ```
 
 ## Connecting the Module Safely
@@ -251,27 +251,6 @@ build_lib_example(
   LIBRARIES_TO_LINK
     ${libraries_to_link}
 )
-```
-
-### Waf (Safe Connect)
-If you wish for your module/program to be able to build without the `oran` 
-module you may check for its existence by reading `bld.env['ENABLE_ORAN']` in 
-your `wscript`.
-
-```python
-def build(bld):
-  # Create a list of your required modules to link
-  # 'core' and 'mobility' are just examples here
-  linked_modules = ['core', 'mobility']
-
-  # Check if 'ENABLE_ORAN' was defined during configuration
-  if 'ENABLE_ORAN' in bld.env:
-    # If it was defined, then the 'oran' module is present and we may link it
-    linked_modules.append('oran')
-
-  # Be sure to pass your list of `linked_modules` to `create_ns3_program`
-  # or `create_ns3_module`
-  obj = bld.create_ns3_program('application-name', linked_modules)
 ```
 
 ### Code (Safe Connect)
@@ -332,6 +311,109 @@ unzip ns3-oran-master.zip
 # Make sure the directory in the ns-3 contrib/ directory is named `oran`
 mv ns3-oran-master oran
 ```
+# ML Support
+ML is not required to use this module, however, we provide a means of
+integration for both ONNX and PyTorch so that it is possible to use ML to
+make inferences when running simulations. Therefore, users who wish to
+simulate O-RAN based solutions that leverage ML may do so using this module.
+It does however require the extra step of making at least one of these
+libraries accessible to our module so that we can link and compile against it.
+This also means that while these tools may be installed and accessible system
+wide, this is not a requirement as it is possible to have a locally compiled
+version of the library and source files in a user's working space. Please note
+that when using these tools with our module, the expectation is that the user
+will have already trained and created an ML model outside of the O-RAN
+simulations, but once this done, that model may be used via the ONNX or
+PyTorch C++ API from the simulation. We provide a class for each tool to
+demonstrate the use of both ONNX and PyTorch, respectively:
+- OranLmLte2LteOnnxHandover
+- OranLmLte2LteTorchHandover
+
+OranLmLte2LteOnnxHandover is defined by the files:
+- 'model/oran-lm-lte-2-lte-onnx-handover.h'
+- 'model/oran-lm-lte-2-lte-onnx-handover.cc'
+
+OranLmLte2LteTorchHandover is defined by the files:
+- 'model/oran-lm-lte-2-lte-torch-handover.h'
+- 'model/oran-lm-lte-2-lte-torch-handover.cc'
+
+There is also an example that we will discuss later that demonstrates the use
+of these two classes using existing ML models included with this module.
+
+## ONNX
+At the time that this documentation was created, not very many linux
+distributions provide ONNX packages. However, the use of ONNX for this module
+is attractive since models that are created using other tools, such as
+PyTorch, can be exported to ONNX. Therfore, integration with ONNX was desired
+with the hopes that it can be used to provide the flexibility needed to
+support more than one type of ML model without having to integrate each
+individually. To make use of ONNX with this module, one simply needs to
+download the ONNX libraries that are distributed on the ONNX webiste
+([https://onnxruntime.ai/](https://onnxruntime.ai/)), and export the location
+of the extracted library to the `LIBONNXPATH` environment variable. For
+example,
+
+```shell
+# Change to home directory
+cd ~
+
+# Download the library files
+wget "https://github.com/microsoft/onnxruntime/releases/download/v1.14.1/onnxruntime-linux-x64-1.14.1.tgz"
+
+# Extract the library files
+tar xzf onnxruntime-linux-x64-1.14.1.tgz
+
+# Create environment variable with library location so that cmake knows where
+# to find it
+export LIBONNXPATH="/home/$(whoami)/onnxruntime-linux-x64-1.14.1"
+
+```
+
+At this point, the user should be able to navigate to their working directory
+of `ns-3` and run 
+
+```shell
+./ns3 configure
+```
+
+The output of this command should include the text "find_external_library:
+OnnxRuntime was found," indicating that the library and necessary source
+files were discovered.
+
+## PyTorch
+PyTorch is widely available through most linux distribution package bases.
+Therefore, a user should simply be able to install the desired
+"python-pytorch" package with no further steps being required. However, if
+the user cannot or does not wish to install the package, one simply can
+download the PyTorch libraries that are distrubited on the PyTorch webiste
+([https://pytorch.org/](https://pytorch.org/)), and export the location of the
+extracted library to the `LIBTORCHPATH` environment variable. For example,
+
+```shell
+# Change to home directory
+cd ~
+
+# Download the library files
+wget "https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-1.13.1%2Bcpu.zip"
+
+# Extract the library files
+unzip libtorch-shared-with-deps-1.13.1+cpu.zip
+
+# Create environment variable with library location so that cmake knows where
+# to find it
+export LIBTORCHPATH="/home/$(whoami)/libtorch"
+
+```
+At this point, the accessibility of the library can be verified by navigating
+to the working directory of `ns-3` and running the following command.
+
+```shell
+./ns3 configure
+```
+
+The output of this command should include the text "find_external_library:
+Torch was found," indicating that the library and necessary source
+files were discovered.
 
 # Documentation
 [Sphinx](https://www.sphinx-doc.org/en/master/) is required to build the 
@@ -341,6 +423,7 @@ To run Sphinx to build the documentation, cd into the `doc` directory in the
 module and run `make [type]` for the type of documentation you wish to build.
 
 ```shell
+
 # From the ns-3 root directory
 cd contrib/oran/doc
 
@@ -361,9 +444,6 @@ The built documentation can now be found in `doc/build/[type]`.
 
 # Running the Examples
 Listed below are the commands to run the examples provided with the module.
-
-Note: If you are using a version of `ns-3` without CMake, replace 
-`./ns3 run ` with `./waf --run`.
 
 ## Random Walk Example
 Example with a very simple topology in which `ns-3` nodes move randomly and 
@@ -397,7 +477,7 @@ models.
 
 ## LTE to LTE Distance Handover With LM Processing Delay Example
 Similar to the 
-[LTE to LTE Distance Handover Wth Helper Example](#lte-to-lte-distance-handover-with-helper-example), 
+[LTE to LTE Distance Handover With Helper Example](#lte-to-lte-distance-handover-with-helper-example), 
 however, in this scenario the Logic Module is configured with a processing 
 delay.
 
@@ -407,7 +487,7 @@ delay.
 
 ## LTE to LTE Distance Handover With LM Query Trigger Example
 Similar to the 
-[LTE to LTE Distance Handover Wth Helper Example](#lte-to-lte-distance-handover-with-helper-example) 
+[LTE to LTE Distance Handover With Helper Example](#lte-to-lte-distance-handover-with-helper-example) 
 example, however, in this scenario the Near-RT RIC is configured with a 
 custom Query Trigger (provided in the scenario) that may initiate the Logic 
 Module querying process as soon as Reports with certain characteristics are 
@@ -451,3 +531,39 @@ with the Near-RT RIC separately.
 ./ns3 run "oran-multiple-net-devices-example"
 ```
 
+## LTE to LTE ML Handover Example
+Note that in order to run this example using the flag, `--use-onnx-lm`, the
+ONNX libraries must be found during the configuration of `ns-3`, and it is
+assumed that the ML model file "saved_trained_model_pytorch.onnx" has been
+copied from the example directory to the working directory. In order to run
+this example using the flag, `--use-torch-lm`, the PyTorch libraries must be
+found during the configuration of `ns-3`, and it is assumed that the ML model
+file "saved_trained_model_pytorch.pt" has been copied from the example
+directory to the working directory.
+
+This example showcases how pretrained ONNX and PyTorch ML Models can be used
+to initiate handovers based on location and packet loss data. It consists of
+four UEs and two eNBs, where UE 1 and UE 4 are configured to move only within
+coverage of eNB 1 or eNB 2, respectively, while UE 2 and UE 3 move around in
+an area where the coverage of eNB 1 and eNB 2 overlap. As the simulation
+progresses with UEs moving and receiving data, the distances of all four UEs
+as well as the recorded packet loss for each UE are fed to an ML model that
+returns a desired configuration that indicates which eNB UE 2 and UE 3 should
+be attached to minimize the overall packet loss. The models that we provide
+are for demonstrate purposes only and have not been thoroughly developed. It
+should also be noted that "saved_trained_model_pytorch.onnx" is the same
+trained model as "saved_trained_model_pytorch.pt" only it  has been exported
+to the ONNX format.
+
+```shell
+./ns3 run "oran-lte-2-lte-ml-handover-example"
+```
+
+Without going into too many details, there is also a script included in the
+examples folder called,
+"oran-lte-2-lte-ml-handover-example-generate-training-data.sh," that can be
+used as a start to generate data using this same example to train an ML model.
+Furthermore, once the training data has been generated, the file
+"oran-lte-2-lte-ml-handover-example-classifier.py" that is also included in
+the example folder, can be used to produce a PyTorch ML model using the
+training data that is generated.

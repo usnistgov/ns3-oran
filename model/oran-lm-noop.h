@@ -64,7 +64,7 @@ public:
   /**
    * Destructor of the OranLmNoop class.
    */
-  virtual ~OranLmNoop (void);
+  ~OranLmNoop (void) override;
   /**
    * Run the logic of this LM. This is a No Operation LM, so the logic does
    * nothing and generates no commands.

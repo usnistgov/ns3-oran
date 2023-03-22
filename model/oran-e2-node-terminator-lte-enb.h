@@ -60,21 +60,21 @@ public:
   /**
    * The destructor of the OranE2NodeTerminatorLteEnb class.
    */
-  virtual ~OranE2NodeTerminatorLteEnb (void);
+  ~OranE2NodeTerminatorLteEnb (void) override;
   /**
    * Get the E2 Node Type. For this Terminator, this method
    * always returns the LTE eNB type.
    *
    * \return the E2 Node Type.
    */
-  virtual OranNearRtRic::NodeType GetNodeType (void) const override;
+  OranNearRtRic::NodeType GetNodeType (void) const override;
   /**
    * Receive and process a command. If the Command is an LTE Handover Command
    * it will be processed. All other types of Commands are silently discarded..
    *
    * \param command The received command.
    */
-  virtual void ReceiveCommand (Ptr<OranCommand> command) override;
+  void ReceiveCommand (Ptr<OranCommand> command) override;
   /**
    * Get the NetDevice of the LTE eNB.
    *

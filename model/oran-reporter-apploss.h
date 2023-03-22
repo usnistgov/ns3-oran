@@ -29,90 +29,76 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#ifndef ORAN_E2_NODE_TERMINATOR_CONTAINER_H
-#define ORAN_E2_NODE_TERMINATOR_CONTAINER_H
+#ifndef ORAN_REPORTER_APPLOSS
+#define ORAN_REPORTER_APPLOSS
 
 #include <vector>
 
-#include "oran-e2-node-terminator.h"
+#include <ns3/ptr.h>
+
+#include "oran-reporter.h"
+#include "oran-report.h"
 
 namespace ns3 {
+
+class Packet;
+class Address;
 
 /**
  * \ingroup oran
  *
- * A Container for E2 Node Terminator. This Container allows the Activation and
- * Deactivation of all Terminators in it at once.
+ * A Reporter that captures the application packet loss of the node.
  */
-class OranE2NodeTerminatorContainer
+class OranReporterAppLoss : public OranReporter
 {
 public:
   /**
-   * Declaration of container iterator.
-   */
-  typedef std::vector<Ptr<OranE2NodeTerminator> >::const_iterator Iterator;
-  /**
-   * Constructor of the ORanE2NodeTerminatorContainer.
-   */
-  OranE2NodeTerminatorContainer (void) = default;
-  /**
-   * Destructor of the OranE2NodeTerminatorContainer.
-   */
-  virtual ~OranE2NodeTerminatorContainer (void) = default;
-  /**
-   * Activate all of the E2 Node Terminators in the container.
-   */
-  void Activate (void);
-  /**
-   * Get an iterator referencing the first element.
+   * Get the TypeId of the OranReporterAppLoss class.
    *
-   * \return The iterator.
+   * \return The TypeId.
    */
-  Iterator Begin (void) const;
+  static TypeId GetTypeId (void);
   /**
-   * Deactivate all of the E2 Node Terminators in the container.
+   * Constructor of the OranReporterAppLoss class.
    */
-  void Deactivate (void);
+   OranReporterAppLoss (void);
   /**
-   * Get an iterator referencing the last element.
-   *
-   * \return The iterator.
+   * Destructor of the OranReporterAppLoss class.
    */
-  Iterator End (void) const;
+  ~OranReporterAppLoss (void) override;
   /**
-   * Get the number of elements in the container.
+   * Records the transmission of a packet.
    *
-   * \return The number of elements.
+   * \param p The packet.
    */
-  uint32_t GetN (void) const;
+  void AddTx (Ptr<const Packet> p);
   /**
-   * Get an element from the container.
+   * Records the reception of a packet from a given address.
    *
-   * \param i The index of the element to return.
-   *
-   * \return The element.
+   * \param p The packet.
+   * \param from The address that the packet is from.
    */
-  Ptr<OranE2NodeTerminator> Get (uint32_t i) const;
+  void AddRx (Ptr<const Packet> p, const Address &from);
+
+protected:
   /**
-   * Add the elements of another container to this container.
+   * Capture the application packet loss and instantiate an OranReportAppLoss.
    *
-   * \param other The other container.
+   * \return The generated Report.
    */
-  void Add (OranE2NodeTerminatorContainer other);
-  /**
-   * Add an element to this container.
-   *
-   * \param e2NodeTerminator The element to add.
-   */
-  void Add (Ptr<OranE2NodeTerminator> e2NodeTerminator);
+  std::vector<Ptr<OranReport> > GenerateReports (void) override;
+
 private:
   /**
-   * The underlying container.
+   * The number of transmitted packets.
    */
-  std::vector<Ptr<OranE2NodeTerminator> > m_e2NodeTerminators;
-}; // class OranE2NodeTerminatorContainer
+  uint64_t m_tx;
+  /**
+   * The number of recived packets.
+   */
+  uint64_t m_rx;
+};
 
 } // namespace ns3
 
-#endif // ORAN_E2_NODE_TERMINATOR_CONTAINER_H
-
+#endif // ORAN_REPORTER_APPLOSS

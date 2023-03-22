@@ -64,25 +64,25 @@ public:
   /**
    * Destructor of the OranReportTriggerPeriodic class.
    */
-  virtual ~OranReportTriggerPeriodic (void);
+  ~OranReportTriggerPeriodic (void) override;
   /**
    * Activates this trigger for the given reporter.
    * \param reporter The reporter to link to.
    */
-  virtual void Activate (Ptr<OranReporter> reporter) override;
+  void Activate (Ptr<OranReporter> reporter) override;
   /**
    * Deactivates this trigger and unlinks it from the current reporter.
    */
-  virtual void Deactivate (void) override;
+  void Deactivate (void) override;
 protected:
   /**
    * Dispose of the Report.
    */
-  virtual void DoDispose (void) override;
+  void DoDispose (void) override;
   /**
    * Triggers a report.
    */
-  virtual void TriggerReport (void) override;
+  void TriggerReport (void) override;
   /**
    * Cancel the next trigger event.
    */
