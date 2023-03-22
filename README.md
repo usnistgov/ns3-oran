@@ -533,10 +533,10 @@ with the Near-RT RIC separately.
 
 ## LTE to LTE ML Handover Example
 Note that in order to run this example using the flag, `--use-onnx-lm`, the
-ONNX libraires must be found during the configuration of `ns-3`, and it is
+ONNX libraries must be found during the configuration of `ns-3`, and it is
 assumed that the ML model file "saved_trained_model_pytorch.onnx" has been
 copied from the example directory to the working directory. In order to run
-this example using the flag, `--use-torch-lm`, the PyTorch libraires must be
+this example using the flag, `--use-torch-lm`, the PyTorch libraries must be
 found during the configuration of `ns-3`, and it is assumed that the ML model
 file "saved_trained_model_pytorch.pt" has been copied from the example
 directory to the working directory.
