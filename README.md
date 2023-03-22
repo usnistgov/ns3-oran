@@ -404,7 +404,7 @@ unzip libtorch-shared-with-deps-1.13.1+cpu.zip
 export LIBTORCHPATH="/home/$(whoami)/libtorch"
 
 ```
-A this point, the accessibility of the library can be verified by navigating
+At this point, the accessibility of the library can be verified by navigating
 to the working directory of `ns-3` and running the following command.
 
 ```shell
