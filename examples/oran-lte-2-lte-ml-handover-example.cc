@@ -324,7 +324,6 @@ main (int argc, char *argv[])
         }
       else if (useTorch == true)
         {
-
           NS_ABORT_MSG_IF (!TypeId::LookupByNameFailSafe ("ns3::OranLmLte2LteTorchHandover", &defaultLmTid),
               "Torch LM not found. Were the Torch headers and libraries found during the config operation?");
         }

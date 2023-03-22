@@ -33,7 +33,7 @@ This example provides two methods for optionally printing a message to the termi
 The configuration of the O-RAN models begins at line 178. Firstly, the components of the RIC are instantiated and configured:
 
 - Data Repository, instantiated on line 182 and configured on lines 188 through 192.
-- Default Logic Module, instantiated as ``OranLmLte2LteDistanceHandover`` on line 183 and configured on lines 194 tp 196.
+- Default Logic Module, instantiated as ``OranLmLte2LteDistanceHandover`` on line 183 and configured on lines 194 to 196.
 - Conflict Mitigation Module, instantiated as an ``OranCmmNoop`` on line 184 and configured on lines 198 and 199.
 - E2 Terminator, instantiated on line 186 and configured on lines 201 through 203.
 
@@ -122,6 +122,18 @@ Data Repository Example
 
 The Data Repository Example, distributed in the example file ``oran-data-repository-example.cc``, showcases how the Data Repository API can be used to store and retrieve information. This example performs all these operations from the scenario for simplicity, but the same methods can be used by any model in the simulation that can access the RIC. This will be important when developing custom Logic Modules, and can also be used in scenarios for debugging, testing and validation.
 
+
+
+LTE to LTE ML Handover Example
+************************************
+
+The LTE to LTE ML Handover Example, distributed in the example file ``oran-lte-2-lte-ml-handover-example.cc``, is a scenario that showcases how pretrained ONNX and PyTorch ML Models can be used to initiate handovers based on location and packet loss data. It consists of four UEs and two eNBs, where UE 1 and UE 4 are configured to move only within coverage of eNB 1 or eNB 2, respectively, while UE 2 and UE 3 move around in an area where the coverage of eNB 1 and eNB 2 overlap. As the simulation progresses with UEs moving and receiving data, the distances of all four UEs as well as the recorded packet loss for each UE are fed to an ML model that returns a desired configuration that indicates which eNB UE 2 and UE 3 should be attached to to minimize the overall packet loss. The models that we provide are for demonstrate purposes only and have not been thoroughly developed. It should also be noted that "saved_trained_model_pytorch.onnx" is the same trained model as "saved_trained_model_pytorch.pt" only it has been exported to the ONNX format.
+
+Note that in order to run this example using the flag, ``--use-onnx-lm``, the ONNX libraires must be found during the configuration of ns-3, and it is assumed that the ML model file ``saved_trained_model_pytorch.onnx`` has been copied from the example directory to the working directory. In order to run this example using the flag, ``--use-torch-lm`` the PyTorch libraires must be found during the configuration of ns-3, and it is assumed that the ML model file ``saved_trained_model_pytorch.pt`` has been copied from the example directory to the working directory.
+
+The configuration of the O-RAN models begins at line 305. The ``OranLmLte2LteOnnxHandover`` LM is instantiated and configured on lines 320 to 324, while the ``OranLmLte2LteTorchHandover`` LM is instantiated and configured on lines 325 to 329. These LMs use a pretrained ML model that takes UE distance and application loss as an input and then outputs a desired configuration that the LM can then use to determine if any handovers need to take place.
+
+There is a script included in the examples folder called, ``oran-lte-2-lte-ml-handover-example-generate-training-data.sh`` that can be used to generate data using this same example to create and train an ML model. This script essentially runs a simulation for each possible combination of UE-to-cell configuration, and then parses the data to determine which confiugration provides the lowest average packet loss. Using this information, the script then provides traning data that can be used by the PyTorch classifier defined in ``oran-lte-2-lte-ml-handover-example-classifier.py``, which takes the outputs from the script as input. This input essentially tells the ML model which configuration will provide the lowest average packet loss for the next one second, given the inputs we described earlier. After runing the script to generate the training data and feeding that training data to the python classifier, a new ``saved_trained_model_pytorch.pt`` should exist that can now be used by the ``OranLmLte2LteTorchHandover`` LM.
 
 
 Tests
