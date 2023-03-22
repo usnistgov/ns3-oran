@@ -315,7 +315,7 @@ mv ns3-oran-master oran
 ML is not required to use this module, however, we provide a means of
 integration for both ONNX and PyTorch so that it is possible to use ML to
 make inferences when running simulations. Therefore, users who wish to
-simulate O-RAN based solutions that leverage ML may due so using this module.
+simulate O-RAN based solutions that leverage ML may do so using this module.
 It does however require the extra step of making at least one of these
 libraries accessible to our module so that we can link and compile against it.
 This also means that while these tools may be installed and accessible system
