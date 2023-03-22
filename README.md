@@ -549,7 +549,7 @@ an area where the coverage of eNB 1 and eNB 2 overlap. As the simulation
 progresses with UEs moving and receiving data, the distances of all four UEs
 as well as the recorded packet loss for each UE are fed to an ML model that
 returns a desired configuration that indicates which eNB UE 2 and UE 3 should
-be attached to to minimize the overall packet loss. The models that we provide
+be attached to minimize the overall packet loss. The models that we provide
 are for demonstrate purposes only and have not been thoroughly developed. It
 should also be noted that "saved_trained_model_pytorch.onnx" is the same
 trained model as "saved_trained_model_pytorch.pt" only it  has been exported
