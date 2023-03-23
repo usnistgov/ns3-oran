@@ -29,592 +29,628 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <vector>
-
-#include <ns3/simulator.h>
-#include <ns3/log.h>
-#include <ns3/pointer.h>
-#include <ns3/abort.h>
-#include <ns3/string.h>
-#include <ns3/enum.h>
-
-#include "oran-lm.h"
-#include "oran-cmm.h"
-#include "oran-data-repository.h"
-#include "oran-near-rt-ric-e2terminator.h"
-#include "oran-command.h"
-#include "oran-query-trigger.h"
-
 #include "oran-near-rt-ric.h"
 
-namespace ns3 {
+#include "oran-cmm.h"
+#include "oran-command.h"
+#include "oran-data-repository.h"
+#include "oran-lm.h"
+#include "oran-near-rt-ric-e2terminator.h"
+#include "oran-query-trigger.h"
 
-NS_LOG_COMPONENT_DEFINE ("OranNearRtRic");
+#include <ns3/abort.h>
+#include <ns3/enum.h>
+#include <ns3/log.h>
+#include <ns3/pointer.h>
+#include <ns3/simulator.h>
+#include <ns3/string.h>
 
-NS_OBJECT_ENSURE_REGISTERED (OranNearRtRic);
+#include <vector>
+
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranNearRtRic");
+
+NS_OBJECT_ENSURE_REGISTERED(OranNearRtRic);
 
 TypeId
-OranNearRtRic::GetTypeId (void)
+OranNearRtRic::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranNearRtRic")
-    .SetParent<Object> ()
-    .AddConstructor<OranNearRtRic> ()
-    .AddAttribute ("DefaultLogicModule", 
-                   "The default logic module.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranNearRtRic::m_defaultLm),
-                   MakePointerChecker<OranLm> ())
-    .AddAttribute ("E2Terminator", 
-                   "The E2 Terminator for the Near-RT RIC.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranNearRtRic::m_e2Terminator),
-                   MakePointerChecker<OranNearRtRicE2Terminator> ())
-    .AddAttribute ("DataRepository", 
-                   "The data repository.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranNearRtRic::m_data),
-                   MakePointerChecker<OranDataRepository> ())
-    .AddAttribute ("ConflictMitigationModule", 
-                   "The Conflict Mitigation Module.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranNearRtRic::m_cmm),
-                   MakePointerChecker<OranCmm> ())
-    .AddAttribute ("LmQueryInterval", 
-                   "Interval between periodic queries to the Logic Modules",
-                   TimeValue (Seconds (5)),
-                   MakeTimeAccessor (&OranNearRtRic::m_lmQueryInterval),
-                   MakeTimeChecker (MilliSeconds (10)))
-    .AddAttribute ("LmQueryMaxWaitTime", 
-                   "The maximum time to wait for Logic Modules to finish. A value of \"0\" indicates no limit.",
-                   TimeValue (Seconds (0)),
-                   MakeTimeAccessor (&OranNearRtRic::m_lmQueryMaxWaitTime),
-                   MakeTimeChecker ())
-    .AddAttribute ("LmQueryLateCommandPolicy",
-                    "The filter to apply on UL CQIs received",
-                    EnumValue (OranNearRtRic::DROP),
-                    MakeEnumAccessor (&OranNearRtRic::m_lmQueryLateCommandPolicy),
-                    MakeEnumChecker (OranNearRtRic::DROP, "DROP",
-                                     OranNearRtRic::SAVE, "SAVE"))
-    .AddAttribute ("E2NodeInactivityThreshold",
-                   "The amount of time from a node's last registration request before becoming inactive.",
-                   TimeValue (Seconds (5)),
-                   MakeTimeAccessor (&OranNearRtRic::m_e2NodeInactivityThreshold),
-                   MakeTimeChecker ())
-    .AddAttribute ("E2NodeInactivityIntervalRv",
-                   "The random variable used (in seconds) to periodically deregister inactive nodes.",
-                   StringValue ("ns3::ConstantRandomVariable[Constant=5]"),
-                   MakePointerAccessor (&OranNearRtRic::m_e2NodeInactivityIntervalRv),
-                   MakePointerChecker<RandomVariableStream> ())
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranNearRtRic")
+            .SetParent<Object>()
+            .AddConstructor<OranNearRtRic>()
+            .AddAttribute("DefaultLogicModule",
+                          "The default logic module.",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranNearRtRic::m_defaultLm),
+                          MakePointerChecker<OranLm>())
+            .AddAttribute("E2Terminator",
+                          "The E2 Terminator for the Near-RT RIC.",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranNearRtRic::m_e2Terminator),
+                          MakePointerChecker<OranNearRtRicE2Terminator>())
+            .AddAttribute("DataRepository",
+                          "The data repository.",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranNearRtRic::m_data),
+                          MakePointerChecker<OranDataRepository>())
+            .AddAttribute("ConflictMitigationModule",
+                          "The Conflict Mitigation Module.",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranNearRtRic::m_cmm),
+                          MakePointerChecker<OranCmm>())
+            .AddAttribute("LmQueryInterval",
+                          "Interval between periodic queries to the Logic Modules",
+                          TimeValue(Seconds(5)),
+                          MakeTimeAccessor(&OranNearRtRic::m_lmQueryInterval),
+                          MakeTimeChecker(MilliSeconds(10)))
+            .AddAttribute("LmQueryMaxWaitTime",
+                          "The maximum time to wait for Logic Modules to finish. A value of \"0\" "
+                          "indicates no limit.",
+                          TimeValue(Seconds(0)),
+                          MakeTimeAccessor(&OranNearRtRic::m_lmQueryMaxWaitTime),
+                          MakeTimeChecker())
+            .AddAttribute("LmQueryLateCommandPolicy",
+                          "The filter to apply on UL CQIs received",
+                          EnumValue(OranNearRtRic::DROP),
+                          MakeEnumAccessor(&OranNearRtRic::m_lmQueryLateCommandPolicy),
+                          MakeEnumChecker(OranNearRtRic::DROP, "DROP", OranNearRtRic::SAVE, "SAVE"))
+            .AddAttribute("E2NodeInactivityThreshold",
+                          "The amount of time from a node's last registration request before "
+                          "becoming inactive.",
+                          TimeValue(Seconds(5)),
+                          MakeTimeAccessor(&OranNearRtRic::m_e2NodeInactivityThreshold),
+                          MakeTimeChecker())
+            .AddAttribute(
+                "E2NodeInactivityIntervalRv",
+                "The random variable used (in seconds) to periodically deregister inactive nodes.",
+                StringValue("ns3::ConstantRandomVariable[Constant=5]"),
+                MakePointerAccessor(&OranNearRtRic::m_e2NodeInactivityIntervalRv),
+                MakePointerChecker<RandomVariableStream>());
 
- return tid;
+    return tid;
 }
 
-OranNearRtRic::OranNearRtRic (void) 
-  : Object (),
-    m_additionalLms (std::map<std::string, Ptr<OranLm> > ()),
-    m_active (false),
-    m_lmQueryEvent (EventId ()),
-    m_e2NodeInactivityEvent (EventId ()),
-    m_lmQueryCycle (Seconds (0))
+OranNearRtRic::OranNearRtRic(void)
+    : Object(),
+      m_additionalLms(std::map<std::string, Ptr<OranLm>>()),
+      m_active(false),
+      m_lmQueryEvent(EventId()),
+      m_e2NodeInactivityEvent(EventId()),
+      m_lmQueryCycle(Seconds(0))
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranNearRtRic::~OranNearRtRic (void)
+OranNearRtRic::~OranNearRtRic(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranNearRtRic::Activate (void)
+OranNearRtRic::Activate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  NS_ABORT_MSG_IF (m_e2Terminator == nullptr, "Attempting to activate Near-RT RIC with a NULL E2 Terminator");
-  NS_ABORT_MSG_IF (m_defaultLm == nullptr, "Attempting to activate Near-RT RIC with a NULL Default Logic Module");
-  NS_ABORT_MSG_IF (m_cmm == nullptr, "Attempting to activate Near-RT RIC with a NULL Conflict Mitigation Module");
-  NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to activate Near-RT RIC with a NULL Data Repository");
+    NS_ABORT_MSG_IF(m_e2Terminator == nullptr,
+                    "Attempting to activate Near-RT RIC with a NULL E2 Terminator");
+    NS_ABORT_MSG_IF(m_defaultLm == nullptr,
+                    "Attempting to activate Near-RT RIC with a NULL Default Logic Module");
+    NS_ABORT_MSG_IF(m_cmm == nullptr,
+                    "Attempting to activate Near-RT RIC with a NULL Conflict Mitigation Module");
+    NS_ABORT_MSG_IF(m_data == nullptr,
+                    "Attempting to activate Near-RT RIC with a NULL Data Repository");
 
-  if (!m_active)
+    if (!m_active)
     {
-      NS_LOG_LOGIC ("Near-RT RIC activated");
+        NS_LOG_LOGIC("Near-RT RIC activated");
 
-      m_active = true;
-      // Activate the E2 Terminator
-      m_e2Terminator->Activate ();
-      // Activate the data repository
-      m_data->Activate ();
-      // Activate the default and additional Logic Modules
-      m_defaultLm->Activate ();
-      for (auto entry : m_additionalLms)
+        m_active = true;
+        // Activate the E2 Terminator
+        m_e2Terminator->Activate();
+        // Activate the data repository
+        m_data->Activate();
+        // Activate the default and additional Logic Modules
+        m_defaultLm->Activate();
+        for (auto entry : m_additionalLms)
         {
-          entry.second->Activate ();
+            entry.second->Activate();
         }
-      // Activate the conflic mitigation module
-      m_cmm->Activate ();
+        // Activate the conflic mitigation module
+        m_cmm->Activate();
     }
 }
 
 void
-OranNearRtRic::Deactivate (void)
+OranNearRtRic::Deactivate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
-    {   
-      NS_ABORT_MSG_IF (m_e2Terminator == nullptr, "Attempting to deactivate Near-RT RIC with a NULL E2 Terminator");
-      NS_ABORT_MSG_IF (m_defaultLm == nullptr, "Attempting to deactivate Near-RT RIC with a NULL Default Logic Module");
-      NS_ABORT_MSG_IF (m_cmm == nullptr, "Attempting to deactivate Near-RT RIC with a NULL Conflict Mitigation Module");
-      NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to deactivate Near-RT RIC with a NULL Data Repository");
+    if (m_active)
+    {
+        NS_ABORT_MSG_IF(m_e2Terminator == nullptr,
+                        "Attempting to deactivate Near-RT RIC with a NULL E2 Terminator");
+        NS_ABORT_MSG_IF(m_defaultLm == nullptr,
+                        "Attempting to deactivate Near-RT RIC with a NULL Default Logic Module");
+        NS_ABORT_MSG_IF(
+            m_cmm == nullptr,
+            "Attempting to deactivate Near-RT RIC with a NULL Conflict Mitigation Module");
+        NS_ABORT_MSG_IF(m_data == nullptr,
+                        "Attempting to deactivate Near-RT RIC with a NULL Data Repository");
 
-      NS_LOG_LOGIC ("Near-RT RIC deactivated");
+        NS_LOG_LOGIC("Near-RT RIC deactivated");
 
-      // Deactivate the E2 Terminator
-      m_e2Terminator->Deactivate ();
-      // Deactivate the data repository
-      m_data->Deactivate ();
-      // Deactivate the default and additional Logic Modules
-      m_defaultLm->Deactivate ();
-      for (auto entry : m_additionalLms)
+        // Deactivate the E2 Terminator
+        m_e2Terminator->Deactivate();
+        // Deactivate the data repository
+        m_data->Deactivate();
+        // Deactivate the default and additional Logic Modules
+        m_defaultLm->Deactivate();
+        for (auto entry : m_additionalLms)
         {
-          entry.second->Deactivate ();
+            entry.second->Deactivate();
         }
-      // Deactivate the conflic mitigation module
-      m_cmm->Deactivate ();
+        // Deactivate the conflic mitigation module
+        m_cmm->Deactivate();
     }
-  m_active = false;
+    m_active = false;
 }
 
 bool
-OranNearRtRic::IsActive (void) const
+OranNearRtRic::IsActive(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_active;
+    return m_active;
 }
 
 void
-OranNearRtRic::Start (void)
+OranNearRtRic::Start(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  Activate ();
+    Activate();
 
-  NS_ABORT_MSG_IF (m_lmQueryEvent.IsRunning (), "Near-RT RIC has already been started");
-  NS_ABORT_MSG_IF (m_e2NodeInactivityEvent.IsRunning (), "Near-RT RIC has already been started");
+    NS_ABORT_MSG_IF(m_lmQueryEvent.IsRunning(), "Near-RT RIC has already been started");
+    NS_ABORT_MSG_IF(m_e2NodeInactivityEvent.IsRunning(), "Near-RT RIC has already been started");
 
-  m_lmQueryEvent = Simulator::Schedule (m_lmQueryInterval, &OranNearRtRic::QueryLms, this);
-  m_e2NodeInactivityEvent = Simulator::Schedule (
-      Seconds (m_e2NodeInactivityIntervalRv->GetValue ()),
-      &OranNearRtRic::CheckForInactivity,
-      this);
+    m_lmQueryEvent = Simulator::Schedule(m_lmQueryInterval, &OranNearRtRic::QueryLms, this);
+    m_e2NodeInactivityEvent = Simulator::Schedule(Seconds(m_e2NodeInactivityIntervalRv->GetValue()),
+                                                  &OranNearRtRic::CheckForInactivity,
+                                                  this);
 }
 
 void
-OranNearRtRic::Stop (void)
+OranNearRtRic::Stop(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  Deactivate ();
-  m_lmQueryEvent.Cancel ();
-  m_e2NodeInactivityEvent.Cancel ();
-  m_processLmQueryCommandsEvent.Cancel ();
+    Deactivate();
+    m_lmQueryEvent.Cancel();
+    m_e2NodeInactivityEvent.Cancel();
+    m_processLmQueryCommandsEvent.Cancel();
 }
 
-Ptr<OranNearRtRicE2Terminator> 
-OranNearRtRic::GetE2Terminator (void) const
+Ptr<OranNearRtRicE2Terminator>
+OranNearRtRic::GetE2Terminator(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_e2Terminator;
+    return m_e2Terminator;
 }
 
 Ptr<OranLm>
-OranNearRtRic::GetDefaultLogicModule (void) const
+OranNearRtRic::GetDefaultLogicModule(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_defaultLm;
+    return m_defaultLm;
 }
 
 void
-OranNearRtRic::SetDefaultLogicModule (Ptr<OranLm> newDefaultLm)
+OranNearRtRic::SetDefaultLogicModule(Ptr<OranLm> newDefaultLm)
 {
-  NS_LOG_FUNCTION (this << newDefaultLm);
+    NS_LOG_FUNCTION(this << newDefaultLm);
 
-  NS_ABORT_MSG_IF (newDefaultLm == nullptr, 
-      "Attempting to set a NULL Default Logic Module in the Near-RT RIC");
-  m_defaultLm = newDefaultLm;
+    NS_ABORT_MSG_IF(newDefaultLm == nullptr,
+                    "Attempting to set a NULL Default Logic Module in the Near-RT RIC");
+    m_defaultLm = newDefaultLm;
 }
 
-Ptr<OranLm>  
-OranNearRtRic::GetAdditionalLogicModule (std::string name) const
+Ptr<OranLm>
+OranNearRtRic::GetAdditionalLogicModule(std::string name) const
 {
-  NS_LOG_FUNCTION (this << name);
+    NS_LOG_FUNCTION(this << name);
 
-  Ptr<OranLm> ret;
+    Ptr<OranLm> ret;
 
-  auto foundLm = m_additionalLms.find (name);
-  if (foundLm == m_additionalLms.end ())
+    auto foundLm = m_additionalLms.find(name);
+    if (foundLm == m_additionalLms.end())
     {
-      ret = nullptr;
+        ret = nullptr;
     }
-  else
+    else
     {
-      ret = foundLm->second;
+        ret = foundLm->second;
     }
 
-  return ret;
+    return ret;
 }
 
 OranNearRtRic::AddLmResult
-OranNearRtRic::AddLogicModule (Ptr<OranLm> newLm)
+OranNearRtRic::AddLogicModule(Ptr<OranLm> newLm)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  AddLmResult ret = OranNearRtRic::ADDLM_OK;
-  if (m_additionalLms.find (newLm->GetName ()) == m_additionalLms.end ())
+    AddLmResult ret = OranNearRtRic::ADDLM_OK;
+    if (m_additionalLms.find(newLm->GetName()) == m_additionalLms.end())
     {
-      NS_LOG_LOGIC ("Near-RT RIC adding the \"" << newLm->GetName () << "\" Logic Module");
-      m_additionalLms [newLm->GetName ()] = newLm;
-    } 
-  else
+        NS_LOG_LOGIC("Near-RT RIC adding the \"" << newLm->GetName() << "\" Logic Module");
+        m_additionalLms[newLm->GetName()] = newLm;
+    }
+    else
     {
-      NS_LOG_LOGIC ("Near-RT RIC could not add \"" << newLm->GetName () << "\" because Logic Module already exists");
-      ret = OranNearRtRic::ADDLM_ERR_NAME_EXISTS;
+        NS_LOG_LOGIC("Near-RT RIC could not add \"" << newLm->GetName()
+                                                    << "\" because Logic Module already exists");
+        ret = OranNearRtRic::ADDLM_ERR_NAME_EXISTS;
     }
 
-  return ret;
+    return ret;
 }
 
 OranNearRtRic::RemoveLmResult
-OranNearRtRic::RemoveLogicModule (std::string name)
+OranNearRtRic::RemoveLogicModule(std::string name)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  RemoveLmResult ret = OranNearRtRic::DELLM_OK;
-  if (m_additionalLms.find (name) != m_additionalLms.end ())
+    RemoveLmResult ret = OranNearRtRic::DELLM_OK;
+    if (m_additionalLms.find(name) != m_additionalLms.end())
     {
-      NS_LOG_LOGIC ("Near-RT RIC removing the \"" << name << "\" Logic Module");
-      m_additionalLms.erase (name);
+        NS_LOG_LOGIC("Near-RT RIC removing the \"" << name << "\" Logic Module");
+        m_additionalLms.erase(name);
     }
-  else
+    else
     {
-      NS_LOG_LOGIC ("Near-RT RIC could not remove \"" << name << "\" because the Logic Module was not found");
-      ret = OranNearRtRic::DELLM_ERR_NAME_INVALID;
+        NS_LOG_LOGIC("Near-RT RIC could not remove \""
+                     << name << "\" because the Logic Module was not found");
+        ret = OranNearRtRic::DELLM_ERR_NAME_INVALID;
     }
 
-  return ret;
+    return ret;
 }
 
 bool
-OranNearRtRic::AddQueryTrigger (std::string name, Ptr<OranQueryTrigger> trigger)
+OranNearRtRic::AddQueryTrigger(std::string name, Ptr<OranQueryTrigger> trigger)
 {
-  NS_LOG_FUNCTION (this << name << trigger);
+    NS_LOG_FUNCTION(this << name << trigger);
 
-  bool success = true;
+    bool success = true;
 
-  if (m_queryTriggers.find (name) == m_queryTriggers.end ())
+    if (m_queryTriggers.find(name) == m_queryTriggers.end())
     {
-      NS_LOG_LOGIC ("Near-RT RIC adding the \"" << name << "\" query trigger");
-      m_queryTriggers[name] = trigger;
+        NS_LOG_LOGIC("Near-RT RIC adding the \"" << name << "\" query trigger");
+        m_queryTriggers[name] = trigger;
     }
-  else
+    else
     {
-
-      NS_LOG_LOGIC ("Near-RT RIC could not add \"" << name << "\" becasue the query trigger already exists");
-      success = false;
+        NS_LOG_LOGIC("Near-RT RIC could not add \""
+                     << name << "\" becasue the query trigger already exists");
+        success = false;
     }
 
-  return success;
+    return success;
 }
 
 bool
-OranNearRtRic::RemoveQueryTrigger (std::string name)
+OranNearRtRic::RemoveQueryTrigger(std::string name)
 {
-  NS_LOG_FUNCTION (this << name);
+    NS_LOG_FUNCTION(this << name);
 
-  bool success = true;
-  auto it = m_queryTriggers.find (name);
+    bool success = true;
+    auto it = m_queryTriggers.find(name);
 
-  if (it != m_queryTriggers.end ())
+    if (it != m_queryTriggers.end())
     {
-      NS_LOG_LOGIC ("Near-RT RIC removing the \"" << name << "\" query trigger");
-      m_queryTriggers.erase (it);
+        NS_LOG_LOGIC("Near-RT RIC removing the \"" << name << "\" query trigger");
+        m_queryTriggers.erase(it);
     }
-  else
+    else
     {
-      NS_LOG_LOGIC ("Near-RT RIC could not remove \"" << name << "\" becasue the query trigger was not found");
-      success = false;
+        NS_LOG_LOGIC("Near-RT RIC could not remove \""
+                     << name << "\" becasue the query trigger was not found");
+        success = false;
     }
 
-  return success;
+    return success;
 }
 
 Ptr<OranDataRepository>
-OranNearRtRic::Data (void) const
+OranNearRtRic::Data(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_data;
+    return m_data;
 }
 
 Ptr<OranCmm>
-OranNearRtRic::GetCmm (void) const
+OranNearRtRic::GetCmm(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_cmm;
-}
-
-void 
-OranNearRtRic::SetCmm (Ptr<OranCmm> newCmm)
-{
-  NS_LOG_FUNCTION (this << newCmm);
-
-  NS_ABORT_MSG_IF (newCmm == nullptr, 
-      "Attempting to set a NULL Conflict Mitigation Module in the Near-RT RIC");
-  m_cmm = newCmm;
+    return m_cmm;
 }
 
 void
-OranNearRtRic::NotifyLmFinished (Time cycle, std::vector<Ptr<OranCommand> > commands, Ptr<OranLm> lm)
+OranNearRtRic::SetCmm(Ptr<OranCmm> newCmm)
 {
-  NS_LOG_FUNCTION (this << cycle << commands << lm);
-  
-  // Indicate whether or not this is the default.
-  bool isDefaultLm = (lm == m_defaultLm);
-  // Create the key used to identify the LM.
-  std::tuple<std::string, bool> key = std::make_tuple (lm->GetName (), isDefaultLm);
+    NS_LOG_FUNCTION(this << newCmm);
 
-  if (m_lmQueryCommands.find (key) != m_lmQueryCommands.end ())
+    NS_ABORT_MSG_IF(newCmm == nullptr,
+                    "Attempting to set a NULL Conflict Mitigation Module in the Near-RT RIC");
+    m_cmm = newCmm;
+}
+
+void
+OranNearRtRic::NotifyLmFinished(Time cycle, std::vector<Ptr<OranCommand>> commands, Ptr<OranLm> lm)
+{
+    NS_LOG_FUNCTION(this << cycle << commands << lm);
+
+    // Indicate whether or not this is the default.
+    bool isDefaultLm = (lm == m_defaultLm);
+    // Create the key used to identify the LM.
+    std::tuple<std::string, bool> key = std::make_tuple(lm->GetName(), isDefaultLm);
+
+    if (m_lmQueryCommands.find(key) != m_lmQueryCommands.end())
     {
-      m_lmQueryCommands[key] = std::vector<Ptr<OranCommand> > ();
+        m_lmQueryCommands[key] = std::vector<Ptr<OranCommand>>();
     }
-  
-  // Check if the issued commands belong to this cycle.
-  if (cycle == m_lmQueryCycle)
-    {
-      // Check if commands still have yet to be processed.
-      if (m_processLmQueryCommandsEvent.IsRunning ()
-          || m_lmQueryMaxWaitTime == Seconds (0))
-        {
-          NS_LOG_LOGIC ("Near-RT RIC received command(s) from \"" << lm->GetName () << "\" for cycle " << cycle.GetTimeStep ());
-  
-          // Collect the commands generated by the LM
-          m_lmQueryCommands[key].insert (m_lmQueryCommands[key].end (), commands.begin (), commands.end ());
-        }
-      else
-        {
-          NS_LOG_WARN ("Near-RT RIC received late command(s) for cycle "
-              << m_lmQueryCycle.GetTimeStep () << " from \"" << lm->GetName () << "\"");
 
-          // Check what to do with late commands.
-          switch (m_lmQueryLateCommandPolicy)
+    // Check if the issued commands belong to this cycle.
+    if (cycle == m_lmQueryCycle)
+    {
+        // Check if commands still have yet to be processed.
+        if (m_processLmQueryCommandsEvent.IsRunning() || m_lmQueryMaxWaitTime == Seconds(0))
+        {
+            NS_LOG_LOGIC("Near-RT RIC received command(s) from \""
+                         << lm->GetName() << "\" for cycle " << cycle.GetTimeStep());
+
+            // Collect the commands generated by the LM
+            m_lmQueryCommands[key].insert(m_lmQueryCommands[key].end(),
+                                          commands.begin(),
+                                          commands.end());
+        }
+        else
+        {
+            NS_LOG_WARN("Near-RT RIC received late command(s) for cycle "
+                        << m_lmQueryCycle.GetTimeStep() << " from \"" << lm->GetName() << "\"");
+
+            // Check what to do with late commands.
+            switch (m_lmQueryLateCommandPolicy)
             {
-              case DROP:
-                NS_LOG_LOGIC ("Dropping command(s) due to late command policy");
+            case DROP:
+                NS_LOG_LOGIC("Dropping command(s) due to late command policy");
                 break;
-              case SAVE:
-                NS_LOG_LOGIC ("Saving command(s) for this cycle due to late command policy");
-                m_lmQueryCommands[key].insert (m_lmQueryCommands[key].end (), commands.begin (), commands.end ());
+            case SAVE:
+                NS_LOG_LOGIC("Saving command(s) for this cycle due to late command policy");
+                m_lmQueryCommands[key].insert(m_lmQueryCommands[key].end(),
+                                              commands.begin(),
+                                              commands.end());
                 break;
-              default:
-                NS_ABORT_MSG ("Unsupported late command policy in Near-RT RIC");
+            default:
+                NS_ABORT_MSG("Unsupported late command policy in Near-RT RIC");
                 break;
             }
         }
     }
-  else
+    else
     {
-      NS_ABORT_MSG ("Near-RT RIC received command for unexpected cycle");
+        NS_ABORT_MSG("Near-RT RIC received command for unexpected cycle");
     }
 
-  // Only process LM query commands from here once all LMs have returned
-  // commands AND it is either the case that all commands have been received
-  // before the maiximum wait time has been exceeded or there is no maximum
-  // wait time.
-  if (m_lmQueryCommands.size () == m_additionalLms.size () + 1
-      && (m_processLmQueryCommandsEvent.IsRunning ()
-          || m_lmQueryMaxWaitTime == Seconds (0)))
+    // Only process LM query commands from here once all LMs have returned
+    // commands AND it is either the case that all commands have been received
+    // before the maiximum wait time has been exceeded or there is no maximum
+    // wait time.
+    if (m_lmQueryCommands.size() == m_additionalLms.size() + 1 &&
+        (m_processLmQueryCommandsEvent.IsRunning() || m_lmQueryMaxWaitTime == Seconds(0)))
     {
-      ProcessLmQueryCommands ();
-    }
-}
-
-void
-OranNearRtRic::NotifyReportReceived (Ptr<OranReport> report)
-{
-  NS_LOG_FUNCTION (this << report);
-
-  NS_LOG_LOGIC ("Near-RT RIC received a report");
-
-  bool queryLms = false;
-
-  for (auto qtrigger : m_queryTriggers)
-    {
-      if (qtrigger.second->QueryLms (report))
-        {
-          queryLms = true;
-          NS_LOG_LOGIC ("Near-RT RIC's \"" << qtrigger.first << "\" query trigger has indicated that LMs should be queried");
-        }
-    }
-
-  if (queryLms)
-    {
-      if (m_lmQueryEvent.IsRunning ())
-        {
-          m_lmQueryEvent.Cancel ();
-        }
-
-      NS_LOG_LOGIC ("Near-RT RIC LM query triggered based on received report");
-
-      QueryLms ();
+        ProcessLmQueryCommands();
     }
 }
 
 void
-OranNearRtRic::DoDispose (void)
+OranNearRtRic::NotifyReportReceived(Ptr<OranReport> report)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this << report);
 
-  m_e2Terminator = nullptr;
-  m_data = nullptr;
-  m_defaultLm = nullptr;
+    NS_LOG_LOGIC("Near-RT RIC received a report");
 
-  m_additionalLms.clear();
+    bool queryLms = false;
 
-  m_lmQueryEvent.Cancel ();
-  m_e2NodeInactivityEvent.Cancel ();
-  m_processLmQueryCommandsEvent.Cancel ();
+    for (auto qtrigger : m_queryTriggers)
+    {
+        if (qtrigger.second->QueryLms(report))
+        {
+            queryLms = true;
+            NS_LOG_LOGIC("Near-RT RIC's \""
+                         << qtrigger.first
+                         << "\" query trigger has indicated that LMs should be queried");
+        }
+    }
 
-  m_cmm = nullptr;
+    if (queryLms)
+    {
+        if (m_lmQueryEvent.IsRunning())
+        {
+            m_lmQueryEvent.Cancel();
+        }
 
-  m_lmQueryCommands.clear();
+        NS_LOG_LOGIC("Near-RT RIC LM query triggered based on received report");
 
-  Object::DoDispose ();
+        QueryLms();
+    }
 }
 
 void
-OranNearRtRic::QueryLms (void)
+OranNearRtRic::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    m_e2Terminator = nullptr;
+    m_data = nullptr;
+    m_defaultLm = nullptr;
+
+    m_additionalLms.clear();
+
+    m_lmQueryEvent.Cancel();
+    m_e2NodeInactivityEvent.Cancel();
+    m_processLmQueryCommandsEvent.Cancel();
+
+    m_cmm = nullptr;
+
+    m_lmQueryCommands.clear();
+
+    Object::DoDispose();
+}
+
+void
+OranNearRtRic::QueryLms(void)
+{
+    NS_LOG_FUNCTION(this);
+
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_e2Terminator == nullptr, "Attempting to query LMs in a Near-RT RIC with a NULL E2 Terminator");
-      NS_ABORT_MSG_IF (m_defaultLm == nullptr, "Attempting to query LMs in Near-RT RIC with a NULL Default Logic Module");
-      NS_ABORT_MSG_IF (m_cmm == nullptr, "Attempting to query LMs in Near-RT RIC with a NULL Conflict Mitigation Module");
-      NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to query LMs in  Near-RT RIC with a NULL Data Repository");
+        NS_ABORT_MSG_IF(m_e2Terminator == nullptr,
+                        "Attempting to query LMs in a Near-RT RIC with a NULL E2 Terminator");
+        NS_ABORT_MSG_IF(m_defaultLm == nullptr,
+                        "Attempting to query LMs in Near-RT RIC with a NULL Default Logic Module");
+        NS_ABORT_MSG_IF(
+            m_cmm == nullptr,
+            "Attempting to query LMs in Near-RT RIC with a NULL Conflict Mitigation Module");
+        NS_ABORT_MSG_IF(m_data == nullptr,
+                        "Attempting to query LMs in  Near-RT RIC with a NULL Data Repository");
 
-      // Move to next cycle.
-      m_lmQueryCycle = Simulator::Now ();
+        // Move to next cycle.
+        m_lmQueryCycle = Simulator::Now();
 
-      NS_LOG_LOGIC ("Near-RT RIC querying LMs and signaling for them to run for cycle " << m_lmQueryCycle.GetTimeStep ());
+        NS_LOG_LOGIC("Near-RT RIC querying LMs and signaling for them to run for cycle "
+                     << m_lmQueryCycle.GetTimeStep());
 
-      // Mark E2 nodes that have not recently sent a registration request as
-      // in active.
-      CheckForInactivity ();
+        // Mark E2 nodes that have not recently sent a registration request as
+        // in active.
+        CheckForInactivity();
 
-      if (m_lmQueryMaxWaitTime > Seconds (0))
+        if (m_lmQueryMaxWaitTime > Seconds(0))
         {
-          m_processLmQueryCommandsEvent = Simulator::Schedule (m_lmQueryMaxWaitTime, &OranNearRtRic::ProcessLmQueryCommands, this);
+            m_processLmQueryCommandsEvent =
+                Simulator::Schedule(m_lmQueryMaxWaitTime,
+                                    &OranNearRtRic::ProcessLmQueryCommands,
+                                    this);
         }
-      
-      // Check if LM is still running.
-      if (m_defaultLm->IsRunning ())
+
+        // Check if LM is still running.
+        if (m_defaultLm->IsRunning())
         {
-          // Cancel the current process.
-          m_defaultLm->CancelRun ();
-          NS_LOG_WARN ("Near-RT RIC canceled run for \"" << m_defaultLm->GetName ()
-              << "\" because it had not finished running by next query cycle");
+            // Cancel the current process.
+            m_defaultLm->CancelRun();
+            NS_LOG_WARN("Near-RT RIC canceled run for \""
+                        << m_defaultLm->GetName()
+                        << "\" because it had not finished running by next query cycle");
         }
 
-      // Signal default LM to run
-      m_defaultLm->Run (m_lmQueryCycle);
+        // Signal default LM to run
+        m_defaultLm->Run(m_lmQueryCycle);
 
-      // Signal all additional LMs to run.
-      for (auto lm : m_additionalLms)
+        // Signal all additional LMs to run.
+        for (auto lm : m_additionalLms)
         {
-          // Check if LM is still running.
-          if (lm.second->IsRunning ())
+            // Check if LM is still running.
+            if (lm.second->IsRunning())
             {
-              // Cancel the current process.
-              lm.second->CancelRun ();
-              NS_LOG_WARN ("Near-RT RIC canceled run for \"" << lm.second->GetName ()
-                  << "\" because it had not finished running by next query cycle");
+                // Cancel the current process.
+                lm.second->CancelRun();
+                NS_LOG_WARN("Near-RT RIC canceled run for \""
+                            << lm.second->GetName()
+                            << "\" because it had not finished running by next query cycle");
             }
-          lm.second->Run (m_lmQueryCycle);
+            lm.second->Run(m_lmQueryCycle);
         }
 
-      m_lmQueryEvent = Simulator::Schedule (m_lmQueryInterval, &OranNearRtRic::QueryLms, this);
+        m_lmQueryEvent = Simulator::Schedule(m_lmQueryInterval, &OranNearRtRic::QueryLms, this);
     }
 }
 
 void
-OranNearRtRic::CheckForInactivity (void)
+OranNearRtRic::CheckForInactivity(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to check for inactivity in Near-RT RIC with a NULL Data Repository");
-      NS_ABORT_MSG_IF (m_e2Terminator == nullptr, "Attempting to check for inactivity in Near-RT RIC with a NULL E2 Terminator");
+        NS_ABORT_MSG_IF(
+            m_data == nullptr,
+            "Attempting to check for inactivity in Near-RT RIC with a NULL Data Repository");
+        NS_ABORT_MSG_IF(
+            m_e2Terminator == nullptr,
+            "Attempting to check for inactivity in Near-RT RIC with a NULL E2 Terminator");
 
-      NS_LOG_LOGIC ("Near-RT RIC checking for E2 Node inactivity");
+        NS_LOG_LOGIC("Near-RT RIC checking for E2 Node inactivity");
 
-      std::vector<std::tuple<uint64_t, Time> > lastRegistrations = m_data->GetLastRegistrationRequests ();
+        std::vector<std::tuple<uint64_t, Time>> lastRegistrations =
+            m_data->GetLastRegistrationRequests();
 
-      for (auto lastreg : lastRegistrations)
+        for (auto lastreg : lastRegistrations)
         {
-          uint64_t e2NodeId;
-          Time registrationTime;
+            uint64_t e2NodeId;
+            Time registrationTime;
 
-          std::tie (e2NodeId, registrationTime) = lastreg;
+            std::tie(e2NodeId, registrationTime) = lastreg;
 
-          Time inactivityPeriod = Simulator::Now () - registrationTime;
+            Time inactivityPeriod = Simulator::Now() - registrationTime;
 
-          if (inactivityPeriod > m_e2NodeInactivityThreshold)
+            if (inactivityPeriod > m_e2NodeInactivityThreshold)
             {
-              NS_LOG_LOGIC ("Near-RT RIC deactivating E2 Node with ID " << e2NodeId
-                  << " that has not registered in " << inactivityPeriod.GetSeconds () << " s");
-              m_e2Terminator->ReceiveDeregistrationRequest (e2NodeId);
+                NS_LOG_LOGIC("Near-RT RIC deactivating E2 Node with ID "
+                             << e2NodeId << " that has not registered in "
+                             << inactivityPeriod.GetSeconds() << " s");
+                m_e2Terminator->ReceiveDeregistrationRequest(e2NodeId);
             }
         }
-      
-      if (m_e2NodeInactivityEvent.IsRunning ())
+
+        if (m_e2NodeInactivityEvent.IsRunning())
         {
-          m_e2NodeInactivityEvent.Cancel ();
+            m_e2NodeInactivityEvent.Cancel();
         }
 
-      m_e2NodeInactivityEvent = Simulator::Schedule (
-          Seconds (m_e2NodeInactivityIntervalRv->GetValue ()),
-          &OranNearRtRic::CheckForInactivity,
-          this);
+        m_e2NodeInactivityEvent =
+            Simulator::Schedule(Seconds(m_e2NodeInactivityIntervalRv->GetValue()),
+                                &OranNearRtRic::CheckForInactivity,
+                                this);
     }
 }
 
 void
-OranNearRtRic::ProcessLmQueryCommands (void)
+OranNearRtRic::ProcessLmQueryCommands(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      NS_LOG_LOGIC ("Near-RT RIC processing commands");
+        NS_LOG_LOGIC("Near-RT RIC processing commands");
 
-      if (m_processLmQueryCommandsEvent.IsRunning ())
+        if (m_processLmQueryCommandsEvent.IsRunning())
         {
-          m_processLmQueryCommandsEvent.Cancel ();
+            m_processLmQueryCommandsEvent.Cancel();
         }
 
-      // Pass to the E2 Terminator the set of commands resulting
-      // from the Conflict Mitigation Module filtering the complete
-      // set of commands generated
-      m_e2Terminator->ProcessCommands (m_cmm->Filter (m_lmQueryCommands));
+        // Pass to the E2 Terminator the set of commands resulting
+        // from the Conflict Mitigation Module filtering the complete
+        // set of commands generated
+        m_e2Terminator->ProcessCommands(m_cmm->Filter(m_lmQueryCommands));
 
-      m_lmQueryCommands.clear ();
+        m_lmQueryCommands.clear();
     }
 }
 

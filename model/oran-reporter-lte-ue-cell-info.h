@@ -32,49 +32,50 @@
 #ifndef ORAN_REPORTER_LTE_UE_CELL_INFO_H
 #define ORAN_REPORTER_LTE_UE_CELL_INFO_H
 
-#include <vector>
+#include "oran-report.h"
+#include "oran-reporter.h"
 
 #include <ns3/ptr.h>
 
-#include "oran-reporter.h"
-#include "oran-report.h"
+#include <vector>
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup oran
  *
- * Reporter that attaches to an LTE UE and captures the LTE Cell ID 
+ * Reporter that attaches to an LTE UE and captures the LTE Cell ID
  * of the eNB the UE is attached to.
  */
 class OranReporterLteUeCellInfo : public OranReporter
 {
-public:
-  /**
-   * Get the TypeId of the OranReporterLteUeCellInfo class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReporterLteUeCellInfo class.
-   */
-  OranReporterLteUeCellInfo (void);
-  /**
-   * Destructor of the OranReporterLteUeCellInfo class.
-   */
-  ~OranReporterLteUeCellInfo (void) override;
-protected:
-  /**
-   * Get the Cell ID of the attached LTE cell, and generate an
-   * OranReportLteUeCEllInfo.
-   *
-   * \return The generated Report.
-   */
-  std::vector<Ptr<OranReport> > GenerateReports (void) override;
+  public:
+    /**
+     * Get the TypeId of the OranReporterLteUeCellInfo class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReporterLteUeCellInfo class.
+     */
+    OranReporterLteUeCellInfo(void);
+    /**
+     * Destructor of the OranReporterLteUeCellInfo class.
+     */
+    ~OranReporterLteUeCellInfo(void) override;
+
+  protected:
+    /**
+     * Get the Cell ID of the attached LTE cell, and generate an
+     * OranReportLteUeCEllInfo.
+     *
+     * \return The generated Report.
+     */
+    std::vector<Ptr<OranReport>> GenerateReports(void) override;
 }; // class OranReporterLteUeCellInfo
 
 } // namespace ns3
 
 #endif /* ORAN_REPORTER_LTE_UE_CELL_INFO_H */
-

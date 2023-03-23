@@ -29,64 +29,65 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-reporter-location.h"
+
+#include "oran-report-location.h"
+
+#include <ns3/abort.h>
 #include <ns3/log.h>
 #include <ns3/mobility-model.h>
 #include <ns3/simulator.h>
 #include <ns3/uinteger.h>
-#include <ns3/abort.h>
 
-#include "oran-report-location.h"
+namespace ns3
+{
 
-#include "oran-reporter-location.h"
+NS_LOG_COMPONENT_DEFINE("OranReporterLocation");
 
-namespace ns3 {
-
-NS_LOG_COMPONENT_DEFINE ("OranReporterLocation");
-
-NS_OBJECT_ENSURE_REGISTERED (OranReporterLocation);
+NS_OBJECT_ENSURE_REGISTERED(OranReporterLocation);
 
 TypeId
-OranReporterLocation::GetTypeId (void)
+OranReporterLocation::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReporterLocation")
-    .SetParent<OranReporter> ()
-    .AddConstructor<OranReporterLocation> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranReporterLocation")
+                            .SetParent<OranReporter>()
+                            .AddConstructor<OranReporterLocation>();
 
- return tid;
+    return tid;
 }
 
-OranReporterLocation::OranReporterLocation (void)
-  : OranReporter ()
+OranReporterLocation::OranReporterLocation(void)
+    : OranReporter()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReporterLocation::~OranReporterLocation (void)
+OranReporterLocation::~OranReporterLocation(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-std::vector<Ptr<OranReport> >
-OranReporterLocation::GenerateReports (void)
+std::vector<Ptr<OranReport>>
+OranReporterLocation::GenerateReports(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  std::vector<Ptr<OranReport> > reports;
-  if (m_active)
+    std::vector<Ptr<OranReport>> reports;
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_terminator == nullptr, "Attempting to generate reports in reporter with NULL E2 Terminator");
-      Ptr<MobilityModel> mobility = m_terminator->GetNode ()->GetObject<MobilityModel>();
+        NS_ABORT_MSG_IF(m_terminator == nullptr,
+                        "Attempting to generate reports in reporter with NULL E2 Terminator");
+        Ptr<MobilityModel> mobility = m_terminator->GetNode()->GetObject<MobilityModel>();
 
-      Ptr<OranReportLocation> locationReport = CreateObject<OranReportLocation> ();
-      locationReport->SetAttribute ("ReporterE2NodeId", UintegerValue (m_terminator->GetE2NodeId ()));
-      locationReport->SetAttribute ("Location", VectorValue (mobility->GetPosition()));
-      locationReport->SetAttribute ("Time", TimeValue (Simulator::Now ()));
+        Ptr<OranReportLocation> locationReport = CreateObject<OranReportLocation>();
+        locationReport->SetAttribute("ReporterE2NodeId",
+                                     UintegerValue(m_terminator->GetE2NodeId()));
+        locationReport->SetAttribute("Location", VectorValue(mobility->GetPosition()));
+        locationReport->SetAttribute("Time", TimeValue(Simulator::Now()));
 
-      reports.push_back (locationReport);
+        reports.push_back(locationReport);
     }
-  return reports;
+    return reports;
 }
 
 } // namespace ns3
-

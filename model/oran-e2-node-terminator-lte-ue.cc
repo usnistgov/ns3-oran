@@ -29,74 +29,74 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-e2-node-terminator-lte-ue.h"
+
+#include "oran-command-lte-2-lte-handover.h"
+
+#include <ns3/abort.h>
 #include <ns3/log.h>
 #include <ns3/node.h>
 #include <ns3/pointer.h>
 #include <ns3/string.h>
-#include <ns3/abort.h>
 
-#include "oran-command-lte-2-lte-handover.h"
+namespace ns3
+{
 
-#include "oran-e2-node-terminator-lte-ue.h"
+NS_LOG_COMPONENT_DEFINE("OranE2NodeTerminatorLteUe");
 
-namespace ns3 {
-
-NS_LOG_COMPONENT_DEFINE ("OranE2NodeTerminatorLteUe");
-
-NS_OBJECT_ENSURE_REGISTERED (OranE2NodeTerminatorLteUe);
+NS_OBJECT_ENSURE_REGISTERED(OranE2NodeTerminatorLteUe);
 
 TypeId
-OranE2NodeTerminatorLteUe::GetTypeId (void)
+OranE2NodeTerminatorLteUe::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranE2NodeTerminatorLteUe")
-    .SetParent<OranE2NodeTerminator> ()
-    .AddConstructor<OranE2NodeTerminatorLteUe> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranE2NodeTerminatorLteUe")
+                            .SetParent<OranE2NodeTerminator>()
+                            .AddConstructor<OranE2NodeTerminatorLteUe>();
 
- return tid;
+    return tid;
 }
 
-OranE2NodeTerminatorLteUe::OranE2NodeTerminatorLteUe (void)
-  : OranE2NodeTerminator ()
+OranE2NodeTerminatorLteUe::OranE2NodeTerminatorLteUe(void)
+    : OranE2NodeTerminator()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranE2NodeTerminatorLteUe::~OranE2NodeTerminatorLteUe (void)
+OranE2NodeTerminatorLteUe::~OranE2NodeTerminatorLteUe(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 OranNearRtRic::NodeType
-OranE2NodeTerminatorLteUe::GetNodeType (void) const
+OranE2NodeTerminatorLteUe::GetNodeType(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return OranNearRtRic::LTEUE;
+    return OranNearRtRic::LTEUE;
 }
 
 void
-OranE2NodeTerminatorLteUe::ReceiveCommand (Ptr<OranCommand> command)
+OranE2NodeTerminatorLteUe::ReceiveCommand(Ptr<OranCommand> command)
 {
-  NS_LOG_FUNCTION (this << command);
+    NS_LOG_FUNCTION(this << command);
 
-  if (m_active)
+    if (m_active)
     {
-      // No supported commands yet.
+        // No supported commands yet.
     }
 }
 
 Ptr<LteUeNetDevice>
-OranE2NodeTerminatorLteUe::GetNetDevice (void) const
+OranE2NodeTerminatorLteUe::GetNetDevice(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  Ptr<LteUeNetDevice> lteUeNetDev = GetNode ()->GetDevice (GetNetDeviceIndex ())->GetObject<LteUeNetDevice> ();
+    Ptr<LteUeNetDevice> lteUeNetDev =
+        GetNode()->GetDevice(GetNetDeviceIndex())->GetObject<LteUeNetDevice>();
 
-  NS_ABORT_MSG_IF (lteUeNetDev == nullptr, "Unable to find appropriate network device");
+    NS_ABORT_MSG_IF(lteUeNetDev == nullptr, "Unable to find appropriate network device");
 
-  return lteUeNetDev;
+    return lteUeNetDev;
 }
 
 } // namespace ns3
-

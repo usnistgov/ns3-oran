@@ -29,79 +29,80 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
+#include "oran-reporter-lte-ue-cell-info.h"
+
+#include "oran-report-lte-ue-cell-info.h"
+
 #include <ns3/abort.h>
+#include <ns3/log.h>
 #include <ns3/lte-ue-net-device.h>
 #include <ns3/lte-ue-rrc.h>
 #include <ns3/mobility-model.h>
 #include <ns3/simulator.h>
 #include <ns3/uinteger.h>
 
-#include "oran-report-lte-ue-cell-info.h"
+namespace ns3
+{
 
-#include "oran-reporter-lte-ue-cell-info.h"
+NS_LOG_COMPONENT_DEFINE("OranReporterLteUeCellInfo");
 
-namespace ns3 {
-
-NS_LOG_COMPONENT_DEFINE ("OranReporterLteUeCellInfo");
-
-NS_OBJECT_ENSURE_REGISTERED (OranReporterLteUeCellInfo);
+NS_OBJECT_ENSURE_REGISTERED(OranReporterLteUeCellInfo);
 
 TypeId
-OranReporterLteUeCellInfo::GetTypeId (void)
+OranReporterLteUeCellInfo::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReporterLteUeCellInfo")
-    .SetParent<OranReporter> ()
-    .AddConstructor<OranReporterLteUeCellInfo> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranReporterLteUeCellInfo")
+                            .SetParent<OranReporter>()
+                            .AddConstructor<OranReporterLteUeCellInfo>();
 
- return tid;
+    return tid;
 }
 
-OranReporterLteUeCellInfo::OranReporterLteUeCellInfo (void)
-  : OranReporter ()
+OranReporterLteUeCellInfo::OranReporterLteUeCellInfo(void)
+    : OranReporter()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReporterLteUeCellInfo::~OranReporterLteUeCellInfo (void)
+OranReporterLteUeCellInfo::~OranReporterLteUeCellInfo(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-std::vector<Ptr<OranReport> >
-OranReporterLteUeCellInfo::GenerateReports (void)
+std::vector<Ptr<OranReport>>
+OranReporterLteUeCellInfo::GenerateReports(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  std::vector<Ptr<OranReport> > reports;
-  if (m_active)
+    std::vector<Ptr<OranReport>> reports;
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_terminator == nullptr, "Attempting to generate reports in reporter with NULL E2 Terminator");
+        NS_ABORT_MSG_IF(m_terminator == nullptr,
+                        "Attempting to generate reports in reporter with NULL E2 Terminator");
 
-      Ptr<LteUeNetDevice> lteUeNetDev = nullptr;
-      Ptr<Node> node = m_terminator->GetNode ();
-      Ptr<OranReportLteUeCellInfo> cellInfoReport = CreateObject<OranReportLteUeCellInfo> ();
+        Ptr<LteUeNetDevice> lteUeNetDev = nullptr;
+        Ptr<Node> node = m_terminator->GetNode();
+        Ptr<OranReportLteUeCellInfo> cellInfoReport = CreateObject<OranReportLteUeCellInfo>();
 
-      for (uint32_t idx = 0; lteUeNetDev == nullptr && idx < node->GetNDevices (); idx++)
+        for (uint32_t idx = 0; lteUeNetDev == nullptr && idx < node->GetNDevices(); idx++)
         {
-          lteUeNetDev = node->GetDevice (idx)->GetObject<LteUeNetDevice> ();
+            lteUeNetDev = node->GetDevice(idx)->GetObject<LteUeNetDevice>();
         }
 
-      NS_ABORT_MSG_IF (lteUeNetDev == nullptr , "Unable to find appropriate network device");
+        NS_ABORT_MSG_IF(lteUeNetDev == nullptr, "Unable to find appropriate network device");
 
-      Ptr<LteUeRrc> lteUeRrc = lteUeNetDev->GetRrc ();
+        Ptr<LteUeRrc> lteUeRrc = lteUeNetDev->GetRrc();
 
-      cellInfoReport->SetAttribute ("ReporterE2NodeId", UintegerValue (m_terminator->GetE2NodeId ()));
-      cellInfoReport->SetAttribute ("CellId", UintegerValue (lteUeRrc->GetCellId ()));
-      cellInfoReport->SetAttribute ("Rnti", UintegerValue (lteUeRrc->GetRnti ()));
-      cellInfoReport->SetAttribute ("Time", TimeValue (Simulator::Now ()));
+        cellInfoReport->SetAttribute("ReporterE2NodeId",
+                                     UintegerValue(m_terminator->GetE2NodeId()));
+        cellInfoReport->SetAttribute("CellId", UintegerValue(lteUeRrc->GetCellId()));
+        cellInfoReport->SetAttribute("Rnti", UintegerValue(lteUeRrc->GetRnti()));
+        cellInfoReport->SetAttribute("Time", TimeValue(Simulator::Now()));
 
-      reports.push_back (cellInfoReport);
+        reports.push_back(cellInfoReport);
     }
 
-  return reports;
+    return reports;
 }
 
 } // namespace ns3
-

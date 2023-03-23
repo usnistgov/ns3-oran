@@ -32,12 +32,13 @@
 #ifndef ORAN_REPORT_TRIGGER_H
 #define ORAN_REPORT_TRIGGER_H
 
-#include <string>
-
 #include <ns3/object.h>
 #include <ns3/ptr.h>
 
-namespace ns3 {
+#include <string>
+
+namespace ns3
+{
 
 class OranReporter;
 
@@ -50,60 +51,61 @@ class OranReporter;
  */
 class OranReportTrigger : public Object
 {
-public:
-  /**
-   * Get the TypeId of the OranReportTrigger class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Destructor of the OranReportTrigger class.
-   */
-  ~OranReportTrigger (void) override;
-  /**
-   * Activates this trigger for and links it to the given reporter.
-   * \param reporter The reporter to link to.
-   */
-  virtual void Activate (Ptr<OranReporter> reporter);
-  /**
-   * Deactivates this trigger and unlinks it from the current reporter.
-   */
-  virtual void Deactivate (void);
-  /**
-   * Notifies the trigger that initial registartion has completed successfully.
-   */
-  virtual void NotifyRegistrationComplete (void);
-protected:
-  /**
-   * Constructor of the OranReportTrigger class.
-   */
-  OranReportTrigger (void);
-  /**
-   * Dispose of the Report.
-   */
-  void DoDispose (void) override;
-  /**
-   * Triggers a report.
-   */
-  virtual void TriggerReport (void);
+  public:
+    /**
+     * Get the TypeId of the OranReportTrigger class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Destructor of the OranReportTrigger class.
+     */
+    ~OranReportTrigger(void) override;
+    /**
+     * Activates this trigger for and links it to the given reporter.
+     * \param reporter The reporter to link to.
+     */
+    virtual void Activate(Ptr<OranReporter> reporter);
+    /**
+     * Deactivates this trigger and unlinks it from the current reporter.
+     */
+    virtual void Deactivate(void);
+    /**
+     * Notifies the trigger that initial registartion has completed successfully.
+     */
+    virtual void NotifyRegistrationComplete(void);
 
-  /**
-   * Flag to indicate if the trigger is active.
-   */
-  bool m_active;
-  /**
-   * The reporter to trigger reports for.
-   */
-  Ptr<OranReporter> m_reporter;
-private:
-  /**
-   * Indicates if an initial report should be triggered upon registration.
-   */
-  bool m_initialReport;
+  protected:
+    /**
+     * Constructor of the OranReportTrigger class.
+     */
+    OranReportTrigger(void);
+    /**
+     * Dispose of the Report.
+     */
+    void DoDispose(void) override;
+    /**
+     * Triggers a report.
+     */
+    virtual void TriggerReport(void);
+
+    /**
+     * Flag to indicate if the trigger is active.
+     */
+    bool m_active;
+    /**
+     * The reporter to trigger reports for.
+     */
+    Ptr<OranReporter> m_reporter;
+
+  private:
+    /**
+     * Indicates if an initial report should be triggered upon registration.
+     */
+    bool m_initialReport;
 }; // class OranReportTrigger
 
 } // namespace ns3
 
 #endif /* ORAN_REPORT_TRIGGER_H */
-

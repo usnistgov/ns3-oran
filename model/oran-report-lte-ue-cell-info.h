@@ -32,11 +32,12 @@
 #ifndef ORAN_REPORT_LTE_UE_CELL_INFO_H
 #define ORAN_REPORT_LTE_UE_CELL_INFO_H
 
-#include <string>
-
 #include "oran-report.h"
 
-namespace ns3 {
+#include <string>
+
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -45,52 +46,53 @@ namespace ns3 {
  */
 class OranReportLteUeCellInfo : public OranReport
 {
-public:
-  /**
-   * Get the TypeId of the OranReportLteUeCellInfo class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReportLteUeCellInfo class.
-   */
-  OranReportLteUeCellInfo (void);
-  /**
-   * Destructor of the OranReportLteUeCellInfo class.
-   */
-  ~OranReportLteUeCellInfo (void) override;
-  /**
-   * Get a string representation of this Report.
-   *
-   * \return A string representation of this Report.
-   */
-  std::string ToString (void) const override;
-private:
-  /**
-   * The reported cell ID.
-   */
-  uint16_t m_cellId;
-  /**
-   * The reported RNTI.
-   */
-  uint16_t m_rnti; 
-public:
-  /**
-   * Get the reported cell ID.
-   *
-   * \return The reported cell ID.
-   */
-  uint16_t GetCellId (void) const;
-  /**
-   * Get the reported RNTI.
-   *
-   * \return The reported RNTI.
-   */
-  uint16_t GetRnti (void) const;
+  public:
+    /**
+     * Get the TypeId of the OranReportLteUeCellInfo class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReportLteUeCellInfo class.
+     */
+    OranReportLteUeCellInfo(void);
+    /**
+     * Destructor of the OranReportLteUeCellInfo class.
+     */
+    ~OranReportLteUeCellInfo(void) override;
+    /**
+     * Get a string representation of this Report.
+     *
+     * \return A string representation of this Report.
+     */
+    std::string ToString(void) const override;
+
+  private:
+    /**
+     * The reported cell ID.
+     */
+    uint16_t m_cellId;
+    /**
+     * The reported RNTI.
+     */
+    uint16_t m_rnti;
+
+  public:
+    /**
+     * Get the reported cell ID.
+     *
+     * \return The reported cell ID.
+     */
+    uint16_t GetCellId(void) const;
+    /**
+     * Get the reported RNTI.
+     *
+     * \return The reported RNTI.
+     */
+    uint16_t GetRnti(void) const;
 }; // class OranReportLteUeCellInfo
 
 } // namespace ns3
 
 #endif /* ORAN_REPORT_LTE_UE_CELL_INFO_H */
-

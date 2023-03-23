@@ -29,59 +29,58 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-command.h"
+
 #include <ns3/log.h>
 #include <ns3/uinteger.h>
 
-#include "oran-command.h"
+namespace ns3
+{
 
-namespace ns3 {
+NS_LOG_COMPONENT_DEFINE("OranCommand");
 
-NS_LOG_COMPONENT_DEFINE ("OranCommand");
-
-NS_OBJECT_ENSURE_REGISTERED (OranCommand);
+NS_OBJECT_ENSURE_REGISTERED(OranCommand);
 
 TypeId
-OranCommand::GetTypeId (void)
+OranCommand::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranCommand")
-    .SetParent<Object> ()
-    .AddConstructor<OranCommand> ()
-    .AddAttribute ("TargetE2NodeId",
-                   "The E2 Node ID of the recipient of this command",
-                   UintegerValue (0),
-                   MakeUintegerAccessor (&OranCommand::m_targetE2NodeId),
-                   MakeUintegerChecker<uint64_t> ())
-  ;
+    static TypeId tid = TypeId("ns3::OranCommand")
+                            .SetParent<Object>()
+                            .AddConstructor<OranCommand>()
+                            .AddAttribute("TargetE2NodeId",
+                                          "The E2 Node ID of the recipient of this command",
+                                          UintegerValue(0),
+                                          MakeUintegerAccessor(&OranCommand::m_targetE2NodeId),
+                                          MakeUintegerChecker<uint64_t>());
 
- return tid;
+    return tid;
 }
 
-OranCommand::OranCommand (void)
-  : Object ()
+OranCommand::OranCommand(void)
+    : Object()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranCommand::~OranCommand (void)
+OranCommand::~OranCommand(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranCommand::ToString (void) const
+OranCommand::ToString(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return "Parent OranCommand. Should not be used";
+    return "Parent OranCommand. Should not be used";
 }
 
 uint64_t
-OranCommand::GetTargetE2NodeId (void) const
+OranCommand::GetTargetE2NodeId(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_targetE2NodeId;
+    return m_targetE2NodeId;
 }
 
 } // namespace ns3
-

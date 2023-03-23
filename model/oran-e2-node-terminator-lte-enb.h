@@ -32,11 +32,12 @@
 #ifndef ORAN_E2_NODE_TERMINATOR_LTE_ENB_H
 #define ORAN_E2_NODE_TERMINATOR_LTE_ENB_H
 
-#include <ns3/lte-enb-net-device.h>
-
 #include "oran-e2-node-terminator.h"
 
-namespace ns3 {
+#include <ns3/lte-enb-net-device.h>
+
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -46,44 +47,43 @@ namespace ns3 {
  */
 class OranE2NodeTerminatorLteEnb : public OranE2NodeTerminator
 {
-public:
-  /**
-   * Get the TypeId of the OranE2NodeTerminatorLteEnb class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Create an instance of the OranE2NodeTerminatorLteEnb class.
-   */
-  OranE2NodeTerminatorLteEnb (void);
-  /**
-   * The destructor of the OranE2NodeTerminatorLteEnb class.
-   */
-  ~OranE2NodeTerminatorLteEnb (void) override;
-  /**
-   * Get the E2 Node Type. For this Terminator, this method
-   * always returns the LTE eNB type.
-   *
-   * \return the E2 Node Type.
-   */
-  OranNearRtRic::NodeType GetNodeType (void) const override;
-  /**
-   * Receive and process a command. If the Command is an LTE Handover Command
-   * it will be processed. All other types of Commands are silently discarded..
-   *
-   * \param command The received command.
-   */
-  void ReceiveCommand (Ptr<OranCommand> command) override;
-  /**
-   * Get the NetDevice of the LTE eNB.
-   *
-   * \return The net device.
-   */
-  virtual Ptr<LteEnbNetDevice> GetNetDevice (void) const;
+  public:
+    /**
+     * Get the TypeId of the OranE2NodeTerminatorLteEnb class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Create an instance of the OranE2NodeTerminatorLteEnb class.
+     */
+    OranE2NodeTerminatorLteEnb(void);
+    /**
+     * The destructor of the OranE2NodeTerminatorLteEnb class.
+     */
+    ~OranE2NodeTerminatorLteEnb(void) override;
+    /**
+     * Get the E2 Node Type. For this Terminator, this method
+     * always returns the LTE eNB type.
+     *
+     * \return the E2 Node Type.
+     */
+    OranNearRtRic::NodeType GetNodeType(void) const override;
+    /**
+     * Receive and process a command. If the Command is an LTE Handover Command
+     * it will be processed. All other types of Commands are silently discarded..
+     *
+     * \param command The received command.
+     */
+    void ReceiveCommand(Ptr<OranCommand> command) override;
+    /**
+     * Get the NetDevice of the LTE eNB.
+     *
+     * \return The net device.
+     */
+    virtual Ptr<LteEnbNetDevice> GetNetDevice(void) const;
 }; // class OranE2NodeTermiantorLteEnb
 
 } // namespace ns3
 
 #endif /* ORAN_E2_NODE_TERMINATOR_LTE_ENB_H */
-

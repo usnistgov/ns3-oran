@@ -32,14 +32,16 @@
 #ifndef ORAN_REPORT_TRIGGER_LOCATION_CHANGE_H
 #define ORAN_REPORT_TRIGGER_LOCATION_CHANGE_H
 
-#include <string>
+#include "oran-report-trigger.h"
 
+#include <ns3/mobility-model.h>
 #include <ns3/object.h>
 #include <ns3/ptr.h>
 
-#include "oran-report-trigger.h"
+#include <string>
 
-namespace ns3 {
+namespace ns3
+{
 
 class OranReporter;
 
@@ -51,48 +53,49 @@ class OranReporter;
  */
 class OranReportTriggerLocationChange : public OranReportTrigger
 {
-public:
-  /**
-   * Get the TypeId of the OranReportTriggerLocationChange class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReportTriggerLocationChange class.
-   */
-  OranReportTriggerLocationChange (void);
-  /**
-   * Destructor of the OranReportTriggerLocationChange class.
-   */
-  ~OranReportTriggerLocationChange (void) override;
-  /**
-   * Activates this trigger for the given reporter.
-   * \param reporter The reporter to link to.
-   */
-  void Activate (Ptr<OranReporter> reporter) override;
-  /**
-   * Deactivates this trigger and unlinks it from the current reporter.
-   */
-  void Deactivate (void) override;
-protected:
-  /**
-   * Dispose of the Report.
-   */
-  void DoDispose (void) override;
-  /**
-   * The callback for receiving the HandoverEndOk event from an LTE UE.
-   * \param mobility
-   */
-  virtual void CourseChangedSink (Ptr<const MobilityModel> mobility);
-private:
-  /**
-   * Disconnects the callback from the LTE UE.
-   */
-  void DisconnectSink (void);
+  public:
+    /**
+     * Get the TypeId of the OranReportTriggerLocationChange class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReportTriggerLocationChange class.
+     */
+    OranReportTriggerLocationChange(void);
+    /**
+     * Destructor of the OranReportTriggerLocationChange class.
+     */
+    ~OranReportTriggerLocationChange(void) override;
+    /**
+     * Activates this trigger for the given reporter.
+     * \param reporter The reporter to link to.
+     */
+    void Activate(Ptr<OranReporter> reporter) override;
+    /**
+     * Deactivates this trigger and unlinks it from the current reporter.
+     */
+    void Deactivate(void) override;
+
+  protected:
+    /**
+     * Dispose of the Report.
+     */
+    void DoDispose(void) override;
+    /**
+     * The callback for receiving the HandoverEndOk event from an LTE UE.
+     * \param mobility
+     */
+    virtual void CourseChangedSink(Ptr<const MobilityModel> mobility);
+
+  private:
+    /**
+     * Disconnects the callback from the LTE UE.
+     */
+    void DisconnectSink(void);
 }; // class OranReportTriggerLocationChange
 
 } // namespace ns3
 
 #endif /* ORAN_REPORT_TRIGGER_LOCATION_CHANGE_H */
-

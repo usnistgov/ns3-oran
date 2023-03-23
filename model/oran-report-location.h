@@ -32,14 +32,15 @@
 #ifndef ORAN_REPORT_LOCATION_H
 #define ORAN_REPORT_LOCATION_H
 
-#include <string>
+#include "oran-report.h"
 
 #include <ns3/object.h>
 #include <ns3/vector.h>
 
-#include "oran-report.h"
+#include <string>
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -48,42 +49,43 @@ namespace ns3 {
  */
 class OranReportLocation : public OranReport
 {
-public:
-  /**
-   * Get the TypeId of the OranReportLocation class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReportLocation class.
-   */
-  OranReportLocation (void);
-  /**
-   * Destructor of the OranReportLocation class.
-   */
-  ~OranReportLocation (void) override;
-  /**
-   * Get a string representation of this Report
-   *
-   * \return A string representation of this Report.
-   */
-  std::string ToString (void) const override;
-private:
-  /**
-   * The reported location
-   */
-  Vector m_location; 
-public:
-  /**
-   * Get the reported location.
-   * 
-   * \return The reported location.
-   */
-  Vector GetLocation (void) const;
+  public:
+    /**
+     * Get the TypeId of the OranReportLocation class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReportLocation class.
+     */
+    OranReportLocation(void);
+    /**
+     * Destructor of the OranReportLocation class.
+     */
+    ~OranReportLocation(void) override;
+    /**
+     * Get a string representation of this Report
+     *
+     * \return A string representation of this Report.
+     */
+    std::string ToString(void) const override;
+
+  private:
+    /**
+     * The reported location
+     */
+    Vector m_location;
+
+  public:
+    /**
+     * Get the reported location.
+     *
+     * \return The reported location.
+     */
+    Vector GetLocation(void) const;
 }; // class OranReportLocation
 
 } // namespace ns3
 
 #endif /* ORAN_REPORT_LOCATION_H */
-

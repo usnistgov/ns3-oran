@@ -29,38 +29,36 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
+#include "oran-query-trigger.h"
 
 #include "oran-report.h"
 
-#include "oran-query-trigger.h"
+#include <ns3/log.h>
 
-namespace ns3 {
+namespace ns3
+{
 
-NS_LOG_COMPONENT_DEFINE ("OranQueryTrigger");
+NS_LOG_COMPONENT_DEFINE("OranQueryTrigger");
 
-NS_OBJECT_ENSURE_REGISTERED (OranQueryTrigger);
+NS_OBJECT_ENSURE_REGISTERED(OranQueryTrigger);
 
 TypeId
-OranQueryTrigger::GetTypeId (void)
+OranQueryTrigger::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranQueryTrigger")
-    .SetParent<Object> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranQueryTrigger").SetParent<Object>();
 
- return tid;
+    return tid;
 }
 
-OranQueryTrigger::OranQueryTrigger (void)
-  : Object ()
+OranQueryTrigger::OranQueryTrigger(void)
+    : Object()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranQueryTrigger::~OranQueryTrigger (void)
+OranQueryTrigger::~OranQueryTrigger(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 } // namespace ns3
-

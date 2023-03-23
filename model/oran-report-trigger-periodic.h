@@ -32,14 +32,17 @@
 #ifndef ORAN_REPORT_TRIGGER_PERIODIC_H
 #define ORAN_REPORT_TRIGGER_PERIODIC_H
 
-#include <string>
-
-#include <ns3/object.h>
-#include <ns3/ptr.h>
-
 #include "oran-report-trigger.h"
 
-namespace ns3 {
+#include <ns3/event-id.h>
+#include <ns3/object.h>
+#include <ns3/ptr.h>
+#include <ns3/random-variable-stream.h>
+
+#include <string>
+
+namespace ns3
+{
 
 class OranReporter;
 
@@ -50,60 +53,61 @@ class OranReporter;
  */
 class OranReportTriggerPeriodic : public OranReportTrigger
 {
-public:
-  /**
-   * Get the TypeId of the OranReportTriggerPeriodic class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReportTriggerPeriodic class.
-   */
-  OranReportTriggerPeriodic (void);
-  /**
-   * Destructor of the OranReportTriggerPeriodic class.
-   */
-  ~OranReportTriggerPeriodic (void) override;
-  /**
-   * Activates this trigger for the given reporter.
-   * \param reporter The reporter to link to.
-   */
-  void Activate (Ptr<OranReporter> reporter) override;
-  /**
-   * Deactivates this trigger and unlinks it from the current reporter.
-   */
-  void Deactivate (void) override;
-protected:
-  /**
-   * Dispose of the Report.
-   */
-  void DoDispose (void) override;
-  /**
-   * Triggers a report.
-   */
-  void TriggerReport (void) override;
-  /**
-   * Cancel the next trigger event.
-   */
-  virtual void CancelNextTrigger (void);
-  /**
-   * Schedule the next trigger event.
-   */
-  virtual void ScheduleNextTrigger (void);
-private:
-  /**
-   * The next trigger event.
-   */
-  EventId m_triggerEvent;
-  /**
-   * The random variable used to generate the delay (in seconds) between
-   * triggered reports.
-   */
-  Ptr<RandomVariableStream> m_intervalRv;
+  public:
+    /**
+     * Get the TypeId of the OranReportTriggerPeriodic class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReportTriggerPeriodic class.
+     */
+    OranReportTriggerPeriodic(void);
+    /**
+     * Destructor of the OranReportTriggerPeriodic class.
+     */
+    ~OranReportTriggerPeriodic(void) override;
+    /**
+     * Activates this trigger for the given reporter.
+     * \param reporter The reporter to link to.
+     */
+    void Activate(Ptr<OranReporter> reporter) override;
+    /**
+     * Deactivates this trigger and unlinks it from the current reporter.
+     */
+    void Deactivate(void) override;
+
+  protected:
+    /**
+     * Dispose of the Report.
+     */
+    void DoDispose(void) override;
+    /**
+     * Triggers a report.
+     */
+    void TriggerReport(void) override;
+    /**
+     * Cancel the next trigger event.
+     */
+    virtual void CancelNextTrigger(void);
+    /**
+     * Schedule the next trigger event.
+     */
+    virtual void ScheduleNextTrigger(void);
+
+  private:
+    /**
+     * The next trigger event.
+     */
+    EventId m_triggerEvent;
+    /**
+     * The random variable used to generate the delay (in seconds) between
+     * triggered reports.
+     */
+    Ptr<RandomVariableStream> m_intervalRv;
 }; // class OranReportTriggerPeriodic
 
 } // namespace ns3
 
 #endif /* ORAN_REPORT_TRIGGER_PERIODIC_H */
-

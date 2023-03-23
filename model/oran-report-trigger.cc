@@ -29,114 +29,113 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/pointer.h>
-#include <ns3/string.h>
-#include <ns3/simulator.h>
-#include <ns3/nstime.h>
-#include <ns3/boolean.h>
+#include "oran-report-trigger.h"
 
 #include "oran-reporter.h"
 
-#include "oran-report-trigger.h"
+#include <ns3/boolean.h>
+#include <ns3/log.h>
+#include <ns3/nstime.h>
+#include <ns3/pointer.h>
+#include <ns3/simulator.h>
+#include <ns3/string.h>
 
-namespace ns3 {
+namespace ns3
+{
 
-NS_LOG_COMPONENT_DEFINE ("OranReportTrigger");
+NS_LOG_COMPONENT_DEFINE("OranReportTrigger");
 
-NS_OBJECT_ENSURE_REGISTERED (OranReportTrigger);
+NS_OBJECT_ENSURE_REGISTERED(OranReportTrigger);
 
 TypeId
-OranReportTrigger::GetTypeId (void)
+OranReportTrigger::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReportTrigger")
-    .SetParent<Object> ()
-    .AddAttribute ("Reporter",
-                   "The reporter.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranReportTrigger::m_reporter),
-                   MakePointerChecker<OranReporter> ())
-    .AddAttribute ("InitialReport",
-                   "Indicates if an initial report should be generated upon registration.",
-                   BooleanValue (false),
-                   MakeBooleanAccessor (&OranReportTrigger::m_initialReport),
-                   MakeBooleanChecker ())
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranReportTrigger")
+            .SetParent<Object>()
+            .AddAttribute("Reporter",
+                          "The reporter.",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranReportTrigger::m_reporter),
+                          MakePointerChecker<OranReporter>())
+            .AddAttribute("InitialReport",
+                          "Indicates if an initial report should be generated upon registration.",
+                          BooleanValue(false),
+                          MakeBooleanAccessor(&OranReportTrigger::m_initialReport),
+                          MakeBooleanChecker());
 
- return tid;
+    return tid;
 }
 
-OranReportTrigger::OranReportTrigger (void)
-  : Object (),
-    m_active (false)
+OranReportTrigger::OranReportTrigger(void)
+    : Object(),
+      m_active(false)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReportTrigger::~OranReportTrigger (void)
+OranReportTrigger::~OranReportTrigger(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranReportTrigger::Activate (Ptr<OranReporter> reporter)
+OranReportTrigger::Activate(Ptr<OranReporter> reporter)
 {
-  NS_LOG_FUNCTION (this << reporter);
+    NS_LOG_FUNCTION(this << reporter);
 
-  if (! m_active)
+    if (!m_active)
     {
-      NS_ABORT_MSG_IF (reporter == nullptr, "Attempting to link to a NULL reporter.");
+        NS_ABORT_MSG_IF(reporter == nullptr, "Attempting to link to a NULL reporter.");
 
-      m_active = true;
-      m_reporter = reporter;
-      m_reporter->SetAttribute ("Trigger", PointerValue (GetObject<OranReportTrigger> ()));
+        m_active = true;
+        m_reporter = reporter;
+        m_reporter->SetAttribute("Trigger", PointerValue(GetObject<OranReportTrigger>()));
     }
 }
 
 void
-OranReportTrigger::Deactivate (void)
+OranReportTrigger::Deactivate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_reporter == nullptr, "Attempting to unlink from a NULL reporter.");
+        NS_ABORT_MSG_IF(m_reporter == nullptr, "Attempting to unlink from a NULL reporter.");
 
-      m_reporter->SetAttribute ("Trigger", PointerValue (nullptr));
-      m_reporter = nullptr;
-      m_active = false;
-    }
-      
-}
-
-void
-OranReportTrigger::NotifyRegistrationComplete (void)
-{
-  if (m_active && m_initialReport)
-    {
-      TriggerReport ();
+        m_reporter->SetAttribute("Trigger", PointerValue(nullptr));
+        m_reporter = nullptr;
+        m_active = false;
     }
 }
 
 void
-OranReportTrigger::DoDispose (void)
+OranReportTrigger::NotifyRegistrationComplete(void)
 {
-  NS_LOG_FUNCTION (this);
-
-  m_reporter = nullptr;
-
-  Object::DoDispose ();
+    if (m_active && m_initialReport)
+    {
+        TriggerReport();
+    }
 }
 
 void
-OranReportTrigger::TriggerReport (void)
+OranReportTrigger::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
-  
-  NS_ABORT_MSG_IF (m_reporter == nullptr, "Attempting to trigger a report with a NULL reporter.");
+    NS_LOG_FUNCTION(this);
 
-  m_reporter->PerformReport ();
+    m_reporter = nullptr;
+
+    Object::DoDispose();
+}
+
+void
+OranReportTrigger::TriggerReport(void)
+{
+    NS_LOG_FUNCTION(this);
+
+    NS_ABORT_MSG_IF(m_reporter == nullptr, "Attempting to trigger a report with a NULL reporter.");
+
+    m_reporter->PerformReport();
 }
 
 } // namespace ns3
-

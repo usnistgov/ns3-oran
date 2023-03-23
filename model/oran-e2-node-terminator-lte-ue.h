@@ -32,11 +32,12 @@
 #ifndef ORAN_E2_NODE_TERMINATOR_LTE_UE_H
 #define ORAN_E2_NODE_TERMINATOR_LTE_UE_H
 
-#include <ns3/lte-ue-net-device.h>
-
 #include "oran-e2-node-terminator.h"
 
-namespace ns3 {
+#include <ns3/lte-ue-net-device.h>
+
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -45,43 +46,42 @@ namespace ns3 {
  */
 class OranE2NodeTerminatorLteUe : public OranE2NodeTerminator
 {
-public:
-  /**
-   * Get the TypeId of the OranE2NodeTerminatorLteUe class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranE2NodeTerminatorLteUe class.
-   */
-  OranE2NodeTerminatorLteUe (void);
-  /**
-   * Destructor of the OranE2NodeTerminatorLteUe class.
-   */
-  ~OranE2NodeTerminatorLteUe (void) override;
-  /**
-   * Get the E2 Node Type. For this Terminator, this method always returns
-   * the LTE UE node type
-   *
-   * \return the E2 Node Type.
-   */
-  OranNearRtRic::NodeType GetNodeType (void) const override;
-  /**
-   * Receive a Command. All Commands are silently ignored.
-   *
-   * \param command The received command.
-   */
-  void ReceiveCommand (Ptr<OranCommand> command) override;
-  /**
-   * Get the NetDevice of the LTE UE.
-   *
-   * \return The net device.
-   */
-  virtual Ptr<LteUeNetDevice> GetNetDevice (void) const;
+  public:
+    /**
+     * Get the TypeId of the OranE2NodeTerminatorLteUe class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranE2NodeTerminatorLteUe class.
+     */
+    OranE2NodeTerminatorLteUe(void);
+    /**
+     * Destructor of the OranE2NodeTerminatorLteUe class.
+     */
+    ~OranE2NodeTerminatorLteUe(void) override;
+    /**
+     * Get the E2 Node Type. For this Terminator, this method always returns
+     * the LTE UE node type
+     *
+     * \return the E2 Node Type.
+     */
+    OranNearRtRic::NodeType GetNodeType(void) const override;
+    /**
+     * Receive a Command. All Commands are silently ignored.
+     *
+     * \param command The received command.
+     */
+    void ReceiveCommand(Ptr<OranCommand> command) override;
+    /**
+     * Get the NetDevice of the LTE UE.
+     *
+     * \return The net device.
+     */
+    virtual Ptr<LteUeNetDevice> GetNetDevice(void) const;
 }; // class OranE2NodeTerminatorLteUe
 
 } // namespace ns3
 
 #endif /* ORAN_E2_NODE_TERMINATOR_LTE_UE_H */
-

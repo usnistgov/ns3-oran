@@ -29,73 +29,71 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-report.h"
+
 #include <ns3/log.h>
 #include <ns3/uinteger.h>
 
-#include "oran-report.h"
+namespace ns3
+{
 
-namespace ns3 {
+NS_LOG_COMPONENT_DEFINE("OranReport");
 
-NS_LOG_COMPONENT_DEFINE ("OranReport");
-
-
-NS_OBJECT_ENSURE_REGISTERED (OranReport);
+NS_OBJECT_ENSURE_REGISTERED(OranReport);
 
 TypeId
-OranReport::GetTypeId (void)
+OranReport::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReport")
-    .SetParent<Object> ()
-    .AddConstructor<OranReport> ()
-    .AddAttribute ("ReporterE2NodeId",
-                   "The E2 Node ID of the reporter",
-                   UintegerValue (0),
-                   MakeUintegerAccessor (&OranReport::m_reporterE2NodeId),
-                   MakeUintegerChecker<uint64_t> ())
-    .AddAttribute ("Time",
-                   "The Time at which the report was generated",
-                   TimeValue (),
-                   MakeTimeAccessor (&OranReport::m_time),
-                   MakeTimeChecker ())
-  ;
+    static TypeId tid = TypeId("ns3::OranReport")
+                            .SetParent<Object>()
+                            .AddConstructor<OranReport>()
+                            .AddAttribute("ReporterE2NodeId",
+                                          "The E2 Node ID of the reporter",
+                                          UintegerValue(0),
+                                          MakeUintegerAccessor(&OranReport::m_reporterE2NodeId),
+                                          MakeUintegerChecker<uint64_t>())
+                            .AddAttribute("Time",
+                                          "The Time at which the report was generated",
+                                          TimeValue(),
+                                          MakeTimeAccessor(&OranReport::m_time),
+                                          MakeTimeChecker());
 
- return tid;
+    return tid;
 }
 
-OranReport::OranReport (void)
-  : Object ()
+OranReport::OranReport(void)
+    : Object()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReport::~OranReport (void)
+OranReport::~OranReport(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranReport::ToString (void) const
+OranReport::ToString(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return "Parent OranReport. Should not be used.";
+    return "Parent OranReport. Should not be used.";
 }
 
 uint64_t
-OranReport::GetReporterE2NodeId (void) const
+OranReport::GetReporterE2NodeId(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_reporterE2NodeId;
+    return m_reporterE2NodeId;
 }
 
 Time
-OranReport::GetTime (void) const
+OranReport::GetTime(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_time;
+    return m_time;
 }
 
 } // namespace ns3
-

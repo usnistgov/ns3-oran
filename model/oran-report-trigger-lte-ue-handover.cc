@@ -29,140 +29,146 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/pointer.h>
-#include <ns3/string.h>
-#include <ns3/simulator.h>
-#include <ns3/nstime.h>
-#include <ns3/random-variable-stream.h>
-#include <ns3/lte-ue-net-device.h>
-#include <ns3/lte-ue-rrc.h>
-
-#include "oran-reporter.h"
 #include "oran-report-trigger-lte-ue-handover.h"
 
-namespace ns3 {
+#include "oran-reporter.h"
 
-NS_LOG_COMPONENT_DEFINE ("OranReportTriggerLteUeHandover");
+#include <ns3/log.h>
+#include <ns3/lte-ue-net-device.h>
+#include <ns3/lte-ue-rrc.h>
+#include <ns3/nstime.h>
+#include <ns3/pointer.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/simulator.h>
+#include <ns3/string.h>
 
-NS_OBJECT_ENSURE_REGISTERED (OranReportTriggerLteUeHandover);
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranReportTriggerLteUeHandover");
+
+NS_OBJECT_ENSURE_REGISTERED(OranReportTriggerLteUeHandover);
 
 TypeId
-OranReportTriggerLteUeHandover::GetTypeId (void)
+OranReportTriggerLteUeHandover::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReportTriggerLteUeHandover")
-    .SetParent<OranReportTrigger> ()
-    .AddConstructor<OranReportTriggerLteUeHandover> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranReportTriggerLteUeHandover")
+                            .SetParent<OranReportTrigger>()
+                            .AddConstructor<OranReportTriggerLteUeHandover>();
 
- return tid;
+    return tid;
 }
 
-OranReportTriggerLteUeHandover::OranReportTriggerLteUeHandover (void)
-  : OranReportTrigger ()
+OranReportTriggerLteUeHandover::OranReportTriggerLteUeHandover(void)
+    : OranReportTrigger()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReportTriggerLteUeHandover::~OranReportTriggerLteUeHandover (void)
+OranReportTriggerLteUeHandover::~OranReportTriggerLteUeHandover(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranReportTriggerLteUeHandover::Activate (Ptr<OranReporter> reporter)
+OranReportTriggerLteUeHandover::Activate(Ptr<OranReporter> reporter)
 {
-  NS_LOG_FUNCTION (this << reporter);
+    NS_LOG_FUNCTION(this << reporter);
 
-  if (! m_active)
+    if (!m_active)
     {
-      Ptr<LteUeNetDevice> lteUeNetDev = nullptr;
-      Ptr<Node> node = reporter->GetTerminator ()->GetNode ();
+        Ptr<LteUeNetDevice> lteUeNetDev = nullptr;
+        Ptr<Node> node = reporter->GetTerminator()->GetNode();
 
-      for (uint32_t idx = 0; lteUeNetDev == nullptr && idx < node->GetNDevices (); idx++)
+        for (uint32_t idx = 0; lteUeNetDev == nullptr && idx < node->GetNDevices(); idx++)
         {
-          lteUeNetDev = node->GetDevice (idx)->GetObject<LteUeNetDevice> ();
+            lteUeNetDev = node->GetDevice(idx)->GetObject<LteUeNetDevice>();
         }
 
-      NS_ABORT_MSG_IF (lteUeNetDev == nullptr , "Unable to find appropriate network device");
+        NS_ABORT_MSG_IF(lteUeNetDev == nullptr, "Unable to find appropriate network device");
 
-      lteUeNetDev->GetRrc ()->TraceConnectWithoutContext ("HandoverEndOk",
-          MakeCallback (&OranReportTriggerLteUeHandover::HandoverCompleteSink, this));
+        lteUeNetDev->GetRrc()->TraceConnectWithoutContext(
+            "HandoverEndOk",
+            MakeCallback(&OranReportTriggerLteUeHandover::HandoverCompleteSink, this));
 
-      lteUeNetDev->GetRrc ()->TraceConnectWithoutContext ("ConnectionEstablished",
-          MakeCallback (&OranReportTriggerLteUeHandover::ConnectionEstablishedSink, this));
+        lteUeNetDev->GetRrc()->TraceConnectWithoutContext(
+            "ConnectionEstablished",
+            MakeCallback(&OranReportTriggerLteUeHandover::ConnectionEstablishedSink, this));
     }
 
-  OranReportTrigger::Activate (reporter);
+    OranReportTrigger::Activate(reporter);
 }
 
 void
-OranReportTriggerLteUeHandover::Deactivate (void)
+OranReportTriggerLteUeHandover::Deactivate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      DisconnectSink ();
+        DisconnectSink();
     }
 
-  OranReportTrigger::Deactivate ();
+    OranReportTrigger::Deactivate();
 }
 
 void
-OranReportTriggerLteUeHandover::DoDispose (void)
+OranReportTriggerLteUeHandover::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      DisconnectSink ();
+        DisconnectSink();
     }
 
-  OranReportTrigger::DoDispose ();
+    OranReportTrigger::DoDispose();
 }
 
 void
-OranReportTriggerLteUeHandover::HandoverCompleteSink (uint64_t imsi, uint16_t cellId, uint16_t rnti)
+OranReportTriggerLteUeHandover::HandoverCompleteSink(uint64_t imsi, uint16_t cellId, uint16_t rnti)
 {
-  NS_LOG_FUNCTION (this << imsi << (uint32_t)cellId << (uint32_t)rnti);
+    NS_LOG_FUNCTION(this << imsi << (uint32_t)cellId << (uint32_t)rnti);
 
-  NS_LOG_LOGIC ("Handover triggering report");
+    NS_LOG_LOGIC("Handover triggering report");
 
-  TriggerReport ();
+    TriggerReport();
 }
 
 void
-OranReportTriggerLteUeHandover::ConnectionEstablishedSink (uint64_t imsi, uint16_t cellId, uint16_t rnti)
+OranReportTriggerLteUeHandover::ConnectionEstablishedSink(uint64_t imsi,
+                                                          uint16_t cellId,
+                                                          uint16_t rnti)
 {
-  NS_LOG_FUNCTION (this << imsi << (uint32_t)cellId << (uint32_t)rnti);
+    NS_LOG_FUNCTION(this << imsi << (uint32_t)cellId << (uint32_t)rnti);
 
-  NS_LOG_LOGIC ("Connection established triggering report");
+    NS_LOG_LOGIC("Connection established triggering report");
 
-  TriggerReport ();
+    TriggerReport();
 }
 
 void
-OranReportTriggerLteUeHandover::DisconnectSink (void)
+OranReportTriggerLteUeHandover::DisconnectSink(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  Ptr<LteUeNetDevice> lteUeNetDev = nullptr;
-  Ptr<Node> node = m_reporter->GetTerminator ()->GetNode ();
+    Ptr<LteUeNetDevice> lteUeNetDev = nullptr;
+    Ptr<Node> node = m_reporter->GetTerminator()->GetNode();
 
-  for (uint32_t idx = 0; lteUeNetDev == nullptr && idx < node->GetNDevices (); idx++)
+    for (uint32_t idx = 0; lteUeNetDev == nullptr && idx < node->GetNDevices(); idx++)
     {
-      lteUeNetDev = node->GetDevice (idx)->GetObject<LteUeNetDevice> ();
+        lteUeNetDev = node->GetDevice(idx)->GetObject<LteUeNetDevice>();
     }
 
-  NS_ABORT_MSG_IF (lteUeNetDev == nullptr , "Unable to find appropriate network device");
+    NS_ABORT_MSG_IF(lteUeNetDev == nullptr, "Unable to find appropriate network device");
 
-  lteUeNetDev->GetRrc ()->TraceDisconnectWithoutContext ("HandoverEndOk",
-      MakeCallback (&OranReportTriggerLteUeHandover::HandoverCompleteSink, this));
+    lteUeNetDev->GetRrc()->TraceDisconnectWithoutContext(
+        "HandoverEndOk",
+        MakeCallback(&OranReportTriggerLteUeHandover::HandoverCompleteSink, this));
 
-  lteUeNetDev->GetRrc ()->TraceDisconnectWithoutContext ("ConnectionEstablished",
-      MakeCallback (&OranReportTriggerLteUeHandover::ConnectionEstablishedSink, this));
+    lteUeNetDev->GetRrc()->TraceDisconnectWithoutContext(
+        "ConnectionEstablished",
+        MakeCallback(&OranReportTriggerLteUeHandover::ConnectionEstablishedSink, this));
 }
 
 } // namespace ns3
-

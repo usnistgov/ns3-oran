@@ -29,105 +29,107 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
+#include "oran-cmm-handover.h"
+
+#include "oran-command.h"
+#include "oran-data-repository.h"
+#include "oran-near-rt-ric.h"
+
 #include <ns3/abort.h>
+#include <ns3/log.h>
 #include <ns3/simulator.h>
 
-#include "oran-cmm-handover.h"
-#include "oran-command.h"
-#include "oran-near-rt-ric.h"
-#include "oran-data-repository.h"
+namespace ns3
+{
 
-namespace ns3 {
+NS_LOG_COMPONENT_DEFINE("OranCmmHandover");
 
-NS_LOG_COMPONENT_DEFINE ("OranCmmHandover");
-
-NS_OBJECT_ENSURE_REGISTERED (OranCmmHandover);
+NS_OBJECT_ENSURE_REGISTERED(OranCmmHandover);
 
 TypeId
-OranCmmHandover::GetTypeId (void)
+OranCmmHandover::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranCmmHandover")
-    .SetParent<OranCmm> ()
-    .AddConstructor<OranCmmHandover> ()
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranCmmHandover").SetParent<OranCmm>().AddConstructor<OranCmmHandover>();
 
-  return tid;
+    return tid;
 }
 
-OranCmmHandover::OranCmmHandover (void)
-  : OranCmm ()
+OranCmmHandover::OranCmmHandover(void)
+    : OranCmm()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_name = "CmmHandover";
+    m_name = "CmmHandover";
 }
 
-OranCmmHandover::~OranCmmHandover (void)
+OranCmmHandover::~OranCmmHandover(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmmHandover::DoDispose (void)
+OranCmmHandover::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_nearRtRic = nullptr;
+    m_nearRtRic = nullptr;
 
-  Object::DoDispose ();
+    Object::DoDispose();
 }
 
-std::vector<Ptr<OranCommand> >
-OranCmmHandover::Filter (std::map<std::tuple<std::string, bool>, std::vector<Ptr<OranCommand> > > inputCommands)
+std::vector<Ptr<OranCommand>>
+OranCmmHandover::Filter(
+    std::map<std::tuple<std::string, bool>, std::vector<Ptr<OranCommand>>> inputCommands)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  // Do nothing and return a vector with all the commands
-  // As we do nothing, there is no need to check if the CMM
-  // is active or not.
-  // We check if the pointer to the Near-RT RIC has been set, 
-  // though, as not having that one should be a configuration 
-  // problem (and may be a symptom of other issues)
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to run Conflict Mitigation Module with NULL Near-RT RIC");
+    // Do nothing and return a vector with all the commands
+    // As we do nothing, there is no need to check if the CMM
+    // is active or not.
+    // We check if the pointer to the Near-RT RIC has been set,
+    // though, as not having that one should be a configuration
+    // problem (and may be a symptom of other issues)
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr,
+                    "Attempting to run Conflict Mitigation Module with NULL Near-RT RIC");
 
-  std::vector<Ptr<OranCommand> > commands;
-  for (auto commandSet : inputCommands) 
+    std::vector<Ptr<OranCommand>> commands;
+    for (auto commandSet : inputCommands)
     {
-      for (auto cmd : commandSet.second)
+        for (auto cmd : commandSet.second)
         {
-          Ptr<OranCommandLte2LteHandover> handoverCmd = cmd->GetObject<OranCommandLte2LteHandover> ();
-          if (handoverCmd != nullptr)
+            Ptr<OranCommandLte2LteHandover> handoverCmd =
+                cmd->GetObject<OranCommandLte2LteHandover>();
+            if (handoverCmd != nullptr)
             {
-              bool found = false;
-              for (auto pendingCmd : m_pendingCmds)
+                bool found = false;
+                for (auto pendingCmd : m_pendingCmds)
                 {
-                  if (pendingCmd->GetTargetE2NodeId () == handoverCmd->GetTargetE2NodeId ()
-                      && pendingCmd->GetTargetCellId () == handoverCmd->GetTargetCellId ()
-                      && pendingCmd->GetTargetRnti () == handoverCmd->GetTargetRnti ())
+                    if (pendingCmd->GetTargetE2NodeId() == handoverCmd->GetTargetE2NodeId() &&
+                        pendingCmd->GetTargetCellId() == handoverCmd->GetTargetCellId() &&
+                        pendingCmd->GetTargetRnti() == handoverCmd->GetTargetRnti())
                     {
-                      found = true;
+                        found = true;
                     }
                 }
-              if (!found)
+                if (!found)
                 {
-                  commands.push_back (handoverCmd);
-                  m_pendingCmds.push_back (handoverCmd);
+                    commands.push_back(handoverCmd);
+                    m_pendingCmds.push_back(handoverCmd);
                 }
-              else
+                else
                 {
-                  LogLogicToStorage ("Excluding a pending command: " + cmd->ToString ());
-
+                    LogLogicToStorage("Excluding a pending command: " + cmd->ToString());
                 }
             }
-          else
+            else
             {
-              commands.push_back (cmd);
+                commands.push_back(cmd);
             }
         }
     }
 
-  return commands;
+    return commands;
 }
 
 } // namespace ns3

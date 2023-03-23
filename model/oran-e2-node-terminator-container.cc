@@ -31,65 +31,64 @@
 
 #include "oran-e2-node-terminator-container.h"
 
-namespace ns3 {
+namespace ns3
+{
 
 void
-OranE2NodeTerminatorContainer::Activate (void)
+OranE2NodeTerminatorContainer::Activate(void)
 {
-  for (auto terminator : m_e2NodeTerminators)
+    for (auto terminator : m_e2NodeTerminators)
     {
-      terminator->Activate ();
+        terminator->Activate();
     }
 }
 
 OranE2NodeTerminatorContainer::Iterator
-OranE2NodeTerminatorContainer::Begin (void) const
+OranE2NodeTerminatorContainer::Begin(void) const
 {
-  return m_e2NodeTerminators.begin ();
+    return m_e2NodeTerminators.begin();
 }
 
 void
-OranE2NodeTerminatorContainer::Deactivate (void)
+OranE2NodeTerminatorContainer::Deactivate(void)
 {
-  for (auto terminator : m_e2NodeTerminators)
+    for (auto terminator : m_e2NodeTerminators)
     {
-      terminator->Deactivate ();
+        terminator->Deactivate();
     }
 }
 
 OranE2NodeTerminatorContainer::Iterator
-OranE2NodeTerminatorContainer::End (void) const
+OranE2NodeTerminatorContainer::End(void) const
 {
-  return m_e2NodeTerminators.end ();
+    return m_e2NodeTerminators.end();
 }
 
 uint32_t
-OranE2NodeTerminatorContainer::GetN (void) const
+OranE2NodeTerminatorContainer::GetN(void) const
 {
-  return m_e2NodeTerminators.size ();
+    return m_e2NodeTerminators.size();
 }
 
 Ptr<OranE2NodeTerminator>
-OranE2NodeTerminatorContainer::Get (uint32_t i) const
+OranE2NodeTerminatorContainer::Get(uint32_t i) const
 {
-  return m_e2NodeTerminators[i];
+    return m_e2NodeTerminators[i];
 }
 
 void
-OranE2NodeTerminatorContainer::Add (OranE2NodeTerminatorContainer other)
+OranE2NodeTerminatorContainer::Add(OranE2NodeTerminatorContainer other)
 {
-  for (auto it = other.Begin (); it != other.End (); it++)
+    for (auto it = other.Begin(); it != other.End(); it++)
     {
-      Add (*it);
+        Add(*it);
     }
 }
 
 void
-OranE2NodeTerminatorContainer::Add (Ptr<OranE2NodeTerminator> e2NodeTerminator)
+OranE2NodeTerminatorContainer::Add(Ptr<OranE2NodeTerminator> e2NodeTerminator)
 {
-  m_e2NodeTerminators.push_back (e2NodeTerminator);
+    m_e2NodeTerminators.push_back(e2NodeTerminator);
 }
-
-
 
 } // namespace ns3

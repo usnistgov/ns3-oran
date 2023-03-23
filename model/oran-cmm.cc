@@ -29,117 +29,121 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/simulator.h>
-#include <ns3/log.h>
-#include <ns3/abort.h>
-#include <ns3/pointer.h>
-#include <ns3/boolean.h>
-
 #include "oran-cmm.h"
+
 #include "oran-command.h"
-#include "oran-near-rt-ric.h"
 #include "oran-data-repository.h"
+#include "oran-near-rt-ric.h"
 
-namespace ns3 {
-  
-NS_LOG_COMPONENT_DEFINE ("OranCmm");
+#include <ns3/abort.h>
+#include <ns3/boolean.h>
+#include <ns3/log.h>
+#include <ns3/pointer.h>
+#include <ns3/simulator.h>
 
-NS_OBJECT_ENSURE_REGISTERED (OranCmm);
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranCmm");
+
+NS_OBJECT_ENSURE_REGISTERED(OranCmm);
 
 TypeId
-OranCmm::GetTypeId (void)
+OranCmm::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranCmm")
-    .SetParent<Object> ()
-    .AddAttribute ("NearRtRic", "The near RT RIC.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranCmm::m_nearRtRic),
-                   MakePointerChecker<OranNearRtRic> ())
-    .AddAttribute ("Verbose", 
-                   "Flag to indicate if logic should be logged to the data storage",
-                   BooleanValue (false),
-                   MakeBooleanAccessor (&OranCmm::m_verbose),
-                   MakeBooleanChecker ())
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranCmm")
+            .SetParent<Object>()
+            .AddAttribute("NearRtRic",
+                          "The near RT RIC.",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranCmm::m_nearRtRic),
+                          MakePointerChecker<OranNearRtRic>())
+            .AddAttribute("Verbose",
+                          "Flag to indicate if logic should be logged to the data storage",
+                          BooleanValue(false),
+                          MakeBooleanAccessor(&OranCmm::m_verbose),
+                          MakeBooleanChecker());
 
- return tid;
+    return tid;
 }
 
-OranCmm::OranCmm (void)
-  : m_active (false),
-    m_name ("Cmm")
+OranCmm::OranCmm(void)
+    : m_active(false),
+      m_name("Cmm")
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranCmm::~OranCmm (void)
+OranCmm::~OranCmm(void)
 {
-  NS_LOG_FUNCTION (this);
-}
-
-void
-OranCmm::Activate (void)
-{
-  NS_LOG_FUNCTION (this);
-
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to activate LM with NULL Near-RT RIC");
-
-  m_active = true;
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmm::Deactivate (void)
+OranCmm::Activate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_active = false;
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr, "Attempting to activate LM with NULL Near-RT RIC");
+
+    m_active = true;
+}
+
+void
+OranCmm::Deactivate(void)
+{
+    NS_LOG_FUNCTION(this);
+
+    m_active = false;
 }
 
 bool
-OranCmm::IsActive (void) const
+OranCmm::IsActive(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_active;
+    return m_active;
 }
 
 std::string
-OranCmm::GetName (void) const
+OranCmm::GetName(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_name;
+    return m_name;
 }
 
 void
-OranCmm::SetName (std::string name)
+OranCmm::SetName(const std::string &name)
 {
-  NS_LOG_FUNCTION (this << name);
+    NS_LOG_FUNCTION(this << name);
 
-  m_name = name;
+    m_name = name;
 }
 
 void
-OranCmm::DoDispose (void)
+OranCmm::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_nearRtRic = nullptr;
+    m_nearRtRic = nullptr;
 
-  Object::DoDispose ();
+    Object::DoDispose();
 }
 
 void
-OranCmm::LogLogicToStorage (std::string msg) const
+OranCmm::LogLogicToStorage(const std::string &msg) const
 {
-  NS_LOG_FUNCTION (this << msg);
+    NS_LOG_FUNCTION(this << msg);
 
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to log CMM logic with NULL Near-RT RIC");
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr, "Attempting to log CMM logic with NULL Near-RT RIC");
 
-  if (m_verbose)
+    if (m_verbose)
     {
-      m_nearRtRic->Data ()->LogActionCmm (m_name,
-          std::to_string (Simulator::Now ().GetSeconds ()) + " -- " + m_name + " -- " + msg);
+        m_nearRtRic->Data()->LogActionCmm(m_name,
+                                          std::to_string(Simulator::Now().GetSeconds()) + " -- " +
+                                              m_name + " -- " + msg);
     }
 }
 

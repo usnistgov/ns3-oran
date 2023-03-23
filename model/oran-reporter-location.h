@@ -32,14 +32,15 @@
 #ifndef ORAN_REPORTER_LOCATION_H
 #define ORAN_REPORTER_LOCATION_H
 
-#include <vector>
+#include "oran-report.h"
+#include "oran-reporter.h"
 
 #include <ns3/ptr.h>
 
-#include "oran-reporter.h"
-#include "oran-report.h"
+#include <vector>
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -48,31 +49,31 @@ namespace ns3 {
  */
 class OranReporterLocation : public OranReporter
 {
-public:
-  /**
-   * Get the TypeId of the OranReporterLocation class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReporterLocation class.
-   */
-  OranReporterLocation (void);
-  /**
-   * Destructor of the OranReporterLocation class.
-   */
-  ~OranReporterLocation (void) override;
-protected:
-  /**
-   * Capture the position of the node and instantiate an OranReportLocation.
-   *
-   * \return The generated Report.
-   */
-  std::vector<Ptr<OranReport> > GenerateReports (void) override;
+  public:
+    /**
+     * Get the TypeId of the OranReporterLocation class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReporterLocation class.
+     */
+    OranReporterLocation(void);
+    /**
+     * Destructor of the OranReporterLocation class.
+     */
+    ~OranReporterLocation(void) override;
+
+  protected:
+    /**
+     * Capture the position of the node and instantiate an OranReportLocation.
+     *
+     * \return The generated Report.
+     */
+    std::vector<Ptr<OranReport>> GenerateReports(void) override;
 }; // class OranReporterLocation
 
 } // namespace ns3
 
 #endif /* ORAN_REPORTER_LOCATION_H */
-

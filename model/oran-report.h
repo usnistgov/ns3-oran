@@ -32,11 +32,13 @@
 #ifndef ORAN_REPORT_H
 #define ORAN_REPORT_H
 
-#include <ns3/object.h>
 #include <ns3/nstime.h>
+#include <ns3/object.h>
+
 #include <string>
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -49,51 +51,51 @@ namespace ns3 {
  */
 class OranReport : public Object
 {
-public:
-  /**
-   * Get the TypeId of the OranReport class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReport class.
-   */
-  OranReport (void);
-  /**
-   * Destructor of the OranReport class.
-   */
-  ~OranReport (void) override;
-  /**
-   * Get a string representation of this Report.
-   *
-   * \return A string representation of this Report.
-   */
-  virtual std::string ToString (void) const;
-  /**
-   * Get the E2 Node ID of the reporter.
-   *
-   * \return The E2 Node ID of the reporter.
-   */
-  uint64_t GetReporterE2NodeId (void) const;
-  /**
-   * Get the Time at which the Report was generated.
-   *
-   * \return The Time at which the Report was generated.
-   */
-  Time GetTime (void) const;
-private:
-  /**
-   * E2 Node ID of the Reporter.
-   */
-  uint64_t m_reporterE2NodeId;
-  /**
-   * Time at which the Report was generated.
-   */
-  Time m_time;
+  public:
+    /**
+     * Get the TypeId of the OranReport class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReport class.
+     */
+    OranReport(void);
+    /**
+     * Destructor of the OranReport class.
+     */
+    ~OranReport(void) override;
+    /**
+     * Get a string representation of this Report.
+     *
+     * \return A string representation of this Report.
+     */
+    virtual std::string ToString(void) const;
+    /**
+     * Get the E2 Node ID of the reporter.
+     *
+     * \return The E2 Node ID of the reporter.
+     */
+    uint64_t GetReporterE2NodeId(void) const;
+    /**
+     * Get the Time at which the Report was generated.
+     *
+     * \return The Time at which the Report was generated.
+     */
+    Time GetTime(void) const;
+
+  private:
+    /**
+     * E2 Node ID of the Reporter.
+     */
+    uint64_t m_reporterE2NodeId;
+    /**
+     * Time at which the Report was generated.
+     */
+    Time m_time;
 }; // class OranReport
 
 } // namespace ns3
 
 #endif /* ORAN_REPORT_H */
-

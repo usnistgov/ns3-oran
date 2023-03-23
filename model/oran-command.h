@@ -33,55 +33,57 @@
 #define ORAN_COMMAND_H
 
 #include <ns3/object.h>
+
 #include <string>
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup oran
  *
  * Base class of a Command. This class provides the implementation of
  * the GetTargetE2NodeId method for all the Commands. This base class can
- * be instantiated, but the Command issued lacks any meaning and will be 
+ * be instantiated, but the Command issued lacks any meaning and will be
  * silently ignored by the E2 Node Terminators.
  */
 class OranCommand : public Object
 {
-public:
-  /**
-   * Gets the TypeId of the OranCommand class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Creates an instance of the OranCommand class.
-   */
-  OranCommand (void);
-  /**
-   * The destructor of the OranCommand class.
-   */
-  ~OranCommand (void) override;
-  /**
-   * Get a string representation of this command.
-   *
-   * \return A string representation of this command.
-   */
-  virtual std::string ToString (void) const;
-  /**
-   * Get the target E2 Node ID.
-   *
-   * \return The target E2 Node Id.
-   */
-  uint64_t GetTargetE2NodeId (void) const;
-private:
-  /**
-   * The target E2 Node Id
-   */
-  uint64_t m_targetE2NodeId;
+  public:
+    /**
+     * Gets the TypeId of the OranCommand class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Creates an instance of the OranCommand class.
+     */
+    OranCommand(void);
+    /**
+     * The destructor of the OranCommand class.
+     */
+    ~OranCommand(void) override;
+    /**
+     * Get a string representation of this command.
+     *
+     * \return A string representation of this command.
+     */
+    virtual std::string ToString(void) const;
+    /**
+     * Get the target E2 Node ID.
+     *
+     * \return The target E2 Node Id.
+     */
+    uint64_t GetTargetE2NodeId(void) const;
+
+  private:
+    /**
+     * The target E2 Node Id
+     */
+    uint64_t m_targetE2NodeId;
 }; // class OranCommand
 
 } // namespace ns3
 
 #endif /* ORAN_COMMAND_H */
-

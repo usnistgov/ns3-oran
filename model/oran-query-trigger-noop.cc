@@ -29,45 +29,44 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-
 #include "oran-query-trigger-noop.h"
 
-namespace ns3 {
+#include <ns3/log.h>
 
-NS_LOG_COMPONENT_DEFINE ("OranQueryTriggerNoop");
+namespace ns3
+{
 
-NS_OBJECT_ENSURE_REGISTERED (OranQueryTriggerNoop);
+NS_LOG_COMPONENT_DEFINE("OranQueryTriggerNoop");
+
+NS_OBJECT_ENSURE_REGISTERED(OranQueryTriggerNoop);
 
 TypeId
-OranQueryTriggerNoop::GetTypeId (void)
+OranQueryTriggerNoop::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranQueryTriggerNoop")
-    .SetParent<OranQueryTrigger> ()
-    .AddConstructor<OranQueryTriggerNoop> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranQueryTriggerNoop")
+                            .SetParent<OranQueryTrigger>()
+                            .AddConstructor<OranQueryTriggerNoop>();
 
- return tid;
+    return tid;
 }
 
-OranQueryTriggerNoop::OranQueryTriggerNoop (void)
-  : OranQueryTrigger ()
+OranQueryTriggerNoop::OranQueryTriggerNoop(void)
+    : OranQueryTrigger()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranQueryTriggerNoop::~OranQueryTriggerNoop (void)
+OranQueryTriggerNoop::~OranQueryTriggerNoop(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 bool
-OranQueryTriggerNoop::QueryLms (Ptr<OranReport> report)
+OranQueryTriggerNoop::QueryLms(Ptr<OranReport> report)
 {
-  NS_LOG_FUNCTION (this << report);
+    NS_LOG_FUNCTION(this << report);
 
-  return false;
+    return false;
 }
 
 } // namespace ns3
-

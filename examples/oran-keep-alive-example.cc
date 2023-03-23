@@ -35,7 +35,7 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("OranKeepAliveExample");
+NS_LOG_COMPONENT_DEFINE("OranKeepAliveExample");
 
 /**
  * Example to show how the Keep-Alive feature of the ORAN models works.
@@ -45,75 +45,84 @@ NS_LOG_COMPONENT_DEFINE ("OranKeepAliveExample");
  *
  * We can see the effects on the Database (multiple location entries will
  * be missing), and activating the WARN log in the OranE2NodeTerminator,
- * which will report each registration interval that is greater than the 
+ * which will report each registration interval that is greater than the
  * RIC's threshold
  */
 
-int main (int argc, char *argv[])
+int
+main(int argc, char* argv[])
 {
-  uint16_t numberOfNodes = 1;
-  Time simTime = Seconds (105);
-  bool verbose = false;
-  std::string dbFileName = "oran-repository.db";
+    uint16_t numberOfNodes = 1;
+    Time simTime = Seconds(105);
+    bool verbose = false;
+    std::string dbFileName = "oran-repository.db";
 
-  // Command line arguments
-  CommandLine cmd (__FILE__);
-  cmd.AddValue ("duration", "The length of the simulation.", simTime);
-  cmd.AddValue ("verbose", "Enable printing node location.", verbose);
-  cmd.Parse (argc, argv);
+    // Command line arguments
+    CommandLine cmd(__FILE__);
+    cmd.AddValue("duration", "The length of the simulation.", simTime);
+    cmd.AddValue("verbose", "Enable printing node location.", verbose);
+    cmd.Parse(argc, argv);
 
-  // Create nodes.
-  NodeContainer nodes;
-  nodes.Create (numberOfNodes);
+    // Create nodes.
+    NodeContainer nodes;
+    nodes.Create(numberOfNodes);
 
-  // Setup mobility model.
-  Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator> ();
-  positionAlloc->Add (Vector (0, 0, 0));
-  MobilityHelper mobility;
-  mobility.SetMobilityModel ("ns3::ConstantVelocityMobilityModel");
-  mobility.SetPositionAllocator (positionAlloc);
-  mobility.Install (nodes);
-  nodes.Get (0)->GetObject<ConstantVelocityMobilityModel> ()->SetVelocity (Vector (1, 0, 0));
+    // Setup mobility model.
+    Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
+    positionAlloc->Add(Vector(0, 0, 0));
+    MobilityHelper mobility;
+    mobility.SetMobilityModel("ns3::ConstantVelocityMobilityModel");
+    mobility.SetPositionAllocator(positionAlloc);
+    mobility.Install(nodes);
+    nodes.Get(0)->GetObject<ConstantVelocityMobilityModel>()->SetVelocity(Vector(1, 0, 0));
 
-  // Deploy ORAN
-  Ptr<OranNearRtRic> nearRtRic = nullptr;
-  OranE2NodeTerminatorContainer e2NodeTerminators;
-  Ptr<OranHelper> oranHelper = CreateObject<OranHelper> ();
-  oranHelper->SetAttribute ("Verbose", BooleanValue (true));
-  oranHelper->SetAttribute ("E2NodeInactivityThreshold", TimeValue (Seconds (1)));
-  oranHelper->SetAttribute ("E2NodeInactivityIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=0.5]"));
+    // Deploy ORAN
+    Ptr<OranNearRtRic> nearRtRic = nullptr;
+    OranE2NodeTerminatorContainer e2NodeTerminators;
+    Ptr<OranHelper> oranHelper = CreateObject<OranHelper>();
+    oranHelper->SetAttribute("Verbose", BooleanValue(true));
+    oranHelper->SetAttribute("E2NodeInactivityThreshold", TimeValue(Seconds(1)));
+    oranHelper->SetAttribute("E2NodeInactivityIntervalRv",
+                             StringValue("ns3::ConstantRandomVariable[Constant=0.5]"));
 
-  // RIC setup
-  if (! dbFileName.empty ())
+    // RIC setup
+    if (!dbFileName.empty())
     {
-      std::remove (dbFileName.c_str());
+        std::remove(dbFileName.c_str());
     }
 
-  oranHelper->SetDataRepository ("ns3::OranDataRepositorySqlite",
-      "DatabaseFile", StringValue (dbFileName));
-  oranHelper->SetDefaultLogicModule ("ns3::OranLmNoop");
-  oranHelper->SetConflictMitigationModule ("ns3::OranCmmNoop");
+    oranHelper->SetDataRepository("ns3::OranDataRepositorySqlite",
+                                  "DatabaseFile",
+                                  StringValue(dbFileName));
+    oranHelper->SetDefaultLogicModule("ns3::OranLmNoop");
+    oranHelper->SetConflictMitigationModule("ns3::OranCmmNoop");
 
-  nearRtRic = oranHelper->CreateNearRtRic ();
+    nearRtRic = oranHelper->CreateNearRtRic();
 
-  // Terminator nodes setup
-  oranHelper->SetE2NodeTerminator ("ns3::OranE2NodeTerminatorWired",
-      "RegistrationIntervalRv", StringValue ("ns3::UniformRandomVariable[Min=2|Max=3]"),
-      "SendIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=2]"));
+    // Terminator nodes setup
+    oranHelper->SetE2NodeTerminator("ns3::OranE2NodeTerminatorWired",
+                                    "RegistrationIntervalRv",
+                                    StringValue("ns3::UniformRandomVariable[Min=2|Max=3]"),
+                                    "SendIntervalRv",
+                                    StringValue("ns3::ConstantRandomVariable[Constant=2]"));
 
-  oranHelper->AddReporter ("ns3::OranReporterLocation",
-      "Trigger", StringValue ("ns3::OranReportTriggerPeriodic"));
+    oranHelper->AddReporter("ns3::OranReporterLocation",
+                            "Trigger",
+                            StringValue("ns3::OranReportTriggerPeriodic"));
 
-  e2NodeTerminators.Add (oranHelper->DeployTerminators (nearRtRic, nodes));
+    e2NodeTerminators.Add(oranHelper->DeployTerminators(nearRtRic, nodes));
 
-  // Activate and the components
-  Simulator::Schedule (Seconds (1), &OranHelper::ActivateAndStartNearRtRic, oranHelper, nearRtRic);
-  Simulator::Schedule (Seconds (5), &OranHelper::ActivateE2NodeTerminators, oranHelper, e2NodeTerminators);
+    // Activate and the components
+    Simulator::Schedule(Seconds(1), &OranHelper::ActivateAndStartNearRtRic, oranHelper, nearRtRic);
+    Simulator::Schedule(Seconds(5),
+                        &OranHelper::ActivateE2NodeTerminators,
+                        oranHelper,
+                        e2NodeTerminators);
 
-  // Run the simulation.
-  Simulator::Stop (simTime);
-  Simulator::Run ();
-  Simulator::Destroy ();
+    // Run the simulation.
+    Simulator::Stop(simTime);
+    Simulator::Run();
+    Simulator::Destroy();
 
-  return 0;
+    return 0;
 }

@@ -29,59 +29,58 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/abort.h>
-
 #include "oran-lm-noop.h"
-#include "oran-near-rt-ric.h"
+
 #include "oran-command.h"
+#include "oran-near-rt-ric.h"
 
-namespace ns3 {
+#include <ns3/abort.h>
+#include <ns3/log.h>
 
-NS_LOG_COMPONENT_DEFINE ("OranLmNoop");
+namespace ns3
+{
 
-NS_OBJECT_ENSURE_REGISTERED (OranLmNoop);
+NS_LOG_COMPONENT_DEFINE("OranLmNoop");
+
+NS_OBJECT_ENSURE_REGISTERED(OranLmNoop);
 
 TypeId
-OranLmNoop::GetTypeId (void)
+OranLmNoop::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranLmNoop")
-    .SetParent<OranLm> ()
-    .AddConstructor<OranLmNoop> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranLmNoop").SetParent<OranLm>().AddConstructor<OranLmNoop>();
 
- return tid;
+    return tid;
 }
 
-OranLmNoop::OranLmNoop (void)
-  : OranLm ()
+OranLmNoop::OranLmNoop(void)
+    : OranLm()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_name = "OranLmNoop";
+    m_name = "OranLmNoop";
 }
 
-OranLmNoop::~OranLmNoop (void)
+OranLmNoop::~OranLmNoop(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-std::vector <Ptr<OranCommand> >
-OranLmNoop::Run (void)
+std::vector<Ptr<OranCommand>>
+OranLmNoop::Run(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  // Do nothing and return an empty vector of commands
-  // As we do nothing, there is no need to check if the LM
-  // is active or not.
-  // We check if the pointer to the Near-RT RIC has been set, 
-  // though, as not having that one should be a configuration 
-  // problem (and may be a symptom of other issues)
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to run LM (" + m_name + ") with NULL Near-RT RIC");
+    // Do nothing and return an empty vector of commands
+    // As we do nothing, there is no need to check if the LM
+    // is active or not.
+    // We check if the pointer to the Near-RT RIC has been set,
+    // though, as not having that one should be a configuration
+    // problem (and may be a symptom of other issues)
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr,
+                    "Attempting to run LM (" + m_name + ") with NULL Near-RT RIC");
 
-  LogLogicToRepository ("No action taken");
-  return {};
+    LogLogicToRepository("No action taken");
+    return {};
 }
 
 } // namespace ns3
-

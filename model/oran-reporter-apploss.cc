@@ -29,92 +29,93 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/simulator.h>
-#include <ns3/log.h>
-#include <ns3/abort.h>
-#include <ns3/double.h>
-#include <ns3/uinteger.h>
-
-#include <ns3/packet.h>
-#include <ns3/address.h>
-
 #include "oran-reporter-apploss.h"
+
 #include "oran-report-apploss.h"
 
-namespace ns3 {
+#include <ns3/abort.h>
+#include <ns3/address.h>
+#include <ns3/double.h>
+#include <ns3/log.h>
+#include <ns3/packet.h>
+#include <ns3/simulator.h>
+#include <ns3/uinteger.h>
 
-NS_LOG_COMPONENT_DEFINE ("OranReporterAppLoss");
-NS_OBJECT_ENSURE_REGISTERED (OranReporterAppLoss);
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranReporterAppLoss");
+NS_OBJECT_ENSURE_REGISTERED(OranReporterAppLoss);
 
 TypeId
-OranReporterAppLoss::GetTypeId (void)
+OranReporterAppLoss::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReporterAppLoss")
-    .SetParent<OranReporter> ()
-    .AddConstructor<OranReporterAppLoss> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranReporterAppLoss")
+                            .SetParent<OranReporter>()
+                            .AddConstructor<OranReporterAppLoss>();
 
-  return tid;
+    return tid;
 }
 
-OranReporterAppLoss::OranReporterAppLoss (void)
+OranReporterAppLoss::OranReporterAppLoss(void)
 {
-  NS_LOG_FUNCTION (this);
-  
-  m_tx = 0;
-  m_rx = 0;
+    NS_LOG_FUNCTION(this);
+
+    m_tx = 0;
+    m_rx = 0;
 }
 
-OranReporterAppLoss::~OranReporterAppLoss (void)
+OranReporterAppLoss::~OranReporterAppLoss(void)
 {
-  NS_LOG_FUNCTION (this);
-}
-
-void
-OranReporterAppLoss::AddTx (Ptr<const Packet> p)
-{
-  NS_LOG_FUNCTION (this << p);
-
-  m_tx ++;
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranReporterAppLoss::AddRx (Ptr<const Packet> p, const Address &from )
+OranReporterAppLoss::AddTx(Ptr<const Packet> p)
 {
-  NS_LOG_FUNCTION (this << p << from);
+    NS_LOG_FUNCTION(this << p);
 
-  m_rx ++; 
+    m_tx++;
 }
 
-std::vector <Ptr<OranReport> >
-OranReporterAppLoss::GenerateReports (void)
+void
+OranReporterAppLoss::AddRx(Ptr<const Packet> p, const Address& from)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this << p << from);
 
-  std::vector<Ptr<OranReport> > reports;
+    m_rx++;
+}
 
-  if (m_active)
+std::vector<Ptr<OranReport>>
+OranReporterAppLoss::GenerateReports(void)
+{
+    NS_LOG_FUNCTION(this);
+
+    std::vector<Ptr<OranReport>> reports;
+
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_terminator == nullptr, "Attempting to generate reports in reporter with NULL E2 Terminator");
-     
-      double loss = 0;
-      if (m_rx <= m_tx && m_tx > 0) 
+        NS_ABORT_MSG_IF(m_terminator == nullptr,
+                        "Attempting to generate reports in reporter with NULL E2 Terminator");
+
+        double loss = 0;
+        if (m_rx <= m_tx && m_tx > 0)
         {
-          //loss = 1 - (m_rx * 1.0 / m_tx);
-          loss = static_cast<double>(m_tx - m_rx) / static_cast<double>(m_tx);
+            // loss = 1 - (m_rx * 1.0 / m_tx);
+            loss = static_cast<double>(m_tx - m_rx) / static_cast<double>(m_tx);
         }
 
-      Ptr<OranReportAppLoss> lossReport = CreateObject<OranReportAppLoss> ();
-      lossReport->SetAttribute ("ReporterE2NodeId", UintegerValue (m_terminator->GetE2NodeId ()));
-      lossReport->SetAttribute ("Time", TimeValue (Simulator::Now ()));
-      lossReport->SetAttribute ("Loss", DoubleValue (loss));
+        Ptr<OranReportAppLoss> lossReport = CreateObject<OranReportAppLoss>();
+        lossReport->SetAttribute("ReporterE2NodeId", UintegerValue(m_terminator->GetE2NodeId()));
+        lossReport->SetAttribute("Time", TimeValue(Simulator::Now()));
+        lossReport->SetAttribute("Loss", DoubleValue(loss));
 
-      reports.push_back (lossReport);
-      m_tx = 0;
-      m_rx = 0;
+        reports.push_back(lossReport);
+        m_tx = 0;
+        m_rx = 0;
     }
 
-  return reports;
+    return reports;
 }
 
 } // namespace ns3

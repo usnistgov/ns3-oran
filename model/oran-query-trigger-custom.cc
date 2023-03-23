@@ -29,60 +29,62 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-
 #include "oran-query-trigger-custom.h"
 
-namespace ns3 {
+#include <ns3/log.h>
 
-NS_LOG_COMPONENT_DEFINE ("OranQueryTriggerCustom");
+namespace ns3
+{
 
-NS_OBJECT_ENSURE_REGISTERED (OranQueryTriggerCustom);
+NS_LOG_COMPONENT_DEFINE("OranQueryTriggerCustom");
+
+NS_OBJECT_ENSURE_REGISTERED(OranQueryTriggerCustom);
 
 TypeId
-OranQueryTriggerCustom::GetTypeId (void)
+OranQueryTriggerCustom::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranQueryTriggerCustom")
-    .SetParent<OranQueryTrigger> ()
-    .AddConstructor<OranQueryTriggerCustom> ()
-    .AddAttribute ("CustomCallback",
-                   "Callback invoked to determine if LMs should be queried when a report is received.",
-                   CallbackValue (),
-                   MakeCallbackAccessor (&OranQueryTriggerCustom::m_customCb),
-                   MakeCallbackChecker ())
+    static TypeId tid =
+        TypeId("ns3::OranQueryTriggerCustom")
+            .SetParent<OranQueryTrigger>()
+            .AddConstructor<OranQueryTriggerCustom>()
+            .AddAttribute(
+                "CustomCallback",
+                "Callback invoked to determine if LMs should be queried when a report is received.",
+                CallbackValue(),
+                MakeCallbackAccessor(&OranQueryTriggerCustom::m_customCb),
+                MakeCallbackChecker())
 
-  ;
+        ;
 
- return tid;
+    return tid;
 }
 
-OranQueryTriggerCustom::OranQueryTriggerCustom (void)
-  : OranQueryTrigger (),
-    m_customCb (MakeNullCallback<bool, Ptr<OranReport> > ())
+OranQueryTriggerCustom::OranQueryTriggerCustom(void)
+    : OranQueryTrigger(),
+      m_customCb(MakeNullCallback<bool, Ptr<OranReport>>())
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranQueryTriggerCustom::~OranQueryTriggerCustom (void)
+OranQueryTriggerCustom::~OranQueryTriggerCustom(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 bool
-OranQueryTriggerCustom::QueryLms (Ptr<OranReport> report)
+OranQueryTriggerCustom::QueryLms(Ptr<OranReport> report)
 {
-  NS_LOG_FUNCTION (this << report);
+    NS_LOG_FUNCTION(this << report);
 
-  return !m_customCb.IsNull() && m_customCb(report);
+    return !m_customCb.IsNull() && m_customCb(report);
 }
 
 void
-OranQueryTriggerCustom::DoDispose (void)
+OranQueryTriggerCustom::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_customCb = MakeNullCallback<bool, Ptr<OranReport> > ();
+    m_customCb = MakeNullCallback<bool, Ptr<OranReport>>();
 }
 
 } // namespace ns3
-

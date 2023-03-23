@@ -29,112 +29,116 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/pointer.h>
-#include <ns3/string.h>
-#include <ns3/simulator.h>
-#include <ns3/nstime.h>
-#include <ns3/random-variable-stream.h>
-#include <ns3/lte-ue-net-device.h>
-#include <ns3/lte-ue-rrc.h>
-
-#include "oran-reporter.h"
 #include "oran-report-trigger-location-change.h"
 
-namespace ns3 {
+#include "oran-reporter.h"
 
-NS_LOG_COMPONENT_DEFINE ("OranReportTriggerLocationChange");
+#include <ns3/log.h>
+#include <ns3/lte-ue-net-device.h>
+#include <ns3/lte-ue-rrc.h>
+#include <ns3/nstime.h>
+#include <ns3/pointer.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/simulator.h>
+#include <ns3/string.h>
 
-NS_OBJECT_ENSURE_REGISTERED (OranReportTriggerLocationChange);
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranReportTriggerLocationChange");
+
+NS_OBJECT_ENSURE_REGISTERED(OranReportTriggerLocationChange);
 
 TypeId
-OranReportTriggerLocationChange::GetTypeId (void)
+OranReportTriggerLocationChange::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReportTriggerLocationChange")
-    .SetParent<OranReportTrigger> ()
-    .AddConstructor<OranReportTriggerLocationChange> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranReportTriggerLocationChange")
+                            .SetParent<OranReportTrigger>()
+                            .AddConstructor<OranReportTriggerLocationChange>();
 
- return tid;
+    return tid;
 }
 
-OranReportTriggerLocationChange::OranReportTriggerLocationChange (void)
-  : OranReportTrigger ()
+OranReportTriggerLocationChange::OranReportTriggerLocationChange(void)
+    : OranReportTrigger()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReportTriggerLocationChange::~OranReportTriggerLocationChange (void)
+OranReportTriggerLocationChange::~OranReportTriggerLocationChange(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranReportTriggerLocationChange::Activate (Ptr<OranReporter> reporter)
+OranReportTriggerLocationChange::Activate(Ptr<OranReporter> reporter)
 {
-  NS_LOG_FUNCTION (this << reporter);
+    NS_LOG_FUNCTION(this << reporter);
 
-  if (! m_active)
+    if (!m_active)
     {
-      Ptr<MobilityModel> mobility = reporter->GetTerminator ()->GetNode ()->GetObject<MobilityModel> ();
+        Ptr<MobilityModel> mobility =
+            reporter->GetTerminator()->GetNode()->GetObject<MobilityModel>();
 
-      NS_ABORT_MSG_IF (mobility == nullptr , "Unable to find mobility model");
+        NS_ABORT_MSG_IF(mobility == nullptr, "Unable to find mobility model");
 
-      mobility->TraceConnectWithoutContext ("CourseChange",
-          MakeCallback (&OranReportTriggerLocationChange::CourseChangedSink, this));
+        mobility->TraceConnectWithoutContext(
+            "CourseChange",
+            MakeCallback(&OranReportTriggerLocationChange::CourseChangedSink, this));
     }
 
-  OranReportTrigger::Activate (reporter);
+    OranReportTrigger::Activate(reporter);
 }
 
 void
-OranReportTriggerLocationChange::Deactivate (void)
+OranReportTriggerLocationChange::Deactivate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      DisconnectSink ();
+        DisconnectSink();
     }
 
-  OranReportTrigger::Deactivate ();
+    OranReportTrigger::Deactivate();
 }
 
 void
-OranReportTriggerLocationChange::DoDispose (void)
+OranReportTriggerLocationChange::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      DisconnectSink ();
+        DisconnectSink();
     }
 
-  OranReportTrigger::DoDispose ();
+    OranReportTrigger::DoDispose();
 }
 
 void
-OranReportTriggerLocationChange::CourseChangedSink (Ptr<const MobilityModel> mobility)
+OranReportTriggerLocationChange::CourseChangedSink(Ptr<const MobilityModel> mobility)
 {
-  NS_LOG_FUNCTION (this << mobility);
+    NS_LOG_FUNCTION(this << mobility);
 
-  NS_LOG_LOGIC ("Location change triggering report");
+    NS_LOG_LOGIC("Location change triggering report");
 
-  TriggerReport ();
+    TriggerReport();
 }
 
 void
-OranReportTriggerLocationChange::DisconnectSink (void)
+OranReportTriggerLocationChange::DisconnectSink(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  Ptr<MobilityModel> mobility = m_reporter->GetTerminator ()->GetNode ()->GetObject<MobilityModel> ();
+    Ptr<MobilityModel> mobility =
+        m_reporter->GetTerminator()->GetNode()->GetObject<MobilityModel>();
 
-  NS_ABORT_MSG_IF (mobility == nullptr , "Unable to find mobility model");
+    NS_ABORT_MSG_IF(mobility == nullptr, "Unable to find mobility model");
 
-  mobility->TraceDisconnectWithoutContext ("CourseChange",
-      MakeCallback (&OranReportTriggerLocationChange::CourseChangedSink, this));
+    mobility->TraceDisconnectWithoutContext(
+        "CourseChange",
+        MakeCallback(&OranReportTriggerLocationChange::CourseChangedSink, this));
 }
 
 } // namespace ns3
-

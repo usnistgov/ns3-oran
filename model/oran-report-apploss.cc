@@ -29,66 +29,66 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/abort.h>
-#include <ns3/double.h>
-
-#include "oran-report.h"
 #include "oran-report-apploss.h"
 
-namespace ns3 {
+#include "oran-report.h"
 
-NS_LOG_COMPONENT_DEFINE ("OranReportAppLoss");
-NS_OBJECT_ENSURE_REGISTERED (OranReportAppLoss);
+#include <ns3/abort.h>
+#include <ns3/double.h>
+#include <ns3/log.h>
+
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranReportAppLoss");
+NS_OBJECT_ENSURE_REGISTERED(OranReportAppLoss);
 
 TypeId
-OranReportAppLoss::GetTypeId (void)
+OranReportAppLoss::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReportAppLoss")
-    .SetParent<OranReport> ()
-    .AddConstructor<OranReportAppLoss> ()
-    .AddAttribute ("Loss", "App Loss Rate",
-                  DoubleValue (),
-                  MakeDoubleAccessor (&OranReportAppLoss::m_loss),
-                  MakeDoubleChecker<double> ())
-    ;
+    static TypeId tid = TypeId("ns3::OranReportAppLoss")
+                            .SetParent<OranReport>()
+                            .AddConstructor<OranReportAppLoss>()
+                            .AddAttribute("Loss",
+                                          "App Loss Rate",
+                                          DoubleValue(),
+                                          MakeDoubleAccessor(&OranReportAppLoss::m_loss),
+                                          MakeDoubleChecker<double>());
 
-  return tid;
+    return tid;
 }
 
-OranReportAppLoss::OranReportAppLoss (void)
+OranReportAppLoss::OranReportAppLoss(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReportAppLoss::~OranReportAppLoss (void)
+OranReportAppLoss::~OranReportAppLoss(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-std::string 
-OranReportAppLoss::ToString (void) const
+std::string
+OranReportAppLoss::ToString(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  std::stringstream ss;
-  Time time = GetTime ();
+    std::stringstream ss;
+    Time time = GetTime();
 
-  ss << "OranReportAppLoss("
-     << "E2NodeId=" << GetReporterE2NodeId ()
-     << ";Time=" << time.As (Time::S)
-     << ";Loss=" << m_loss
-     << ")";
+    ss << "OranReportAppLoss("
+       << "E2NodeId=" << GetReporterE2NodeId() << ";Time=" << time.As(Time::S) << ";Loss=" << m_loss
+       << ")";
 
-  return ss.str ();
+    return ss.str();
 }
 
-double 
-OranReportAppLoss::GetLoss (void) const
+double
+OranReportAppLoss::GetLoss(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_loss;
+    return m_loss;
 }
 
-}
+} // namespace ns3

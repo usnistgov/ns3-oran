@@ -35,7 +35,7 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("OranRandomWalkExample");
+NS_LOG_COMPONENT_DEFINE("OranRandomWalkExample");
 
 /**
  * Usage example of the ORAN models.
@@ -44,113 +44,128 @@ NS_LOG_COMPONENT_DEFINE ("OranRandomWalkExample");
  * and reporting its location is used.
  */
 
-void 
-CourseChange (Ptr<const MobilityModel> mobility)
+void
+CourseChange(Ptr<const MobilityModel> mobility)
 {
-  Vector pos = mobility->GetPosition ();
-  Vector vel = mobility->GetVelocity ();
-  std::cout << Simulator::Now () << ", model=" << mobility << ", POS: x=" << pos.x << ", y=" << pos.y
-            << ", z=" << pos.z << "; VEL:" << vel.x << ", y=" << vel.y
-            << ", z=" << vel.z << std::endl;
+    Vector pos = mobility->GetPosition();
+    Vector vel = mobility->GetVelocity();
+    std::cout << Simulator::Now() << ", model=" << mobility << ", POS: x=" << pos.x
+              << ", y=" << pos.y << ", z=" << pos.z << "; VEL:" << vel.x << ", y=" << vel.y
+              << ", z=" << vel.z << std::endl;
 }
 
 void
-QueryRcSink (std::string query, std::string args, int rc)
+QueryRcSink(std::string query, std::string args, int rc)
 {
-  std::cout << Simulator::Now ().GetSeconds () <<
-    " Query " << ((rc == SQLITE_OK || rc == SQLITE_DONE) ? "OK" : "ERROR") <<
-    "(" << rc << "): \"" << query << "\"";
+    std::cout << Simulator::Now().GetSeconds() << " Query "
+              << ((rc == SQLITE_OK || rc == SQLITE_DONE) ? "OK" : "ERROR") << "(" << rc << "): \""
+              << query << "\"";
 
-  if (! args.empty ())
+    if (!args.empty())
     {
-      std::cout << " (" << args << ")";
+        std::cout << " (" << args << ")";
     }
-  std::cout << std::endl;
+    std::cout << std::endl;
 }
 
-int main (int argc, char *argv[])
+int
+main(int argc, char* argv[])
 {
-  uint16_t numberOfNodes = 1;
-  Time simTime = Seconds (50);
-  bool verbose = false;
-  std::string dbFileName = "oran-repository.db";
+    uint16_t numberOfNodes = 1;
+    Time simTime = Seconds(50);
+    bool verbose = false;
+    std::string dbFileName = "oran-repository.db";
 
-  // Command line arguments
-  CommandLine cmd (__FILE__);
-  cmd.AddValue ("duration", "The length of the simulation.", simTime);
-  cmd.AddValue ("nodes", "The number of nodes to consider.", numberOfNodes);
-  cmd.AddValue ("verbose", "Enable printing node location.", verbose);
-  cmd.Parse (argc, argv);
+    // Command line arguments
+    CommandLine cmd(__FILE__);
+    cmd.AddValue("duration", "The length of the simulation.", simTime);
+    cmd.AddValue("nodes", "The number of nodes to consider.", numberOfNodes);
+    cmd.AddValue("verbose", "Enable printing node location.", verbose);
+    cmd.Parse(argc, argv);
 
-  // Create nodes.
-  NodeContainer nodes;
-  nodes.Create (numberOfNodes);
+    // Create nodes.
+    NodeContainer nodes;
+    nodes.Create(numberOfNodes);
 
-  // Setup mobility model.
-  MobilityHelper mobility;
-  mobility.SetPositionAllocator ("ns3::RandomDiscPositionAllocator",
-                                 "X", StringValue ("100.0"),
-                                 "Y", StringValue ("100.0"),
-                                 "Rho", StringValue ("ns3::UniformRandomVariable[Min=0|Max=30]"));
-  mobility.SetMobilityModel ("ns3::RandomWalk2dMobilityModel",
-                             "Mode", StringValue ("Time"),
-                             "Time", StringValue ("2s"),
-                             "Speed", StringValue ("ns3::ConstantRandomVariable[Constant=1.0]"),
-                             "Bounds", StringValue ("0|100|0|100"));
+    // Setup mobility model.
+    MobilityHelper mobility;
+    mobility.SetPositionAllocator("ns3::RandomDiscPositionAllocator",
+                                  "X",
+                                  StringValue("100.0"),
+                                  "Y",
+                                  StringValue("100.0"),
+                                  "Rho",
+                                  StringValue("ns3::UniformRandomVariable[Min=0|Max=30]"));
+    mobility.SetMobilityModel("ns3::RandomWalk2dMobilityModel",
+                              "Mode",
+                              StringValue("Time"),
+                              "Time",
+                              StringValue("2s"),
+                              "Speed",
+                              StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+                              "Bounds",
+                              StringValue("0|100|0|100"));
 
-  // Deploy mobility model.
-  mobility.Install (nodes);
+    // Deploy mobility model.
+    mobility.Install(nodes);
 
-  // Deploy ORAN
-  Ptr<OranNearRtRic> nearRtRic = nullptr;
-  OranE2NodeTerminatorContainer e2NodeTerminators;
-  Ptr<OranHelper> oranHelper = CreateObject<OranHelper> ();
-  oranHelper->SetAttribute ("Verbose", BooleanValue (true));
+    // Deploy ORAN
+    Ptr<OranNearRtRic> nearRtRic = nullptr;
+    OranE2NodeTerminatorContainer e2NodeTerminators;
+    Ptr<OranHelper> oranHelper = CreateObject<OranHelper>();
+    oranHelper->SetAttribute("Verbose", BooleanValue(true));
 
-  // RIC setup
-  if (! dbFileName.empty ())
+    // RIC setup
+    if (!dbFileName.empty())
     {
-      std::remove (dbFileName.c_str());
+        std::remove(dbFileName.c_str());
     }
 
-  oranHelper->SetDataRepository ("ns3::OranDataRepositorySqlite",
-      "DatabaseFile", StringValue (dbFileName));
-  oranHelper->SetDefaultLogicModule ("ns3::OranLmNoop");
-  oranHelper->SetConflictMitigationModule ("ns3::OranCmmNoop");
+    oranHelper->SetDataRepository("ns3::OranDataRepositorySqlite",
+                                  "DatabaseFile",
+                                  StringValue(dbFileName));
+    oranHelper->SetDefaultLogicModule("ns3::OranLmNoop");
+    oranHelper->SetConflictMitigationModule("ns3::OranCmmNoop");
 
-  nearRtRic = oranHelper->CreateNearRtRic ();
+    nearRtRic = oranHelper->CreateNearRtRic();
 
-  // Terminator nodes setup
-  oranHelper->SetE2NodeTerminator ("ns3::OranE2NodeTerminatorWired",
-      "RegistrationIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"),
-      "SendIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
+    // Terminator nodes setup
+    oranHelper->SetE2NodeTerminator("ns3::OranE2NodeTerminatorWired",
+                                    "RegistrationIntervalRv",
+                                    StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                                    "SendIntervalRv",
+                                    StringValue("ns3::ConstantRandomVariable[Constant=1]"));
 
-  oranHelper->AddReporter ("ns3::OranReporterLocation",
-      "Trigger", StringValue ("ns3::OranReportTriggerPeriodic"));
+    oranHelper->AddReporter("ns3::OranReporterLocation",
+                            "Trigger",
+                            StringValue("ns3::OranReportTriggerPeriodic"));
 
-  e2NodeTerminators.Add (oranHelper->DeployTerminators (nearRtRic, nodes));
+    e2NodeTerminators.Add(oranHelper->DeployTerminators(nearRtRic, nodes));
 
-  // DB logging to the terminal
-  if (verbose)
+    // DB logging to the terminal
+    if (verbose)
     {
-      nearRtRic->Data ()->TraceConnectWithoutContext ("QueryRc", MakeCallback (&QueryRcSink));
-    }
- 
-  // Activate and the components
-  Simulator::Schedule (Seconds (1), &OranHelper::ActivateAndStartNearRtRic, oranHelper, nearRtRic);
-  Simulator::Schedule (Seconds (2), &OranHelper::ActivateE2NodeTerminators, oranHelper, e2NodeTerminators);
-
-  // Link output callback to mobility model.
-  if (verbose)
-    {
-      Config::ConnectWithoutContext ("/NodeList/*/$ns3::MobilityModel/CourseChange",
-          MakeCallback (&CourseChange));
+        nearRtRic->Data()->TraceConnectWithoutContext("QueryRc", MakeCallback(&QueryRcSink));
     }
 
-  // Run the simulation.
-  Simulator::Stop (simTime);
-  Simulator::Run ();
-  Simulator::Destroy ();
+    // Activate and the components
+    Simulator::Schedule(Seconds(1), &OranHelper::ActivateAndStartNearRtRic, oranHelper, nearRtRic);
+    Simulator::Schedule(Seconds(2),
+                        &OranHelper::ActivateE2NodeTerminators,
+                        oranHelper,
+                        e2NodeTerminators);
 
-  return 0;
+    // Link output callback to mobility model.
+    if (verbose)
+    {
+        Config::ConnectWithoutContext("/NodeList/*/$ns3::MobilityModel/CourseChange",
+                                      MakeCallback(&CourseChange));
+    }
+
+    // Run the simulation.
+    Simulator::Stop(simTime);
+    Simulator::Run();
+    Simulator::Destroy();
+
+    return 0;
 }

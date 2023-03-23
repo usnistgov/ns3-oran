@@ -34,59 +34,61 @@
 
 #include "oran-command.h"
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup oran
- * A Command instructing an LTE eNB to handover a UE to another LTE eNB. 
+ * A Command instructing an LTE eNB to handover a UE to another LTE eNB.
  * In this command the Target E2 Node ID is the serving LTE eNB, and the command
  * contains the cell ID of the eNB to handover to, and the RNTI of the UE to be
  * handoverd.
  */
 class OranCommandLte2LteHandover : public OranCommand
 {
-public:
-  /**
-   * Gets the TypeId of the OranCommandLte2LteHandover class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Creates an instance of the OranCommandLte2LteHandover class.
-   */
-  OranCommandLte2LteHandover (void);
-  /**
-   * The destructor of the OranCommandLte2LteHandover class.
-   */
-  ~OranCommandLte2LteHandover (void) override;
+  public:
+    /**
+     * Gets the TypeId of the OranCommandLte2LteHandover class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Creates an instance of the OranCommandLte2LteHandover class.
+     */
+    OranCommandLte2LteHandover(void);
+    /**
+     * The destructor of the OranCommandLte2LteHandover class.
+     */
+    ~OranCommandLte2LteHandover(void) override;
 
-  std::string ToString (void) const override;
-private:
-  /**
-   * The ID of the cell to handover to.
-   */
-  uint16_t m_targetCellId;
-  /**
-   * The RNTI of the UE to handover.
-   */
-  uint16_t m_targetRnti;
-public:
-  /**
-   * Gets the ID of the cell to handover to.
-   *
-   * \returns The cell ID.
-   */
-  uint16_t GetTargetCellId (void) const;
-  /**
-   * Gets the RNTI of the UE to handover.
-   * 
-   * \returns The RNTI.
-   */
-  uint16_t GetTargetRnti (void) const;
+    std::string ToString(void) const override;
+
+  private:
+    /**
+     * The ID of the cell to handover to.
+     */
+    uint16_t m_targetCellId;
+    /**
+     * The RNTI of the UE to handover.
+     */
+    uint16_t m_targetRnti;
+
+  public:
+    /**
+     * Gets the ID of the cell to handover to.
+     *
+     * \returns The cell ID.
+     */
+    uint16_t GetTargetCellId(void) const;
+    /**
+     * Gets the RNTI of the UE to handover.
+     *
+     * \returns The RNTI.
+     */
+    uint16_t GetTargetRnti(void) const;
 }; // class OranCommandLte2LteHandover
 
 } // namespace ns3
 
 #endif /* ORAN_COMMAND_LTE_2_LTE_HANDOVER_H */
-

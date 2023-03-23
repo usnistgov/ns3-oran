@@ -32,15 +32,16 @@
 #ifndef ORAN_LM_H
 #define ORAN_LM_H
 
-#include <vector>
-#include <string_view>
-
-#include <ns3/object.h>
-#include <ns3/random-variable-stream.h>
 #include <ns3/event-id.h>
 #include <ns3/nstime.h>
+#include <ns3/object.h>
+#include <ns3/random-variable-stream.h>
 
-namespace ns3 {
+#include <string_view>
+#include <vector>
+
+namespace ns3
+{
 
 class OranNearRtRic;
 class OranCommand;
@@ -56,125 +57,126 @@ class OranCommand;
  */
 class OranLm : public Object
 {
-public:
-  /**
-   * Get the TypeId of the OranLm class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Create an instance of the OranLm class.
-   */
-  OranLm (void);
-  /**
-   * The destructor of the OranLm class.
-   */
-  ~OranLm (void) override;
-  /**
-   * Activate the Logic Module
-   */
-  virtual void Activate (void);
-  /**
-   * Deactivate the Logic Module.
-   *
-   * This also clears the vector of stored commands.
-   */
-  virtual void Deactivate (void);
-  /**
-   * Check if the Logic Module is active.
-   *
-   * \return True, if this Logic Module is active; otherwise, false.
-   */
-  bool IsActive (void) const;
-  /**
-   * Get the name of this Logic Module.
-   *
-   * \return The Name of this Logic Module.
-   */
-  std::string GetName (void) const;
-  /**
-   * Set the name of this Logic Module.
-   *
-   * \param name The name of this Logic Module.
-   */
-  void SetName (std::string_view name);
-  /**
-   * Prompts this Logical Module to execute its logic and generate any
-   * necessary commands.
-   * 
-   * \param cycle The cycle to run for.
-   */
-  void Run (Time cycle);
-  /**
-   * Cancels the current run.
-   */
-  void CancelRun (void);
-  /**
-   * Indicates if the LM is running.
-   *
-   * \return true, if the LM is running; otherwise, false.
-   */
-  bool IsRunning (void) const;
-protected:
-  /**
-   * Dispose of the object.
-   */
-  void DoDispose (void) override;
-  /**
-   * Log a string to the Data Repository
-   *
-   * \param msg The string to log to the Data Repository
-   */
-  void LogLogicToRepository (const std::string &msg) const;
-  /**
-   * Finish running the logic module.
-   */
-  virtual void FinishRun (void);
-  /**
-   * Generates the commands to provide to the Near-RT RIC.
-   *
-   * \return The generated commands.
-   */
-  virtual std::vector<Ptr<OranCommand> > Run (void) = 0;
+  public:
+    /**
+     * Get the TypeId of the OranLm class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Create an instance of the OranLm class.
+     */
+    OranLm(void);
+    /**
+     * The destructor of the OranLm class.
+     */
+    ~OranLm(void) override;
+    /**
+     * Activate the Logic Module
+     */
+    virtual void Activate(void);
+    /**
+     * Deactivate the Logic Module.
+     *
+     * This also clears the vector of stored commands.
+     */
+    virtual void Deactivate(void);
+    /**
+     * Check if the Logic Module is active.
+     *
+     * \return True, if this Logic Module is active; otherwise, false.
+     */
+    bool IsActive(void) const;
+    /**
+     * Get the name of this Logic Module.
+     *
+     * \return The Name of this Logic Module.
+     */
+    std::string GetName(void) const;
+    /**
+     * Set the name of this Logic Module.
+     *
+     * \param name The name of this Logic Module.
+     */
+    void SetName(std::string_view name);
+    /**
+     * Prompts this Logical Module to execute its logic and generate any
+     * necessary commands.
+     *
+     * \param cycle The cycle to run for.
+     */
+    void Run(Time cycle);
+    /**
+     * Cancels the current run.
+     */
+    void CancelRun(void);
+    /**
+     * Indicates if the LM is running.
+     *
+     * \return true, if the LM is running; otherwise, false.
+     */
+    bool IsRunning(void) const;
 
-  /**
-   * Pointer to the Near-RT RIC. 
-   */
-  Ptr<OranNearRtRic> m_nearRtRic; 
-  /**
-   * A name to differentiate this Logic Module from others
-   */
-  std::string m_name;
-  /**
-   * Flag to indicate if logic should be logged to the Data Repository
-   */
-  bool m_verbose;
-  /**
-   * Flag to keep track of the active status
-   */
-  bool m_active{false};
-private:
-  /**
-   * The finish run event.
-   */
-  EventId m_finishRunEvent;
-  /**
-   * The random variable used to determine the delay (in seconds) it takes to
-   * generate commands.
-   */
-  Ptr<RandomVariableStream> m_processingDelayRv;
-  /**
-   * The current cycle.
-   */
-  Time m_cycle;
-  /**
-   * Commands that were generated.
-   */
-  std::vector<Ptr<OranCommand> > m_commands;
+  protected:
+    /**
+     * Dispose of the object.
+     */
+    void DoDispose(void) override;
+    /**
+     * Log a string to the Data Repository
+     *
+     * \param msg The string to log to the Data Repository
+     */
+    void LogLogicToRepository(const std::string& msg) const;
+    /**
+     * Finish running the logic module.
+     */
+    virtual void FinishRun(void);
+    /**
+     * Generates the commands to provide to the Near-RT RIC.
+     *
+     * \return The generated commands.
+     */
+    virtual std::vector<Ptr<OranCommand>> Run(void) = 0;
+
+    /**
+     * Pointer to the Near-RT RIC.
+     */
+    Ptr<OranNearRtRic> m_nearRtRic;
+    /**
+     * A name to differentiate this Logic Module from others
+     */
+    std::string m_name;
+    /**
+     * Flag to indicate if logic should be logged to the Data Repository
+     */
+    bool m_verbose;
+    /**
+     * Flag to keep track of the active status
+     */
+    bool m_active{false};
+
+  private:
+    /**
+     * The finish run event.
+     */
+    EventId m_finishRunEvent;
+    /**
+     * The random variable used to determine the delay (in seconds) it takes to
+     * generate commands.
+     */
+    Ptr<RandomVariableStream> m_processingDelayRv;
+    /**
+     * The current cycle.
+     */
+    Time m_cycle;
+    /**
+     * Commands that were generated.
+     */
+    std::vector<Ptr<OranCommand>> m_commands;
 }; // class OranLm
 
 } // namespace ns3
 
 #endif /* ORAN_LM_H */
-

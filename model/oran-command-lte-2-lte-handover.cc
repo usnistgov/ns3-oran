@@ -29,80 +29,78 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-command-lte-2-lte-handover.h"
+
 #include <ns3/log.h>
 #include <ns3/uinteger.h>
 
-#include "oran-command-lte-2-lte-handover.h"
+namespace ns3
+{
 
-namespace ns3 {
+NS_LOG_COMPONENT_DEFINE("OranCommandLte2LteHandover");
 
-NS_LOG_COMPONENT_DEFINE ("OranCommandLte2LteHandover");
-
-NS_OBJECT_ENSURE_REGISTERED (OranCommandLte2LteHandover);
+NS_OBJECT_ENSURE_REGISTERED(OranCommandLte2LteHandover);
 
 TypeId
-OranCommandLte2LteHandover::GetTypeId (void)
+OranCommandLte2LteHandover::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranCommandLte2LteHandover")
-    .SetParent<OranCommand> ()
-    .AddConstructor<OranCommandLte2LteHandover> ()
-    .AddAttribute ("TargetCellId",
-                   "The ID of the LTE cell to handover to.",
-                   UintegerValue (0),
-                   MakeUintegerAccessor (&OranCommandLte2LteHandover::m_targetCellId),
-                   MakeUintegerChecker<uint16_t> ())
-    .AddAttribute ("TargetRnti",
-                   "The current RNTI of the UE to handover.",
-                   UintegerValue (0),
-                   MakeUintegerAccessor (&OranCommandLte2LteHandover::m_targetRnti),
-                   MakeUintegerChecker<uint16_t> ())
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranCommandLte2LteHandover")
+            .SetParent<OranCommand>()
+            .AddConstructor<OranCommandLte2LteHandover>()
+            .AddAttribute("TargetCellId",
+                          "The ID of the LTE cell to handover to.",
+                          UintegerValue(0),
+                          MakeUintegerAccessor(&OranCommandLte2LteHandover::m_targetCellId),
+                          MakeUintegerChecker<uint16_t>())
+            .AddAttribute("TargetRnti",
+                          "The current RNTI of the UE to handover.",
+                          UintegerValue(0),
+                          MakeUintegerAccessor(&OranCommandLte2LteHandover::m_targetRnti),
+                          MakeUintegerChecker<uint16_t>());
 
- return tid;
+    return tid;
 }
 
-OranCommandLte2LteHandover::OranCommandLte2LteHandover (void)
-  : OranCommand ()
+OranCommandLte2LteHandover::OranCommandLte2LteHandover(void)
+    : OranCommand()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranCommandLte2LteHandover::~OranCommandLte2LteHandover (void)
+OranCommandLte2LteHandover::~OranCommandLte2LteHandover(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranCommandLte2LteHandover::ToString (void) const
+OranCommandLte2LteHandover::ToString(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  std::stringstream ss;
+    std::stringstream ss;
 
-   ss << "OranCommandLte2LteHandover("
-     << "TargetE2NodeId = " << GetTargetE2NodeId ()
-     << "; TargetCellId = " << m_targetCellId
-     << "; TargetRnti = " << m_targetRnti
-     << ")";
+    ss << "OranCommandLte2LteHandover("
+       << "TargetE2NodeId = " << GetTargetE2NodeId() << "; TargetCellId = " << m_targetCellId
+       << "; TargetRnti = " << m_targetRnti << ")";
 
-  return ss.str ();
+    return ss.str();
 }
 
 uint16_t
-OranCommandLte2LteHandover::GetTargetCellId (void) const
+OranCommandLte2LteHandover::GetTargetCellId(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_targetCellId;
+    return m_targetCellId;
 }
 
 uint16_t
-OranCommandLte2LteHandover::GetTargetRnti (void) const
+OranCommandLte2LteHandover::GetTargetRnti(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_targetRnti;
+    return m_targetRnti;
 }
 
 } // namespace ns3
-

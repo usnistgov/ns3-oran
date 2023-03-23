@@ -32,14 +32,15 @@
 #ifndef ORAN_REPORTER_APPLOSS
 #define ORAN_REPORTER_APPLOSS
 
-#include <vector>
+#include "oran-report.h"
+#include "oran-reporter.h"
 
 #include <ns3/ptr.h>
 
-#include "oran-reporter.h"
-#include "oran-report.h"
+#include <vector>
 
-namespace ns3 {
+namespace ns3
+{
 
 class Packet;
 class Address;
@@ -51,52 +52,52 @@ class Address;
  */
 class OranReporterAppLoss : public OranReporter
 {
-public:
-  /**
-   * Get the TypeId of the OranReporterAppLoss class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReporterAppLoss class.
-   */
-   OranReporterAppLoss (void);
-  /**
-   * Destructor of the OranReporterAppLoss class.
-   */
-  ~OranReporterAppLoss (void) override;
-  /**
-   * Records the transmission of a packet.
-   *
-   * \param p The packet.
-   */
-  void AddTx (Ptr<const Packet> p);
-  /**
-   * Records the reception of a packet from a given address.
-   *
-   * \param p The packet.
-   * \param from The address that the packet is from.
-   */
-  void AddRx (Ptr<const Packet> p, const Address &from);
+  public:
+    /**
+     * Get the TypeId of the OranReporterAppLoss class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReporterAppLoss class.
+     */
+    OranReporterAppLoss(void);
+    /**
+     * Destructor of the OranReporterAppLoss class.
+     */
+    ~OranReporterAppLoss(void) override;
+    /**
+     * Records the transmission of a packet.
+     *
+     * \param p The packet.
+     */
+    void AddTx(Ptr<const Packet> p);
+    /**
+     * Records the reception of a packet from a given address.
+     *
+     * \param p The packet.
+     * \param from The address that the packet is from.
+     */
+    void AddRx(Ptr<const Packet> p, const Address& from);
 
-protected:
-  /**
-   * Capture the application packet loss and instantiate an OranReportAppLoss.
-   *
-   * \return The generated Report.
-   */
-  std::vector<Ptr<OranReport> > GenerateReports (void) override;
+  protected:
+    /**
+     * Capture the application packet loss and instantiate an OranReportAppLoss.
+     *
+     * \return The generated Report.
+     */
+    std::vector<Ptr<OranReport>> GenerateReports(void) override;
 
-private:
-  /**
-   * The number of transmitted packets.
-   */
-  uint64_t m_tx;
-  /**
-   * The number of recived packets.
-   */
-  uint64_t m_rx;
+  private:
+    /**
+     * The number of transmitted packets.
+     */
+    uint64_t m_tx;
+    /**
+     * The number of recived packets.
+     */
+    uint64_t m_rx;
 };
 
 } // namespace ns3

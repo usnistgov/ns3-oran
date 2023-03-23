@@ -32,11 +32,12 @@
 #ifndef ORAN_E2_NODE_TERMINATOR_CONTAINER_H
 #define ORAN_E2_NODE_TERMINATOR_CONTAINER_H
 
-#include <vector>
-
 #include "oran-e2-node-terminator.h"
 
-namespace ns3 {
+#include <vector>
+
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -46,73 +47,73 @@ namespace ns3 {
  */
 class OranE2NodeTerminatorContainer
 {
-public:
-  /**
-   * Declaration of container iterator.
-   */
-  typedef std::vector<Ptr<OranE2NodeTerminator> >::const_iterator Iterator;
-  /**
-   * Constructor of the ORanE2NodeTerminatorContainer.
-   */
-  OranE2NodeTerminatorContainer (void) = default;
-  /**
-   * Destructor of the OranE2NodeTerminatorContainer.
-   */
-  virtual ~OranE2NodeTerminatorContainer (void) = default;
-  /**
-   * Activate all of the E2 Node Terminators in the container.
-   */
-  void Activate (void);
-  /**
-   * Get an iterator referencing the first element.
-   *
-   * \return The iterator.
-   */
-  Iterator Begin (void) const;
-  /**
-   * Deactivate all of the E2 Node Terminators in the container.
-   */
-  void Deactivate (void);
-  /**
-   * Get an iterator referencing the last element.
-   *
-   * \return The iterator.
-   */
-  Iterator End (void) const;
-  /**
-   * Get the number of elements in the container.
-   *
-   * \return The number of elements.
-   */
-  uint32_t GetN (void) const;
-  /**
-   * Get an element from the container.
-   *
-   * \param i The index of the element to return.
-   *
-   * \return The element.
-   */
-  Ptr<OranE2NodeTerminator> Get (uint32_t i) const;
-  /**
-   * Add the elements of another container to this container.
-   *
-   * \param other The other container.
-   */
-  void Add (OranE2NodeTerminatorContainer other);
-  /**
-   * Add an element to this container.
-   *
-   * \param e2NodeTerminator The element to add.
-   */
-  void Add (Ptr<OranE2NodeTerminator> e2NodeTerminator);
-private:
-  /**
-   * The underlying container.
-   */
-  std::vector<Ptr<OranE2NodeTerminator> > m_e2NodeTerminators;
+  public:
+    /**
+     * Declaration of container iterator.
+     */
+    typedef std::vector<Ptr<OranE2NodeTerminator>>::const_iterator Iterator;
+    /**
+     * Constructor of the ORanE2NodeTerminatorContainer.
+     */
+    OranE2NodeTerminatorContainer(void) = default;
+    /**
+     * Destructor of the OranE2NodeTerminatorContainer.
+     */
+    virtual ~OranE2NodeTerminatorContainer(void) = default;
+    /**
+     * Activate all of the E2 Node Terminators in the container.
+     */
+    void Activate(void);
+    /**
+     * Get an iterator referencing the first element.
+     *
+     * \return The iterator.
+     */
+    Iterator Begin(void) const;
+    /**
+     * Deactivate all of the E2 Node Terminators in the container.
+     */
+    void Deactivate(void);
+    /**
+     * Get an iterator referencing the last element.
+     *
+     * \return The iterator.
+     */
+    Iterator End(void) const;
+    /**
+     * Get the number of elements in the container.
+     *
+     * \return The number of elements.
+     */
+    uint32_t GetN(void) const;
+    /**
+     * Get an element from the container.
+     *
+     * \param i The index of the element to return.
+     *
+     * \return The element.
+     */
+    Ptr<OranE2NodeTerminator> Get(uint32_t i) const;
+    /**
+     * Add the elements of another container to this container.
+     *
+     * \param other The other container.
+     */
+    void Add(OranE2NodeTerminatorContainer other);
+    /**
+     * Add an element to this container.
+     *
+     * \param e2NodeTerminator The element to add.
+     */
+    void Add(Ptr<OranE2NodeTerminator> e2NodeTerminator);
+
+  private:
+    /**
+     * The underlying container.
+     */
+    std::vector<Ptr<OranE2NodeTerminator>> m_e2NodeTerminators;
 }; // class OranE2NodeTerminatorContainer
 
 } // namespace ns3
 
 #endif // ORAN_E2_NODE_TERMINATOR_CONTAINER_H
-

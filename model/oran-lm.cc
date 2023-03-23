@@ -29,217 +29,218 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <string>
+#include "oran-lm.h"
 
-#include <ns3/simulator.h>
+#include "oran-data-repository.h"
+#include "oran-near-rt-ric.h"
+
 #include <ns3/abort.h>
+#include <ns3/boolean.h>
 #include <ns3/log.h>
 #include <ns3/pointer.h>
-#include <ns3/boolean.h>
+#include <ns3/simulator.h>
 #include <ns3/string.h>
 
-#include "oran-lm.h"
-#include "oran-near-rt-ric.h"
-#include "oran-data-repository.h"
+#include <string>
 
-namespace ns3 {
+namespace ns3
+{
 
-NS_LOG_COMPONENT_DEFINE ("OranLm");
+NS_LOG_COMPONENT_DEFINE("OranLm");
 
-NS_OBJECT_ENSURE_REGISTERED (OranLm);
+NS_OBJECT_ENSURE_REGISTERED(OranLm);
 
 TypeId
-OranLm::GetTypeId (void)
+OranLm::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranLm")
-    .SetParent<Object> ()
-    .AddAttribute ("NearRtRic", "The near RT RIC.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranLm::m_nearRtRic),
-                   MakePointerChecker<OranNearRtRic> ())
-    .AddAttribute ("Verbose", 
-                   "Flag to indicate if logic should be logged to the data storage.",
-                   BooleanValue (false),
-                   MakeBooleanAccessor (&OranLm::m_verbose),
-                   MakeBooleanChecker ())
-    .AddAttribute ("ProcessingDelayRv", "The random variable used to determine the delay (in seconds) to run.",
-                   StringValue ("ns3::ConstantRandomVariable[Constant=0]"),
-                   MakePointerAccessor (&OranLm::m_processingDelayRv),
-                   MakePointerChecker<RandomVariableStream> ())
-   ;
+    static TypeId tid =
+        TypeId("ns3::OranLm")
+            .SetParent<Object>()
+            .AddAttribute("NearRtRic",
+                          "The near RT RIC.",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranLm::m_nearRtRic),
+                          MakePointerChecker<OranNearRtRic>())
+            .AddAttribute("Verbose",
+                          "Flag to indicate if logic should be logged to the data storage.",
+                          BooleanValue(false),
+                          MakeBooleanAccessor(&OranLm::m_verbose),
+                          MakeBooleanChecker())
+            .AddAttribute("ProcessingDelayRv",
+                          "The random variable used to determine the delay (in seconds) to run.",
+                          StringValue("ns3::ConstantRandomVariable[Constant=0]"),
+                          MakePointerAccessor(&OranLm::m_processingDelayRv),
+                          MakePointerChecker<RandomVariableStream>());
 
- return tid;
+    return tid;
 }
 
-OranLm::OranLm (void)
-  : Object ()
+OranLm::OranLm(void)
+    : Object()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranLm::~OranLm (void)
+OranLm::~OranLm(void)
 {
-  NS_LOG_FUNCTION (this);
-}
-
-void
-OranLm::Activate (void)
-{
-  NS_LOG_FUNCTION (this);
-
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to activate LM with NULL Near-RT RIC");
-
-  NS_LOG_LOGIC ("\"" << m_name << "\" Logic Module activated");
-
-  m_active = true;
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranLm::Deactivate (void)
+OranLm::Activate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  NS_LOG_LOGIC ("\"" << m_name << "\" Logic Module deactivated");
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr, "Attempting to activate LM with NULL Near-RT RIC");
 
-  m_active = false;
+    NS_LOG_LOGIC("\"" << m_name << "\" Logic Module activated");
 
-  if (IsRunning ())
+    m_active = true;
+}
+
+void
+OranLm::Deactivate(void)
+{
+    NS_LOG_FUNCTION(this);
+
+    NS_LOG_LOGIC("\"" << m_name << "\" Logic Module deactivated");
+
+    m_active = false;
+
+    if (IsRunning())
     {
-      CancelRun ();
+        CancelRun();
     }
 }
 
 bool
-OranLm::IsActive (void) const
+OranLm::IsActive(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_active;
+    return m_active;
 }
 
 std::string
-OranLm::GetName (void) const
+OranLm::GetName(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_name;
+    return m_name;
 }
 
 void
-OranLm::SetName (std::string_view name)
+OranLm::SetName(std::string_view name)
 {
-  NS_LOG_FUNCTION (this << name);
+    NS_LOG_FUNCTION(this << name);
 
-  m_name = name;
+    m_name = name;
 }
 
 void
-OranLm::Run (Time cycle)
+OranLm::Run(Time cycle)
 {
-  NS_LOG_FUNCTION (this << cycle);
+    NS_LOG_FUNCTION(this << cycle);
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (IsRunning (), "Attempting to run LM that is already running");
+        NS_ABORT_MSG_IF(IsRunning(), "Attempting to run LM that is already running");
 
-      NS_LOG_LOGIC ("\"" << m_name << "\" Logic Module starting to run");
+        NS_LOG_LOGIC("\"" << m_name << "\" Logic Module starting to run");
 
-      double delay = m_processingDelayRv->GetValue ();
+        double delay = m_processingDelayRv->GetValue();
 
-      delay = delay < 0.0 ? 0.0 : delay;
+        delay = delay < 0.0 ? 0.0 : delay;
 
-      m_cycle = cycle;
-      m_commands = Run ();
+        m_cycle = cycle;
+        m_commands = Run();
 
-      m_finishRunEvent = Simulator::Schedule (
-          Seconds (delay),
-          &OranLm::FinishRun,
-          this);
+        m_finishRunEvent = Simulator::Schedule(Seconds(delay), &OranLm::FinishRun, this);
     }
 }
 
 void
-OranLm::CancelRun (void)
+OranLm::CancelRun(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active && IsRunning ())
+    if (m_active && IsRunning())
     {
-      m_finishRunEvent.Cancel ();
+        m_finishRunEvent.Cancel();
 
-      std::string msg = "Run canceld for cycle " + std::to_string (m_cycle.GetTimeStep ())
-        + " with " + std::to_string (m_commands.size ()) + " command(s) lost";
+        std::string msg = "Run canceld for cycle " + std::to_string(m_cycle.GetTimeStep()) +
+                          " with " + std::to_string(m_commands.size()) + " command(s) lost";
 
-      if (!m_commands.empty())
+        if (!m_commands.empty())
         {
-          msg += " {";
+            msg += " {";
 
-          for (auto command : m_commands)
+            for (auto command : m_commands)
             {
-              msg += command->ToString () + ",";
+                msg += command->ToString() + ",";
             }
 
-          msg.pop_back ();
-          msg += "}";
+            msg.pop_back();
+            msg += "}";
 
-          LogLogicToRepository (msg);
+            LogLogicToRepository(msg);
         }
 
-      m_commands.clear ();
+        m_commands.clear();
     }
 }
 
 bool
-OranLm::IsRunning (void) const
+OranLm::IsRunning(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_finishRunEvent.IsRunning ();
+    return m_finishRunEvent.IsRunning();
 }
 
 void
-OranLm::DoDispose (void)
+OranLm::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_nearRtRic = nullptr;
-  m_processingDelayRv = nullptr;
+    m_nearRtRic = nullptr;
+    m_processingDelayRv = nullptr;
 
-  m_finishRunEvent.Cancel ();
+    m_finishRunEvent.Cancel();
 
-  Object::DoDispose ();
+    Object::DoDispose();
 }
 
 void
-OranLm::LogLogicToRepository (const std::string &msg) const
+OranLm::LogLogicToRepository(const std::string& msg) const
 {
-  NS_LOG_FUNCTION (this << msg);
+    NS_LOG_FUNCTION(this << msg);
 
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to log LM logic with NULL Near-RT RIC");
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr, "Attempting to log LM logic with NULL Near-RT RIC");
 
-  if (m_verbose)
+    if (m_verbose)
     {
-      m_nearRtRic->Data ()->LogActionLm (m_name, 
-          std::to_string (Simulator::Now ().GetSeconds ()) + " -- " + m_name + " -- " + msg);
+        m_nearRtRic->Data()->LogActionLm(m_name,
+                                         std::to_string(Simulator::Now().GetSeconds()) + " -- " +
+                                             m_name + " -- " + msg);
     }
 }
 
 void
-OranLm::FinishRun (void)
+OranLm::FinishRun(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to run LM logic with NULL Near-RT RIC");
+        NS_ABORT_MSG_IF(m_nearRtRic == nullptr, "Attempting to run LM logic with NULL Near-RT RIC");
 
-      NS_LOG_LOGIC ("\"" << m_name << "\" Logic Module finished running");
+        NS_LOG_LOGIC("\"" << m_name << "\" Logic Module finished running");
 
-      m_nearRtRic->NotifyLmFinished (m_cycle, m_commands, GetObject<OranLm> ());
+        m_nearRtRic->NotifyLmFinished(m_cycle, m_commands, GetObject<OranLm>());
 
-      m_commands.clear ();
+        m_commands.clear();
     }
 }
 
 } // namespace ns3
-

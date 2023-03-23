@@ -29,58 +29,57 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/node.h>
-#include <ns3/abort.h>
-
 #include "oran-e2-node-terminator-wired.h"
 
-namespace ns3 {
+#include <ns3/abort.h>
+#include <ns3/log.h>
+#include <ns3/node.h>
 
-NS_LOG_COMPONENT_DEFINE ("OranE2NodeTerminatorWired");
+namespace ns3
+{
 
-NS_OBJECT_ENSURE_REGISTERED (OranE2NodeTerminatorWired);
+NS_LOG_COMPONENT_DEFINE("OranE2NodeTerminatorWired");
+
+NS_OBJECT_ENSURE_REGISTERED(OranE2NodeTerminatorWired);
 
 TypeId
-OranE2NodeTerminatorWired::GetTypeId (void)
+OranE2NodeTerminatorWired::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranE2NodeTerminatorWired")
-    .SetParent<OranE2NodeTerminator> ()
-    .AddConstructor<OranE2NodeTerminatorWired> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranE2NodeTerminatorWired")
+                            .SetParent<OranE2NodeTerminator>()
+                            .AddConstructor<OranE2NodeTerminatorWired>();
 
-  return tid;
+    return tid;
 }
 
-OranE2NodeTerminatorWired::OranE2NodeTerminatorWired (void)
-  : OranE2NodeTerminator ()
+OranE2NodeTerminatorWired::OranE2NodeTerminatorWired(void)
+    : OranE2NodeTerminator()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranE2NodeTerminatorWired::~OranE2NodeTerminatorWired (void)
+OranE2NodeTerminatorWired::~OranE2NodeTerminatorWired(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 OranNearRtRic::NodeType
-OranE2NodeTerminatorWired::GetNodeType (void) const
+OranE2NodeTerminatorWired::GetNodeType(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return OranNearRtRic::WIRED;
+    return OranNearRtRic::WIRED;
 }
 
 void
-OranE2NodeTerminatorWired::ReceiveCommand (Ptr<OranCommand> command)
+OranE2NodeTerminatorWired::ReceiveCommand(Ptr<OranCommand> command)
 {
-  NS_LOG_FUNCTION (this << command);
+    NS_LOG_FUNCTION(this << command);
 
-  if (m_active)
+    if (m_active)
     {
-      // No supported commands yet.
+        // No supported commands yet.
     }
 }
 
 } // namespace ns3
-

@@ -29,85 +29,82 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-report-lte-ue-cell-info.h"
+
+#include "oran-report.h"
+
 #include <ns3/log.h>
 #include <ns3/uinteger.h>
 #include <ns3/vector.h>
 
-#include "oran-report.h"
+namespace ns3
+{
 
-#include "oran-report-lte-ue-cell-info.h"
+NS_LOG_COMPONENT_DEFINE("OranReportLteUeCellInfo");
 
-namespace ns3 {
-
-NS_LOG_COMPONENT_DEFINE ("OranReportLteUeCellInfo");
-
-NS_OBJECT_ENSURE_REGISTERED (OranReportLteUeCellInfo);
+NS_OBJECT_ENSURE_REGISTERED(OranReportLteUeCellInfo);
 
 TypeId
-OranReportLteUeCellInfo::GetTypeId (void)
+OranReportLteUeCellInfo::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReportLteUeCellInfo")
-    .SetParent<OranReport> ()
-    .AddConstructor<OranReportLteUeCellInfo> ()
-    .AddAttribute ("CellId",
-                   "The ID of the cell that the UE is currently attached to.",
-                   UintegerValue (),
-                   MakeUintegerAccessor (&OranReportLteUeCellInfo::m_cellId),
-                   MakeUintegerChecker<uint16_t> ())
-    .AddAttribute ("Rnti",
-                   "The RNTI that was assigned to this UE by the cell.",
-                   UintegerValue (),
-                   MakeUintegerAccessor (&OranReportLteUeCellInfo::m_rnti),
-                   MakeUintegerChecker<uint16_t> ())
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranReportLteUeCellInfo")
+            .SetParent<OranReport>()
+            .AddConstructor<OranReportLteUeCellInfo>()
+            .AddAttribute("CellId",
+                          "The ID of the cell that the UE is currently attached to.",
+                          UintegerValue(),
+                          MakeUintegerAccessor(&OranReportLteUeCellInfo::m_cellId),
+                          MakeUintegerChecker<uint16_t>())
+            .AddAttribute("Rnti",
+                          "The RNTI that was assigned to this UE by the cell.",
+                          UintegerValue(),
+                          MakeUintegerAccessor(&OranReportLteUeCellInfo::m_rnti),
+                          MakeUintegerChecker<uint16_t>());
 
- return tid;
+    return tid;
 }
 
-OranReportLteUeCellInfo::OranReportLteUeCellInfo (void)
-  : OranReport ()
+OranReportLteUeCellInfo::OranReportLteUeCellInfo(void)
+    : OranReport()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReportLteUeCellInfo::~OranReportLteUeCellInfo (void)
+OranReportLteUeCellInfo::~OranReportLteUeCellInfo(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranReportLteUeCellInfo::ToString (void) const
+OranReportLteUeCellInfo::ToString(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  std::stringstream ss;
-  Time time = GetTime ();
-  
-  ss << "OranReportLteUeCellInfo("
-     << "E2NodeId=" << GetReporterE2NodeId ()
-     << ";Time=" << time.As (Time::S)
-     << ";CellId=" << (uint32_t)m_cellId
-     << ";RNTI=" << (uint32_t)m_rnti
-     << ")";
+    std::stringstream ss;
+    Time time = GetTime();
 
-  return ss.str ();
+    ss << "OranReportLteUeCellInfo("
+       << "E2NodeId=" << GetReporterE2NodeId() << ";Time=" << time.As(Time::S)
+       << ";CellId=" << (uint32_t)m_cellId << ";RNTI=" << (uint32_t)m_rnti << ")";
+
+    return ss.str();
 }
 
 uint16_t
-OranReportLteUeCellInfo::GetCellId (void) const
+OranReportLteUeCellInfo::GetCellId(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_cellId;
+    return m_cellId;
 }
 
 uint16_t
-OranReportLteUeCellInfo::GetRnti (void) const
+OranReportLteUeCellInfo::GetRnti(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_rnti;
+    return m_rnti;
 }
 
 } // namespace ns3
-

@@ -32,13 +32,14 @@
 #ifndef ORAN_QUERY_TRIGGER_CUSTOM_H
 #define ORAN_QUERY_TRIGGER_CUSTOM_H
 
+#include "oran-query-trigger.h"
+#include "oran-report.h"
+
 #include <ns3/object.h>
 #include <ns3/ptr.h>
 
-#include "oran-report.h"
-#include "oran-query-trigger.h"
-
-namespace ns3 {
+namespace ns3
+{
 
 class OranReporter;
 
@@ -49,41 +50,42 @@ class OranReporter;
  */
 class OranQueryTriggerCustom : public OranQueryTrigger
 {
-public:
-  /**
-   * Get the TypeId of the OranQueryTriggerCustom class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranQueryTriggerCustom class.
-   */
-  OranQueryTriggerCustom (void);
-  /**
-   * Destructor of the OranQueryTriggerCustom class.
-   */
-  ~OranQueryTriggerCustom (void) override;
-  /**
-   * Indicates if a report should trigger query to the Logic Modules.
-   *
-   * \param report The report to consider.
-   * \returns True, if a query to the Logic Modules should occur.
-   */
-  bool QueryLms (Ptr<OranReport> report) override;
-protected:
-  /**
-   * Dispose of the object.
-   */
-  void DoDispose (void) override;
-private:
-  /**
-   * A custom callback to trigger LM queries.
-   */
-  Callback<bool, Ptr<OranReport> > m_customCb;
+  public:
+    /**
+     * Get the TypeId of the OranQueryTriggerCustom class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranQueryTriggerCustom class.
+     */
+    OranQueryTriggerCustom(void);
+    /**
+     * Destructor of the OranQueryTriggerCustom class.
+     */
+    ~OranQueryTriggerCustom(void) override;
+    /**
+     * Indicates if a report should trigger query to the Logic Modules.
+     *
+     * \param report The report to consider.
+     * \returns True, if a query to the Logic Modules should occur.
+     */
+    bool QueryLms(Ptr<OranReport> report) override;
+
+  protected:
+    /**
+     * Dispose of the object.
+     */
+    void DoDispose(void) override;
+
+  private:
+    /**
+     * A custom callback to trigger LM queries.
+     */
+    Callback<bool, Ptr<OranReport>> m_customCb;
 }; // class OranQueryTriggerCustom
 
 } // namespace ns3
 
 #endif /* ORAN_QUERY_TRIGGER_CUSTOM_H */
-

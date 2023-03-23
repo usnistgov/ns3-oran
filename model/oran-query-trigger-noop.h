@@ -32,13 +32,14 @@
 #ifndef ORAN_QUERY_TRIGGER_NOOP_H
 #define ORAN_QUERY_TRIGGER_NOOP_H
 
+#include "oran-query-trigger.h"
+#include "oran-report.h"
+
 #include <ns3/object.h>
 #include <ns3/ptr.h>
 
-#include "oran-report.h"
-#include "oran-query-trigger.h"
-
-namespace ns3 {
+namespace ns3
+{
 
 class OranReporter;
 
@@ -49,32 +50,31 @@ class OranReporter;
  */
 class OranQueryTriggerNoop : public OranQueryTrigger
 {
-public:
-  /**
-   * Get the TypeId of the OranQueryTriggerNoop class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranQueryTriggerNoop class.
-   */
-  OranQueryTriggerNoop (void);
-  /**
-   * Destructor of the OranQueryTriggerNoop class.
-   */
-  ~OranQueryTriggerNoop (void) override;
-  /**
-   * Indicates if a report should trigger query to the Logic Modules.
-   * As this is a No-Operation trigger, it always returns false.
-   *
-   * \param report The report to consider.
-   * \returns True, if a query to the Logic Modules should occur.
-   */
-  bool QueryLms (Ptr<OranReport> report) override;
+  public:
+    /**
+     * Get the TypeId of the OranQueryTriggerNoop class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranQueryTriggerNoop class.
+     */
+    OranQueryTriggerNoop(void);
+    /**
+     * Destructor of the OranQueryTriggerNoop class.
+     */
+    ~OranQueryTriggerNoop(void) override;
+    /**
+     * Indicates if a report should trigger query to the Logic Modules.
+     * As this is a No-Operation trigger, it always returns false.
+     *
+     * \param report The report to consider.
+     * \returns True, if a query to the Logic Modules should occur.
+     */
+    bool QueryLms(Ptr<OranReport> report) override;
 }; // class OranQueryTriggerNoop
 
 } // namespace ns3
 
 #endif /* ORAN_QUERY_TRIGGER_NOOP_H */
-

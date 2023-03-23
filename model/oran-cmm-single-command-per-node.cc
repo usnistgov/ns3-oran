@@ -29,140 +29,148 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/abort.h>
-
 #include "oran-cmm-single-command-per-node.h"
-#include "oran-command.h"
+
 #include "oran-command-lte-2-lte-handover.h"
-#include "oran-near-rt-ric.h"
+#include "oran-command.h"
 #include "oran-data-repository.h"
+#include "oran-near-rt-ric.h"
 
-namespace ns3 {
+#include <ns3/abort.h>
+#include <ns3/log.h>
 
-NS_LOG_COMPONENT_DEFINE ("OranCmmSingleCommandPerNode");
+namespace ns3
+{
 
-NS_OBJECT_ENSURE_REGISTERED (OranCmmSingleCommandPerNode);
+NS_LOG_COMPONENT_DEFINE("OranCmmSingleCommandPerNode");
+
+NS_OBJECT_ENSURE_REGISTERED(OranCmmSingleCommandPerNode);
 
 TypeId
-OranCmmSingleCommandPerNode::GetTypeId (void)
+OranCmmSingleCommandPerNode::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranCmmSingleCommandPerNode")
-    .SetParent<OranCmm> ()
-    .AddConstructor<OranCmmSingleCommandPerNode> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranCmmSingleCommandPerNode")
+                            .SetParent<OranCmm>()
+                            .AddConstructor<OranCmmSingleCommandPerNode>();
 
-  return tid;
+    return tid;
 }
 
-OranCmmSingleCommandPerNode::OranCmmSingleCommandPerNode (void)
-  : OranCmm ()
+OranCmmSingleCommandPerNode::OranCmmSingleCommandPerNode(void)
+    : OranCmm()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_name = "CmmSingleCommandPerNode";
+    m_name = "CmmSingleCommandPerNode";
 }
 
-OranCmmSingleCommandPerNode::~OranCmmSingleCommandPerNode (void)
+OranCmmSingleCommandPerNode::~OranCmmSingleCommandPerNode(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmmSingleCommandPerNode::DoDispose (void)
+OranCmmSingleCommandPerNode::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  OranCmm::DoDispose ();
+    OranCmm::DoDispose();
 }
 
-std::vector<Ptr<OranCommand> >
-OranCmmSingleCommandPerNode::Filter (
-    std::map<std::tuple<std::string, bool>, 
-    std::vector<Ptr<OranCommand> > > inputCommands)
+std::vector<Ptr<OranCommand>>
+OranCmmSingleCommandPerNode::Filter(
+    std::map<std::tuple<std::string, bool>, std::vector<Ptr<OranCommand>>> inputCommands)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to run Conflict Mitigation Module with NULL Near-RT RIC");
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr,
+                    "Attempting to run Conflict Mitigation Module with NULL Near-RT RIC");
 
-  std::vector<Ptr<OranCommand> > commands;
+    std::vector<Ptr<OranCommand>> commands;
 
-  if (m_active)
+    if (m_active)
     {
-      std::map <uint64_t, bool> affectedNodes;
-      std::map <uint64_t, Ptr<OranCommand> > selectedCommands;
-      for (auto commandSet : inputCommands) 
+        std::map<uint64_t, bool> affectedNodes;
+        std::map<uint64_t, Ptr<OranCommand>> selectedCommands;
+        for (auto commandSet : inputCommands)
         {
-          bool defaultLm = std::get<1>(commandSet.first);
-          uint64_t affectedNodeId;
+            bool defaultLm = std::get<1>(commandSet.first);
+            uint64_t affectedNodeId;
 
-          LogLogicToStorage ("Checking commands from LM " + std::get<0>(commandSet.first));
-          for (auto command : commandSet.second)
+            LogLogicToStorage("Checking commands from LM " + std::get<0>(commandSet.first));
+            for (auto command : commandSet.second)
             {
-              // Get the affected node E2 Node Id depending on the command type
-              if (command->GetInstanceTypeId () == OranCommandLte2LteHandover::GetTypeId ())
+                // Get the affected node E2 Node Id depending on the command type
+                if (command->GetInstanceTypeId() == OranCommandLte2LteHandover::GetTypeId())
                 {
-                  uint16_t cellId;
-                  bool found;
-                  std::tie (found, cellId) = m_nearRtRic->Data ()->GetLteEnbCellInfo (command->GetTargetE2NodeId ());
-                  affectedNodeId = m_nearRtRic->Data ()->GetLteUeE2NodeIdFromCellInfo (
-                      cellId, (command->GetObject<OranCommandLte2LteHandover> ())->GetTargetRnti ());
+                    uint16_t cellId;
+                    bool found;
+                    std::tie(found, cellId) =
+                        m_nearRtRic->Data()->GetLteEnbCellInfo(command->GetTargetE2NodeId());
+                    affectedNodeId = m_nearRtRic->Data()->GetLteUeE2NodeIdFromCellInfo(
+                        cellId,
+                        (command->GetObject<OranCommandLte2LteHandover>())->GetTargetRnti());
 
-                  LogLogicToStorage ("Evaluating LTE-to-LTE Handover command affecting E2 Node " + std::to_string (affectedNodeId));
+                    LogLogicToStorage("Evaluating LTE-to-LTE Handover command affecting E2 Node " +
+                                      std::to_string(affectedNodeId));
                 }
-              else
+                else
                 {
-                  // Default: Use the target E2 Node Id
-                  affectedNodeId = command->GetTargetE2NodeId ();
+                    // Default: Use the target E2 Node Id
+                    affectedNodeId = command->GetTargetE2NodeId();
 
-                  LogLogicToStorage ("Evaluating commands affecting E2 Node " + std::to_string (affectedNodeId));
+                    LogLogicToStorage("Evaluating commands affecting E2 Node " +
+                                      std::to_string(affectedNodeId));
                 }
 
-              if (affectedNodes.find (affectedNodeId) != affectedNodes.end ())
+                if (affectedNodes.find(affectedNodeId) != affectedNodes.end())
                 {
-                  // There is already a command affecting this node. The only way this
-                  // new command replaces the old one is if this was issued by the default LM
-                  // and the old one was not
-                  if (defaultLm && ! affectedNodes [affectedNodeId])
+                    // There is already a command affecting this node. The only way this
+                    // new command replaces the old one is if this was issued by the default LM
+                    // and the old one was not
+                    if (defaultLm && !affectedNodes[affectedNodeId])
                     {
-                      affectedNodes [affectedNodeId] = defaultLm;
-                      selectedCommands [affectedNodeId] = command;
+                        affectedNodes[affectedNodeId] = defaultLm;
+                        selectedCommands[affectedNodeId] = command;
 
-                      LogLogicToStorage ("There was a command for this node, but the new command was issued by the default LM, so new replaces old.");
+                        LogLogicToStorage("There was a command for this node, but the new command "
+                                          "was issued by the default LM, so new replaces old.");
                     }
-                  else
+                    else
                     {
-                      LogLogicToStorage ("There was a command for this node, and the new command has lower precedence (old default? " + 
-                          std::to_string (affectedNodes[affectedNodeId]) + 
-                          "; new default? " + std::to_string (defaultLm) + "). Ignoring new command.");
+                        LogLogicToStorage("There was a command for this node, and the new command "
+                                          "has lower precedence (old default? " +
+                                          std::to_string(affectedNodes[affectedNodeId]) +
+                                          "; new default? " + std::to_string(defaultLm) +
+                                          "). Ignoring new command.");
                     }
                 }
-              else
+                else
                 {
-                  // No command affects the node, so we can just save the current one
-                  affectedNodes [affectedNodeId] = defaultLm;
-                  selectedCommands [affectedNodeId] = command;
+                    // No command affects the node, so we can just save the current one
+                    affectedNodes[affectedNodeId] = defaultLm;
+                    selectedCommands[affectedNodeId] = command;
 
-                  LogLogicToStorage ("There was no command for this node; Saving new command.");
+                    LogLogicToStorage("There was no command for this node; Saving new command.");
                 }
             }
         }
-      // Collect the selected commands into the vector this method will output
-      for (auto selcom : selectedCommands)
+        // Collect the selected commands into the vector this method will output
+        for (auto selcom : selectedCommands)
         {
-          commands.push_back (selcom.second);
+            commands.push_back(selcom.second);
         }
     }
-  else
+    else
     {
-      // This module is not active. Just copy the same set of commands as output
-      for (auto commandSet : inputCommands) 
+        // This module is not active. Just copy the same set of commands as output
+        for (auto commandSet : inputCommands)
         {
-          commands.insert (commands.end (), commandSet.second.begin (), commandSet.second.end ());
+            commands.insert(commands.end(), commandSet.second.begin(), commandSet.second.end());
         }
     }
 
-  return commands;
+    return commands;
 }
 
 } // namespace ns3

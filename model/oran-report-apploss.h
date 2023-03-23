@@ -32,11 +32,12 @@
 #ifndef ORAN_REPORT_APPLOSS
 #define ORAN_REPORT_APPLOSS
 
-#include <string>
-
 #include "oran-report.h"
 
-namespace ns3 {
+#include <string>
+
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -45,40 +46,41 @@ namespace ns3 {
  */
 class OranReportAppLoss : public OranReport
 {
-public:
-  /**
-   * Get the TypeId of the OranReportAppLoss class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReportAppLoss class.
-   */
-   OranReportAppLoss (void);
-  /**
-   * Destructor of the OranReportAppLoss class.
-   */
-  ~OranReportAppLoss (void) override;
-  /**
-   * Get a string representation of this Report
-   *
-   * \return A string representation of this Report.
-   */
-   std::string ToString (void) const override;
-   /**
-    * Gets the reported application packet loss.
-    *
-    * \return The reported application packet loss.
-    */
-   double GetLoss (void) const;
-private:
-   /**
-    * The application packet loss.
-    */
-   double m_loss;
+  public:
+    /**
+     * Get the TypeId of the OranReportAppLoss class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReportAppLoss class.
+     */
+    OranReportAppLoss(void);
+    /**
+     * Destructor of the OranReportAppLoss class.
+     */
+    ~OranReportAppLoss(void) override;
+    /**
+     * Get a string representation of this Report
+     *
+     * \return A string representation of this Report.
+     */
+    std::string ToString(void) const override;
+    /**
+     * Gets the reported application packet loss.
+     *
+     * \return The reported application packet loss.
+     */
+    double GetLoss(void) const;
+
+  private:
+    /**
+     * The application packet loss.
+     */
+    double m_loss;
 }; // class OranReportAppLoss
 
 } // namespace ns3
 
-#endif  //ORAN_REPORT_APPLOSS
+#endif // ORAN_REPORT_APPLOSS

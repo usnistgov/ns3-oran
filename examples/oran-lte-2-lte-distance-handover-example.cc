@@ -29,22 +29,22 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <stdio.h>
-
 #include <ns3/core-module.h>
-#include <ns3/network-module.h>
 #include <ns3/internet-module.h>
-#include <ns3/mobility-module.h>
 #include <ns3/lte-module.h>
+#include <ns3/mobility-module.h>
+#include <ns3/network-module.h>
 #include <ns3/oran-module.h>
+
+#include <stdio.h>
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("OranLte2LteDistanceHandoverExample");
+NS_LOG_COMPONENT_DEFINE("OranLte2LteDistanceHandoverExample");
 
 /**
  * Usage example of the ORAN models.
- * 
+ *
  * The scenario consists of an LTE UE moving back and forth
  * between 2 LTE eNBs. The LTE UE reports to the RIC its location
  * and current Cell ID. In the RIC, an LM will periodically check
@@ -52,222 +52,233 @@ NS_LOG_COMPONENT_DEFINE ("OranLte2LteDistanceHandoverExample");
  */
 
 void
-NotifyHandoverEndOkEnb (std::string context,
-                        uint64_t imsi,
-                        uint16_t cellid,
-                        uint16_t rnti)
+NotifyHandoverEndOkEnb(std::string context, uint64_t imsi, uint16_t cellid, uint16_t rnti)
 {
-  std::cout << Simulator::Now ().GetSeconds () << " " << context
-            << " eNB CellId " << cellid
-            << ": completed handover of UE with IMSI " << imsi
-            << " RNTI " << rnti
-            << std::endl;
+    std::cout << Simulator::Now().GetSeconds() << " " << context << " eNB CellId " << cellid
+              << ": completed handover of UE with IMSI " << imsi << " RNTI " << rnti << std::endl;
 }
 
 void
-ReverseVelocity (NodeContainer nodes, Time interval)
+ReverseVelocity(NodeContainer nodes, Time interval)
 {
-  for (uint32_t idx = 0; idx < nodes.GetN (); idx++)
+    for (uint32_t idx = 0; idx < nodes.GetN(); idx++)
     {
-      Ptr<ConstantVelocityMobilityModel> mobility = nodes.Get (idx)->GetObject<ConstantVelocityMobilityModel> ();
-      mobility->SetVelocity (Vector (mobility->GetVelocity ().x * -1, 0, 0));
+        Ptr<ConstantVelocityMobilityModel> mobility =
+            nodes.Get(idx)->GetObject<ConstantVelocityMobilityModel>();
+        mobility->SetVelocity(Vector(mobility->GetVelocity().x * -1, 0, 0));
     }
 
-  Simulator::Schedule (interval, &ReverseVelocity, nodes, interval);
+    Simulator::Schedule(interval, &ReverseVelocity, nodes, interval);
 }
 
 void
-QueryRcSink (std::string query, std::string args, int rc)
+QueryRcSink(std::string query, std::string args, int rc)
 {
-  std::cout << Simulator::Now ().GetSeconds () <<
-    " Query " << ((rc == SQLITE_OK || rc == SQLITE_DONE) ? "OK" : "ERROR") <<
-    "(" << rc << "): \"" << query << "\"";
+    std::cout << Simulator::Now().GetSeconds() << " Query "
+              << ((rc == SQLITE_OK || rc == SQLITE_DONE) ? "OK" : "ERROR") << "(" << rc << "): \""
+              << query << "\"";
 
-  if (! args.empty ())
+    if (!args.empty())
     {
-      std::cout << " (" << args << ")";
+        std::cout << " (" << args << ")";
     }
-  std::cout << std::endl;
+    std::cout << std::endl;
 }
 
 /**
  * ORAN handover example. Based on the LTE module's "lena-x2-handover.cc".
  */
 int
-main (int argc, char *argv[])
+main(int argc, char* argv[])
 {
-  uint16_t numberOfUes = 1;
-  uint16_t numberOfEnbs = 2;
-  Time simTime = Seconds (50);
-  double distance = 50;
-  Time interval = Seconds (15);
-  double speed = 1.5;
-  bool verbose = false;
-  std::string dbFileName = "oran-repository.db";
+    uint16_t numberOfUes = 1;
+    uint16_t numberOfEnbs = 2;
+    Time simTime = Seconds(50);
+    double distance = 50;
+    Time interval = Seconds(15);
+    double speed = 1.5;
+    bool verbose = false;
+    std::string dbFileName = "oran-repository.db";
 
-  // Command line arguments
-  CommandLine cmd (__FILE__);
-  cmd.AddValue ("verbose", "Enable printing SQL queries results", verbose);
-  cmd.Parse (argc, argv);
+    // Command line arguments
+    CommandLine cmd(__FILE__);
+    cmd.AddValue("verbose", "Enable printing SQL queries results", verbose);
+    cmd.Parse(argc, argv);
 
-  Config::SetDefault ("ns3::LteHelper::UseIdealRrc", BooleanValue (false));
+    Config::SetDefault("ns3::LteHelper::UseIdealRrc", BooleanValue(false));
 
-  Ptr<LteHelper> lteHelper = CreateObject<LteHelper> ();
-  Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper> ();
-  lteHelper->SetEpcHelper (epcHelper);
-  lteHelper->SetSchedulerType ("ns3::RrFfMacScheduler");
-  lteHelper->SetHandoverAlgorithmType ("ns3::NoOpHandoverAlgorithm"); // disable automatic handover
+    Ptr<LteHelper> lteHelper = CreateObject<LteHelper>();
+    Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>();
+    lteHelper->SetEpcHelper(epcHelper);
+    lteHelper->SetSchedulerType("ns3::RrFfMacScheduler");
+    lteHelper->SetHandoverAlgorithmType("ns3::NoOpHandoverAlgorithm"); // disable automatic handover
 
-  Ptr<Node> pgw = epcHelper->GetPgwNode ();
+    Ptr<Node> pgw = epcHelper->GetPgwNode();
 
-  NodeContainer ueNodes;
-  NodeContainer enbNodes;
-  enbNodes.Create (numberOfEnbs);
-  ueNodes.Create (numberOfUes);
+    NodeContainer ueNodes;
+    NodeContainer enbNodes;
+    enbNodes.Create(numberOfEnbs);
+    ueNodes.Create(numberOfUes);
 
-  // Install Mobility Model
-  Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator> ();
-  for (uint16_t i = 0; i < numberOfEnbs; i++)
+    // Install Mobility Model
+    Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
+    for (uint16_t i = 0; i < numberOfEnbs; i++)
     {
-      positionAlloc->Add (Vector (distance * i, 0, 20));
+        positionAlloc->Add(Vector(distance * i, 0, 20));
     }
 
-  for (uint16_t i = 0; i < numberOfUes; i++)
+    for (uint16_t i = 0; i < numberOfUes; i++)
     {
-      // Coordinates of the middle point between the eNBs, minus the distance covered
-      // in half of the interval for switching directions
-      positionAlloc->Add (Vector ((distance / 2) - (speed * (interval.GetSeconds () / 2)), 0, 1.5));
+        // Coordinates of the middle point between the eNBs, minus the distance covered
+        // in half of the interval for switching directions
+        positionAlloc->Add(Vector((distance / 2) - (speed * (interval.GetSeconds() / 2)), 0, 1.5));
     }
 
-  MobilityHelper mobility;
-  mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-  mobility.SetPositionAllocator (positionAlloc);
-  mobility.Install (enbNodes);
+    MobilityHelper mobility;
+    mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+    mobility.SetPositionAllocator(positionAlloc);
+    mobility.Install(enbNodes);
 
-  mobility.SetMobilityModel ("ns3::ConstantVelocityMobilityModel");
-  mobility.Install (ueNodes);
+    mobility.SetMobilityModel("ns3::ConstantVelocityMobilityModel");
+    mobility.Install(ueNodes);
 
-  for (uint32_t idx = 0; idx < ueNodes.GetN (); idx++)
+    for (uint32_t idx = 0; idx < ueNodes.GetN(); idx++)
     {
-      Ptr<ConstantVelocityMobilityModel> mobility = ueNodes.Get (idx)->GetObject<ConstantVelocityMobilityModel> ();
-      mobility->SetVelocity (Vector (speed, 0, 0));
+        Ptr<ConstantVelocityMobilityModel> mobility =
+            ueNodes.Get(idx)->GetObject<ConstantVelocityMobilityModel>();
+        mobility->SetVelocity(Vector(speed, 0, 0));
     }
 
-  // Schedule the first direction switch
-  Simulator::Schedule (interval, &ReverseVelocity, ueNodes, interval);
+    // Schedule the first direction switch
+    Simulator::Schedule(interval, &ReverseVelocity, ueNodes, interval);
 
-  // Install LTE Devices in eNB and UEs
-  NetDeviceContainer enbLteDevs = lteHelper->InstallEnbDevice (enbNodes);
-  NetDeviceContainer ueLteDevs = lteHelper->InstallUeDevice (ueNodes);
-  // Install the IP stack on the UEs
-  InternetStackHelper internet;
-  internet.Install (ueNodes);
-  Ipv4InterfaceContainer ueIpIfaces;
-  ueIpIfaces = epcHelper->AssignUeIpv4Address (NetDeviceContainer (ueLteDevs));
+    // Install LTE Devices in eNB and UEs
+    NetDeviceContainer enbLteDevs = lteHelper->InstallEnbDevice(enbNodes);
+    NetDeviceContainer ueLteDevs = lteHelper->InstallUeDevice(ueNodes);
+    // Install the IP stack on the UEs
+    InternetStackHelper internet;
+    internet.Install(ueNodes);
+    Ipv4InterfaceContainer ueIpIfaces;
+    ueIpIfaces = epcHelper->AssignUeIpv4Address(NetDeviceContainer(ueLteDevs));
 
-  // Attach all UEs to the first eNodeB
-  for (uint16_t i = 0; i < numberOfUes; i++)
+    // Attach all UEs to the first eNodeB
+    for (uint16_t i = 0; i < numberOfUes; i++)
     {
-      lteHelper->Attach (ueLteDevs.Get (i), enbLteDevs.Get (0));
+        lteHelper->Attach(ueLteDevs.Get(i), enbLteDevs.Get(0));
     }
 
-  // Add X2 interface
-  lteHelper->AddX2Interface (enbNodes);
+    // Add X2 interface
+    lteHelper->AddX2Interface(enbNodes);
 
-  // ORAN Models -- BEGIN
-  if (! dbFileName.empty ())
+    // ORAN Models -- BEGIN
+    if (!dbFileName.empty())
     {
-      std::remove (dbFileName.c_str());
+        std::remove(dbFileName.c_str());
     }
-  Ptr<OranDataRepository> dataRepository = CreateObject<OranDataRepositorySqlite> ();
-  Ptr<OranLm> defaultLm = CreateObject<OranLmLte2LteDistanceHandover> ();
-  Ptr<OranCmm> cmm = CreateObject<OranCmmNoop> ();
-  Ptr<OranNearRtRic> nearRtRic = CreateObject<OranNearRtRic> ();
-  Ptr<OranNearRtRicE2Terminator> nearRtRicE2Terminator = CreateObject<OranNearRtRicE2Terminator> ();
+    Ptr<OranDataRepository> dataRepository = CreateObject<OranDataRepositorySqlite>();
+    Ptr<OranLm> defaultLm = CreateObject<OranLmLte2LteDistanceHandover>();
+    Ptr<OranCmm> cmm = CreateObject<OranCmmNoop>();
+    Ptr<OranNearRtRic> nearRtRic = CreateObject<OranNearRtRic>();
+    Ptr<OranNearRtRicE2Terminator> nearRtRicE2Terminator =
+        CreateObject<OranNearRtRicE2Terminator>();
 
-  dataRepository->SetAttribute ("DatabaseFile", StringValue (dbFileName));
-  if (verbose)
+    dataRepository->SetAttribute("DatabaseFile", StringValue(dbFileName));
+    if (verbose)
     {
-      dataRepository->TraceConnectWithoutContext ("QueryRc", MakeCallback (&QueryRcSink));
-    }
-
-  defaultLm->SetAttribute ("Verbose", BooleanValue (true));
-  defaultLm->SetAttribute ("NearRtRic", PointerValue (nearRtRic));
-  defaultLm->SetAttribute ("ProcessingDelayRv", StringValue ("ns3::ConstantRandomVariable[Constant=0]"));
-
-  cmm->SetAttribute ("NearRtRic", PointerValue (nearRtRic));
-  cmm->SetAttribute ("Verbose", BooleanValue (true));
-
-  nearRtRicE2Terminator->SetAttribute ("NearRtRic", PointerValue (nearRtRic));
-  nearRtRicE2Terminator->SetAttribute ("DataRepository", PointerValue (dataRepository));
-  nearRtRicE2Terminator->SetAttribute ("TransmissionDelayRv", StringValue ("ns3::ConstantRandomVariable[Constant=0.001]"));
-
-  nearRtRic->SetAttribute ("DefaultLogicModule", PointerValue (defaultLm));
-  nearRtRic->SetAttribute ("E2Terminator", PointerValue (nearRtRicE2Terminator));
-  nearRtRic->SetAttribute ("DataRepository", PointerValue (dataRepository));
-  nearRtRic->SetAttribute ("LmQueryInterval", TimeValue (Seconds (5)));
-  nearRtRic->SetAttribute ("ConflictMitigationModule", PointerValue (cmm));
-  nearRtRic->SetAttribute ("E2NodeInactivityThreshold", TimeValue (Seconds (2)));
-  nearRtRic->SetAttribute ("E2NodeInactivityIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=2]"));
-  nearRtRic->SetAttribute ("LmQueryMaxWaitTime", TimeValue (Seconds (0))); // 0 means wait for all LMs to finish
-  nearRtRic->SetAttribute ("LmQueryLateCommandPolicy", EnumValue (OranNearRtRic::DROP));
-
-  Simulator::Schedule (Seconds (1), &OranNearRtRic::Start, nearRtRic);
-
-  for (uint32_t idx = 0; idx < ueNodes.GetN (); idx++)
-    {
-      Ptr<OranReporterLocation> locationReporter = CreateObject<OranReporterLocation> ();
-      Ptr<OranReporterLteUeCellInfo> lteUeCellInfoReporter = CreateObject<OranReporterLteUeCellInfo> ();
-      Ptr<OranE2NodeTerminatorLteUe> lteUeTerminator = CreateObject<OranE2NodeTerminatorLteUe> ();
-
-      locationReporter->SetAttribute ("Terminator", PointerValue (lteUeTerminator));
-      locationReporter->SetAttribute ("Trigger", StringValue ("ns3::OranReportTriggerPeriodic"));
-
-      lteUeCellInfoReporter->SetAttribute ("Terminator", PointerValue (lteUeTerminator));
-      lteUeCellInfoReporter->SetAttribute ("Trigger", StringValue ("ns3::OranReportTriggerLteUeHandover[InitialReport=true]"));
-
-      lteUeTerminator->SetAttribute ("NearRtRic", PointerValue (nearRtRic));
-      lteUeTerminator->SetAttribute ("RegistrationIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
-      lteUeTerminator->SetAttribute ("SendIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
-      lteUeTerminator->SetAttribute ("TransmissionDelayRv", StringValue ("ns3::ConstantRandomVariable[Constant=0.001]"));
-
-      lteUeTerminator->AddReporter (locationReporter);
-      lteUeTerminator->AddReporter (lteUeCellInfoReporter);
-
-      lteUeTerminator->Attach (ueNodes.Get (idx));
-
-      Simulator::Schedule (Seconds (2), &OranE2NodeTerminatorLteUe::Activate, lteUeTerminator);
+        dataRepository->TraceConnectWithoutContext("QueryRc", MakeCallback(&QueryRcSink));
     }
 
-  for (uint32_t idx = 0; idx < enbNodes.GetN (); idx++)
+    defaultLm->SetAttribute("Verbose", BooleanValue(true));
+    defaultLm->SetAttribute("NearRtRic", PointerValue(nearRtRic));
+    defaultLm->SetAttribute("ProcessingDelayRv",
+                            StringValue("ns3::ConstantRandomVariable[Constant=0]"));
+
+    cmm->SetAttribute("NearRtRic", PointerValue(nearRtRic));
+    cmm->SetAttribute("Verbose", BooleanValue(true));
+
+    nearRtRicE2Terminator->SetAttribute("NearRtRic", PointerValue(nearRtRic));
+    nearRtRicE2Terminator->SetAttribute("DataRepository", PointerValue(dataRepository));
+    nearRtRicE2Terminator->SetAttribute("TransmissionDelayRv",
+                                        StringValue("ns3::ConstantRandomVariable[Constant=0.001]"));
+
+    nearRtRic->SetAttribute("DefaultLogicModule", PointerValue(defaultLm));
+    nearRtRic->SetAttribute("E2Terminator", PointerValue(nearRtRicE2Terminator));
+    nearRtRic->SetAttribute("DataRepository", PointerValue(dataRepository));
+    nearRtRic->SetAttribute("LmQueryInterval", TimeValue(Seconds(5)));
+    nearRtRic->SetAttribute("ConflictMitigationModule", PointerValue(cmm));
+    nearRtRic->SetAttribute("E2NodeInactivityThreshold", TimeValue(Seconds(2)));
+    nearRtRic->SetAttribute("E2NodeInactivityIntervalRv",
+                            StringValue("ns3::ConstantRandomVariable[Constant=2]"));
+    nearRtRic->SetAttribute("LmQueryMaxWaitTime",
+                            TimeValue(Seconds(0))); // 0 means wait for all LMs to finish
+    nearRtRic->SetAttribute("LmQueryLateCommandPolicy", EnumValue(OranNearRtRic::DROP));
+
+    Simulator::Schedule(Seconds(1), &OranNearRtRic::Start, nearRtRic);
+
+    for (uint32_t idx = 0; idx < ueNodes.GetN(); idx++)
     {
-      Ptr<OranReporterLocation> locationReporter = CreateObject<OranReporterLocation> ();
-      Ptr<OranE2NodeTerminatorLteEnb> lteEnbTerminator = CreateObject<OranE2NodeTerminatorLteEnb> ();
+        Ptr<OranReporterLocation> locationReporter = CreateObject<OranReporterLocation>();
+        Ptr<OranReporterLteUeCellInfo> lteUeCellInfoReporter =
+            CreateObject<OranReporterLteUeCellInfo>();
+        Ptr<OranE2NodeTerminatorLteUe> lteUeTerminator = CreateObject<OranE2NodeTerminatorLteUe>();
 
-      locationReporter->SetAttribute ("Terminator", PointerValue (lteEnbTerminator));
-      locationReporter->SetAttribute ("Trigger", StringValue ("ns3::OranReportTriggerPeriodic"));
+        locationReporter->SetAttribute("Terminator", PointerValue(lteUeTerminator));
+        locationReporter->SetAttribute("Trigger", StringValue("ns3::OranReportTriggerPeriodic"));
 
-      lteEnbTerminator->SetAttribute ("NearRtRic", PointerValue (nearRtRic));
-      lteEnbTerminator->SetAttribute ("RegistrationIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
-      lteEnbTerminator->SetAttribute ("SendIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
-      lteEnbTerminator->SetAttribute ("TransmissionDelayRv", StringValue ("ns3::ConstantRandomVariable[Constant=0.001]"));
+        lteUeCellInfoReporter->SetAttribute("Terminator", PointerValue(lteUeTerminator));
+        lteUeCellInfoReporter->SetAttribute(
+            "Trigger",
+            StringValue("ns3::OranReportTriggerLteUeHandover[InitialReport=true]"));
 
-      lteEnbTerminator->AddReporter (locationReporter);
+        lteUeTerminator->SetAttribute("NearRtRic", PointerValue(nearRtRic));
+        lteUeTerminator->SetAttribute("RegistrationIntervalRv",
+                                      StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+        lteUeTerminator->SetAttribute("SendIntervalRv",
+                                      StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+        lteUeTerminator->SetAttribute("TransmissionDelayRv",
+                                      StringValue("ns3::ConstantRandomVariable[Constant=0.001]"));
 
-      lteEnbTerminator->Attach (enbNodes.Get (idx));
+        lteUeTerminator->AddReporter(locationReporter);
+        lteUeTerminator->AddReporter(lteUeCellInfoReporter);
 
-      Simulator::Schedule (Seconds (1.5), &OranE2NodeTerminatorLteEnb::Activate, lteEnbTerminator);
+        lteUeTerminator->Attach(ueNodes.Get(idx));
+
+        Simulator::Schedule(Seconds(2), &OranE2NodeTerminatorLteUe::Activate, lteUeTerminator);
     }
 
-  // ORAN Models -- END
+    for (uint32_t idx = 0; idx < enbNodes.GetN(); idx++)
+    {
+        Ptr<OranReporterLocation> locationReporter = CreateObject<OranReporterLocation>();
+        Ptr<OranE2NodeTerminatorLteEnb> lteEnbTerminator =
+            CreateObject<OranE2NodeTerminatorLteEnb>();
 
-  // Trace the end of handovers
-  Config::Connect ("/NodeList/*/DeviceList/*/LteEnbRrc/HandoverEndOk",
-                   MakeCallback (&NotifyHandoverEndOkEnb));
+        locationReporter->SetAttribute("Terminator", PointerValue(lteEnbTerminator));
+        locationReporter->SetAttribute("Trigger", StringValue("ns3::OranReportTriggerPeriodic"));
 
-  Simulator::Stop (simTime);
-  Simulator::Run ();
+        lteEnbTerminator->SetAttribute("NearRtRic", PointerValue(nearRtRic));
+        lteEnbTerminator->SetAttribute("RegistrationIntervalRv",
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+        lteEnbTerminator->SetAttribute("SendIntervalRv",
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+        lteEnbTerminator->SetAttribute("TransmissionDelayRv",
+                                       StringValue("ns3::ConstantRandomVariable[Constant=0.001]"));
 
-  Simulator::Destroy ();
-  return 0;
+        lteEnbTerminator->AddReporter(locationReporter);
+
+        lteEnbTerminator->Attach(enbNodes.Get(idx));
+
+        Simulator::Schedule(Seconds(1.5), &OranE2NodeTerminatorLteEnb::Activate, lteEnbTerminator);
+    }
+
+    // ORAN Models -- END
+
+    // Trace the end of handovers
+    Config::Connect("/NodeList/*/DeviceList/*/LteEnbRrc/HandoverEndOk",
+                    MakeCallback(&NotifyHandoverEndOkEnb));
+
+    Simulator::Stop(simTime);
+    Simulator::Run();
+
+    Simulator::Destroy();
+    return 0;
 }

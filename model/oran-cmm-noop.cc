@@ -29,73 +29,75 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/abort.h>
-
 #include "oran-cmm-noop.h"
+
 #include "oran-command.h"
 #include "oran-near-rt-ric.h"
 
-namespace ns3 {
+#include <ns3/abort.h>
+#include <ns3/log.h>
 
-NS_LOG_COMPONENT_DEFINE ("OranCmmNoop");
+namespace ns3
+{
 
-NS_OBJECT_ENSURE_REGISTERED (OranCmmNoop);
+NS_LOG_COMPONENT_DEFINE("OranCmmNoop");
+
+NS_OBJECT_ENSURE_REGISTERED(OranCmmNoop);
 
 TypeId
-OranCmmNoop::GetTypeId (void)
+OranCmmNoop::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranCmmNoop")
-    .SetParent<OranCmm> ()
-    .AddConstructor<OranCmmNoop> ()
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranCmmNoop").SetParent<OranCmm>().AddConstructor<OranCmmNoop>();
 
-  return tid;
+    return tid;
 }
 
-OranCmmNoop::OranCmmNoop (void)
-  : OranCmm ()
+OranCmmNoop::OranCmmNoop(void)
+    : OranCmm()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_name = "CmmNoop";
+    m_name = "CmmNoop";
 }
 
-OranCmmNoop::~OranCmmNoop (void)
+OranCmmNoop::~OranCmmNoop(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmmNoop::DoDispose (void)
+OranCmmNoop::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  OranCmm::DoDispose ();
+    OranCmm::DoDispose();
 }
 
-std::vector<Ptr<OranCommand> >
-OranCmmNoop::Filter (std::map<std::tuple<std::string, bool>, std::vector<Ptr<OranCommand> > > inputCommands)
+std::vector<Ptr<OranCommand>>
+OranCmmNoop::Filter(
+    std::map<std::tuple<std::string, bool>, std::vector<Ptr<OranCommand>>> inputCommands)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  // Do nothing and return a vector with all the commands
-  // As we do nothing, there is no need to check if the CMM
-  // is active or not.
-  // We check if the pointer to the Near-RT RIC has been set, 
-  // though, as not having that one should be a configuration 
-  // problem (and may be a symptom of other issues)
-  NS_ABORT_MSG_IF (m_nearRtRic == nullptr, "Attempting to run Conflict Mitigation Module with NULL Near-RT RIC");
+    // Do nothing and return a vector with all the commands
+    // As we do nothing, there is no need to check if the CMM
+    // is active or not.
+    // We check if the pointer to the Near-RT RIC has been set,
+    // though, as not having that one should be a configuration
+    // problem (and may be a symptom of other issues)
+    NS_ABORT_MSG_IF(m_nearRtRic == nullptr,
+                    "Attempting to run Conflict Mitigation Module with NULL Near-RT RIC");
 
-  LogLogicToStorage ("No action taken");
+    LogLogicToStorage("No action taken");
 
-  std::vector<Ptr<OranCommand> > commands;
-  for (auto commandSet : inputCommands) 
+    std::vector<Ptr<OranCommand>> commands;
+    for (auto commandSet : inputCommands)
     {
-      commands.insert (commands.end (), commandSet.second.begin (), commandSet.second.end ());
+        commands.insert(commands.end(), commandSet.second.begin(), commandSet.second.end());
     }
 
-  return commands;
+    return commands;
 }
 
 } // namespace ns3

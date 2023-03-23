@@ -29,6 +29,19 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-near-rt-ric-e2terminator.h"
+
+#include "oran-command.h"
+#include "oran-data-repository.h"
+#include "oran-e2-node-terminator-lte-enb.h"
+#include "oran-e2-node-terminator-lte-ue.h"
+#include "oran-e2-node-terminator.h"
+#include "oran-near-rt-ric.h"
+#include "oran-report-apploss.h"
+#include "oran-report-location.h"
+#include "oran-report-lte-ue-cell-info.h"
+#include "oran-report.h"
+
 #include <ns3/abort.h>
 #include <ns3/log.h>
 #include <ns3/lte-enb-net-device.h>
@@ -39,221 +52,223 @@
 #include <ns3/simulator.h>
 #include <ns3/string.h>
 
-#include "oran-near-rt-ric.h"
-#include "oran-data-repository.h"
-#include "oran-command.h"
-#include "oran-report.h"
-#include "oran-report-location.h"
-#include "oran-report-lte-ue-cell-info.h"
-#include "oran-report-apploss.h"
-#include "oran-e2-node-terminator.h"
-#include "oran-e2-node-terminator-lte-ue.h"
-#include "oran-e2-node-terminator-lte-enb.h"
+namespace ns3
+{
 
-#include "oran-near-rt-ric-e2terminator.h"
-
-namespace ns3 {
-
-NS_LOG_COMPONENT_DEFINE ("OranNearRtRicE2Terminator");
-NS_OBJECT_ENSURE_REGISTERED (OranNearRtRicE2Terminator);
+NS_LOG_COMPONENT_DEFINE("OranNearRtRicE2Terminator");
+NS_OBJECT_ENSURE_REGISTERED(OranNearRtRicE2Terminator);
 
 TypeId
-OranNearRtRicE2Terminator::GetTypeId (void)
+OranNearRtRicE2Terminator::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranNearRtRicE2Terminator")
-    .SetParent<Object> ()
-    .AddConstructor<OranNearRtRicE2Terminator> ()
-    .AddAttribute ("NearRtRic",
-                   "Pointer to the Near-RT RIC",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranNearRtRicE2Terminator::m_nearRtRic),
-                   MakePointerChecker<OranNearRtRic> ())
-    .AddAttribute ("DataRepository",
-                   "Pointer to the Data Repository",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranNearRtRicE2Terminator::m_data),
-                   MakePointerChecker<OranDataRepository> ())
-    .AddAttribute ("TransmissionDelayRv",
-                   "The random variable used (in seconds) to calculate the transmission delay for a command.",
-                   StringValue ("ns3::ConstantRandomVariable[Constant=0]"),
-                   MakePointerAccessor (&OranNearRtRicE2Terminator::m_transmissionDelayRv),
-                   MakePointerChecker<RandomVariableStream> ())
-    ;
+    static TypeId tid =
+        TypeId("ns3::OranNearRtRicE2Terminator")
+            .SetParent<Object>()
+            .AddConstructor<OranNearRtRicE2Terminator>()
+            .AddAttribute("NearRtRic",
+                          "Pointer to the Near-RT RIC",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranNearRtRicE2Terminator::m_nearRtRic),
+                          MakePointerChecker<OranNearRtRic>())
+            .AddAttribute("DataRepository",
+                          "Pointer to the Data Repository",
+                          PointerValue(nullptr),
+                          MakePointerAccessor(&OranNearRtRicE2Terminator::m_data),
+                          MakePointerChecker<OranDataRepository>())
+            .AddAttribute("TransmissionDelayRv",
+                          "The random variable used (in seconds) to calculate the transmission "
+                          "delay for a command.",
+                          StringValue("ns3::ConstantRandomVariable[Constant=0]"),
+                          MakePointerAccessor(&OranNearRtRicE2Terminator::m_transmissionDelayRv),
+                          MakePointerChecker<RandomVariableStream>());
 
-  return tid;
+    return tid;
 }
 
-OranNearRtRicE2Terminator::OranNearRtRicE2Terminator (void)
-  : Object (),
-    m_active (false),
-    m_nodeTerminators (std::map<uint64_t, Ptr<OranE2NodeTerminator> > ())
+OranNearRtRicE2Terminator::OranNearRtRicE2Terminator(void)
+    : Object(),
+      m_active(false),
+      m_nodeTerminators(std::map<uint64_t, Ptr<OranE2NodeTerminator>>())
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranNearRtRicE2Terminator::~OranNearRtRicE2Terminator (void)
+OranNearRtRicE2Terminator::~OranNearRtRicE2Terminator(void)
 {
-  NS_LOG_FUNCTION (this);
-}
-
-void
-OranNearRtRicE2Terminator::Activate (void)
-{
-  NS_LOG_FUNCTION (this);
-
-  m_active = true;
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranNearRtRicE2Terminator::Deactivate (void)
+OranNearRtRicE2Terminator::Activate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_active = false;
+    m_active = true;
+}
+
+void
+OranNearRtRicE2Terminator::Deactivate(void)
+{
+    NS_LOG_FUNCTION(this);
+
+    m_active = false;
 }
 
 bool
-OranNearRtRicE2Terminator::IsActive (void) const
+OranNearRtRicE2Terminator::IsActive(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_active;
+    return m_active;
 }
 
 void
-OranNearRtRicE2Terminator::ReceiveRegistrationRequest (
-    OranNearRtRic::NodeType type,
-    uint64_t id,
-    Ptr<OranE2NodeTerminator> terminator)
+OranNearRtRicE2Terminator::ReceiveRegistrationRequest(OranNearRtRic::NodeType type,
+                                                      uint64_t id,
+                                                      Ptr<OranE2NodeTerminator> terminator)
 {
-  NS_LOG_FUNCTION (this << type << id << terminator);
+    NS_LOG_FUNCTION(this << type << id << terminator);
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
-      NS_ABORT_MSG_IF (terminator == nullptr, "Attempting to register a NULL Node E2 Terminator");
+        NS_ABORT_MSG_IF(
+            m_data == nullptr,
+            "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
+        NS_ABORT_MSG_IF(terminator == nullptr, "Attempting to register a NULL Node E2 Terminator");
 
-      uint64_t e2NodeId;
-      switch (type)
+        uint64_t e2NodeId;
+        switch (type)
         {
-          case OranNearRtRic::NodeType::LTEUE:
-            e2NodeId = m_data->RegisterNodeLteUe (id,
-                terminator->GetObject<OranE2NodeTerminatorLteUe> ()->GetNetDevice ()->GetRrc ()->GetImsi ());
+        case OranNearRtRic::NodeType::LTEUE:
+            e2NodeId = m_data->RegisterNodeLteUe(id,
+                                                 terminator->GetObject<OranE2NodeTerminatorLteUe>()
+                                                     ->GetNetDevice()
+                                                     ->GetRrc()
+                                                     ->GetImsi());
             break;
-          case OranNearRtRic::NodeType::LTEENB:
-            e2NodeId = m_data->RegisterNodeLteEnb (id,
-                terminator->GetObject<OranE2NodeTerminatorLteEnb> ()->GetNetDevice ()->GetCellId ());
+        case OranNearRtRic::NodeType::LTEENB:
+            e2NodeId = m_data->RegisterNodeLteEnb(
+                id,
+                terminator->GetObject<OranE2NodeTerminatorLteEnb>()->GetNetDevice()->GetCellId());
             break;
-          default:
-            e2NodeId = m_data->RegisterNode (type, id);
+        default:
+            e2NodeId = m_data->RegisterNode(type, id);
             break;
         }
-      m_nodeTerminators [e2NodeId] = terminator;
-      
-      Simulator::Schedule (Seconds (m_transmissionDelayRv->GetValue ()),
-          &OranE2NodeTerminator::ReceiveRegistrationResponse,
-          terminator,
-          e2NodeId);
+        m_nodeTerminators[e2NodeId] = terminator;
+
+        Simulator::Schedule(Seconds(m_transmissionDelayRv->GetValue()),
+                            &OranE2NodeTerminator::ReceiveRegistrationResponse,
+                            terminator,
+                            e2NodeId);
     }
 }
 
 void
-OranNearRtRicE2Terminator::ReceiveDeregistrationRequest (uint64_t e2NodeId)
+OranNearRtRicE2Terminator::ReceiveDeregistrationRequest(uint64_t e2NodeId)
 {
-  NS_LOG_FUNCTION (this << e2NodeId);
+    NS_LOG_FUNCTION(this << e2NodeId);
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
-  
-      uint64_t deregisteredE2NodeId = m_data->DeregisterNode (e2NodeId);
-      
-      Simulator::Schedule (Seconds (m_transmissionDelayRv->GetValue ()),
-          &OranE2NodeTerminator::ReceiveDeregistrationResponse,
-          m_nodeTerminators[e2NodeId],
-          deregisteredE2NodeId);
+        NS_ABORT_MSG_IF(
+            m_data == nullptr,
+            "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
+
+        uint64_t deregisteredE2NodeId = m_data->DeregisterNode(e2NodeId);
+
+        Simulator::Schedule(Seconds(m_transmissionDelayRv->GetValue()),
+                            &OranE2NodeTerminator::ReceiveDeregistrationResponse,
+                            m_nodeTerminators[e2NodeId],
+                            deregisteredE2NodeId);
     }
 }
 
 void
-OranNearRtRicE2Terminator::ReceiveReport (Ptr<OranReport> report)
+OranNearRtRicE2Terminator::ReceiveReport(Ptr<OranReport> report)
 {
-  NS_LOG_FUNCTION (this << report->ToString ());
+    NS_LOG_FUNCTION(this << report->ToString());
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
+        NS_ABORT_MSG_IF(
+            m_data == nullptr,
+            "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
 
-      if (report->GetInstanceTypeId () == TypeId::LookupByName ("ns3::OranReportLocation"))
+        if (report->GetInstanceTypeId() == TypeId::LookupByName("ns3::OranReportLocation"))
         {
-          Ptr<OranReportLocation> posRpt = report->GetObject<OranReportLocation> ();
-          m_data->SavePosition (posRpt->GetReporterE2NodeId (),
-              posRpt->GetLocation(),
-              posRpt->GetTime ());
+            Ptr<OranReportLocation> posRpt = report->GetObject<OranReportLocation>();
+            m_data->SavePosition(posRpt->GetReporterE2NodeId(),
+                                 posRpt->GetLocation(),
+                                 posRpt->GetTime());
         }
-      else if (report->GetInstanceTypeId () == TypeId::LookupByName ("ns3::OranReportLteUeCellInfo"))
+        else if (report->GetInstanceTypeId() ==
+                 TypeId::LookupByName("ns3::OranReportLteUeCellInfo"))
         {
-          Ptr<OranReportLteUeCellInfo> lteUeCellInfoRpt = report->GetObject<OranReportLteUeCellInfo> ();
-          m_data->SaveLteUeCellInfo (lteUeCellInfoRpt->GetReporterE2NodeId (),
-              lteUeCellInfoRpt->GetCellId(),
-              lteUeCellInfoRpt->GetRnti(),
-              lteUeCellInfoRpt->GetTime ());
+            Ptr<OranReportLteUeCellInfo> lteUeCellInfoRpt =
+                report->GetObject<OranReportLteUeCellInfo>();
+            m_data->SaveLteUeCellInfo(lteUeCellInfoRpt->GetReporterE2NodeId(),
+                                      lteUeCellInfoRpt->GetCellId(),
+                                      lteUeCellInfoRpt->GetRnti(),
+                                      lteUeCellInfoRpt->GetTime());
         }
-      else if (report->GetInstanceTypeId () == TypeId::LookupByName ("ns3::OranReportAppLoss"))
+        else if (report->GetInstanceTypeId() == TypeId::LookupByName("ns3::OranReportAppLoss"))
         {
-          Ptr<OranReportAppLoss> appLossRpt = report->GetObject<OranReportAppLoss> ();
-          m_data->SaveAppLoss (appLossRpt->GetReporterE2NodeId (), 
-              appLossRpt->GetLoss (), 
-              appLossRpt->GetTime ());
+            Ptr<OranReportAppLoss> appLossRpt = report->GetObject<OranReportAppLoss>();
+            m_data->SaveAppLoss(appLossRpt->GetReporterE2NodeId(),
+                                appLossRpt->GetLoss(),
+                                appLossRpt->GetTime());
         }
- 
-      m_nearRtRic->NotifyReportReceived (report);
+
+        m_nearRtRic->NotifyReportReceived(report);
     }
 }
 
 void
-OranNearRtRicE2Terminator::SendCommand (Ptr<OranCommand> command)
+OranNearRtRicE2Terminator::SendCommand(Ptr<OranCommand> command)
 {
-  NS_LOG_FUNCTION (this << command->ToString ());
+    NS_LOG_FUNCTION(this << command->ToString());
 
-  if (m_active)
+    if (m_active)
     {
-      NS_ABORT_MSG_IF (m_data == nullptr, "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
+        NS_ABORT_MSG_IF(
+            m_data == nullptr,
+            "Attempting to use a null data repository in the Near-RT RIC E2 Terminator");
 
-      m_data->LogCommandE2Terminator (command);
+        m_data->LogCommandE2Terminator(command);
 
-      Simulator::Schedule (Seconds (m_transmissionDelayRv->GetValue ()),
-          &OranE2NodeTerminator::ReceiveCommand,
-          m_nodeTerminators [command->GetTargetE2NodeId ()],
-          command);
+        Simulator::Schedule(Seconds(m_transmissionDelayRv->GetValue()),
+                            &OranE2NodeTerminator::ReceiveCommand,
+                            m_nodeTerminators[command->GetTargetE2NodeId()],
+                            command);
     }
 }
 
 void
-OranNearRtRicE2Terminator::ProcessCommands (std::vector<Ptr<OranCommand> > commands)
+OranNearRtRicE2Terminator::ProcessCommands(std::vector<Ptr<OranCommand>> commands)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active) 
+    if (m_active)
     {
-      for (const auto &cmd : commands)
+        for (const auto& cmd : commands)
         {
-          SendCommand (cmd);
+            SendCommand(cmd);
         }
     }
 }
 
 void
-OranNearRtRicE2Terminator::DoDispose (void)
+OranNearRtRicE2Terminator::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_nearRtRic = nullptr;
-  m_data = nullptr;
-  m_nodeTerminators.clear();
-  m_transmissionDelayRv = nullptr;
+    m_nearRtRic = nullptr;
+    m_data = nullptr;
+    m_nodeTerminators.clear();
+    m_transmissionDelayRv = nullptr;
 
-  Object::DoDispose ();
+    Object::DoDispose();
 }
 
 } // namespace ns3

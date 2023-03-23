@@ -35,9 +35,11 @@
 #include "oran-lm.h"
 
 #include <ns3/object.h>
+
 #include <vector>
 
-namespace ns3 {
+namespace ns3
+{
 
 class OranNearRtRic;
 class OranCommand;
@@ -45,36 +47,35 @@ class OranCommand;
 /**
  * \ingroup oran
  *
- * Logic Module that does nothing. This is useful for using as defult LM in the 
+ * Logic Module that does nothing. This is useful for using as defult LM in the
  * Near-RT RIC when we are not interested in doing anything.
  */
 class OranLmNoop : public OranLm
 {
-public:
-  /**
-   * Get the TypeId of the OranLmNoop class.
-   *
-   * \return The TypeId
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranLmNoop class.
-   */
-  OranLmNoop (void);
-  /**
-   * Destructor of the OranLmNoop class.
-   */
-  ~OranLmNoop (void) override;
-  /**
-   * Run the logic of this LM. This is a No Operation LM, so the logic does
-   * nothing and generates no commands.
-   *
-   * \return A vector of commands generated.
-   */
-  std::vector<Ptr<OranCommand> > Run (void) override;
+  public:
+    /**
+     * Get the TypeId of the OranLmNoop class.
+     *
+     * \return The TypeId
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranLmNoop class.
+     */
+    OranLmNoop(void);
+    /**
+     * Destructor of the OranLmNoop class.
+     */
+    ~OranLmNoop(void) override;
+    /**
+     * Run the logic of this LM. This is a No Operation LM, so the logic does
+     * nothing and generates no commands.
+     *
+     * \return A vector of commands generated.
+     */
+    std::vector<Ptr<OranCommand>> Run(void) override;
 }; // class OranLmNoop
 
 } // namespace ns3
 
 #endif /* ORAN_LM_NOOP_H */
-

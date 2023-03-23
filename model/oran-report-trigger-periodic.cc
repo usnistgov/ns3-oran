@@ -29,125 +29,126 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/pointer.h>
-#include <ns3/string.h>
-#include <ns3/simulator.h>
-#include <ns3/nstime.h>
-#include <ns3/random-variable-stream.h>
-
-#include "oran-reporter.h"
 #include "oran-report-trigger-periodic.h"
 
-namespace ns3 {
+#include "oran-reporter.h"
 
-NS_LOG_COMPONENT_DEFINE ("OranReportTriggerPeriodic");
+#include <ns3/log.h>
+#include <ns3/nstime.h>
+#include <ns3/pointer.h>
+#include <ns3/random-variable-stream.h>
+#include <ns3/simulator.h>
+#include <ns3/string.h>
 
-NS_OBJECT_ENSURE_REGISTERED (OranReportTriggerPeriodic);
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranReportTriggerPeriodic");
+
+NS_OBJECT_ENSURE_REGISTERED(OranReportTriggerPeriodic);
 
 TypeId
-OranReportTriggerPeriodic::GetTypeId (void)
+OranReportTriggerPeriodic::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReportTriggerPeriodic")
-    .SetParent<OranReportTrigger> ()
-    .AddConstructor<OranReportTriggerPeriodic> ()
-    .AddAttribute ("IntervalRv",
-                   "The random variable used to generate the delay (in seconds) between periodic reports.",
-                   StringValue ("ns3::ConstantRandomVariable[Constant=1]"),
-                   MakePointerAccessor (&OranReportTriggerPeriodic::m_intervalRv),
-                   MakePointerChecker<RandomVariableStream> ())
-  ;
+    static TypeId tid =
+        TypeId("ns3::OranReportTriggerPeriodic")
+            .SetParent<OranReportTrigger>()
+            .AddConstructor<OranReportTriggerPeriodic>()
+            .AddAttribute("IntervalRv",
+                          "The random variable used to generate the delay (in seconds) between "
+                          "periodic reports.",
+                          StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                          MakePointerAccessor(&OranReportTriggerPeriodic::m_intervalRv),
+                          MakePointerChecker<RandomVariableStream>());
 
- return tid;
+    return tid;
 }
 
-OranReportTriggerPeriodic::OranReportTriggerPeriodic (void)
-  : OranReportTrigger (),
-    m_triggerEvent (EventId ())
+OranReportTriggerPeriodic::OranReportTriggerPeriodic(void)
+    : OranReportTrigger(),
+      m_triggerEvent(EventId())
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReportTriggerPeriodic::~OranReportTriggerPeriodic (void)
+OranReportTriggerPeriodic::~OranReportTriggerPeriodic(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranReportTriggerPeriodic::Activate (Ptr<OranReporter> reporter)
+OranReportTriggerPeriodic::Activate(Ptr<OranReporter> reporter)
 {
-  NS_LOG_FUNCTION (this << reporter);
+    NS_LOG_FUNCTION(this << reporter);
 
-  if (! m_active)
+    if (!m_active)
     {
-      ScheduleNextTrigger ();
+        ScheduleNextTrigger();
     }
 
-  OranReportTrigger::Activate (reporter);
+    OranReportTrigger::Activate(reporter);
 }
 
 void
-OranReportTriggerPeriodic::Deactivate (void)
+OranReportTriggerPeriodic::Deactivate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      CancelNextTrigger ();
+        CancelNextTrigger();
     }
 
-  OranReportTrigger::Deactivate ();
+    OranReportTrigger::Deactivate();
 }
 
 void
-OranReportTriggerPeriodic::DoDispose (void)
+OranReportTriggerPeriodic::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_triggerEvent.IsRunning ())
+    if (m_triggerEvent.IsRunning())
     {
-      m_triggerEvent.Cancel ();
+        m_triggerEvent.Cancel();
     }
 
-  m_intervalRv = nullptr;
+    m_intervalRv = nullptr;
 
-  OranReportTrigger::DoDispose ();
+    OranReportTrigger::DoDispose();
 }
 
 void
-OranReportTriggerPeriodic::TriggerReport (void)
+OranReportTriggerPeriodic::TriggerReport(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      ScheduleNextTrigger ();
+        ScheduleNextTrigger();
     }
 
-  OranReportTrigger::TriggerReport ();
+    OranReportTrigger::TriggerReport();
 }
 
 void
-OranReportTriggerPeriodic::CancelNextTrigger (void)
+OranReportTriggerPeriodic::CancelNextTrigger(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_triggerEvent.IsRunning ())
+    if (m_triggerEvent.IsRunning())
     {
-      m_triggerEvent.Cancel ();
+        m_triggerEvent.Cancel();
     }
 }
 
 void
-OranReportTriggerPeriodic::ScheduleNextTrigger (void)
+OranReportTriggerPeriodic::ScheduleNextTrigger(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_triggerEvent = Simulator::Schedule (
-      Seconds (m_intervalRv->GetValue ()), 
-      &OranReportTriggerPeriodic::TriggerReport, 
-      this);
+    m_triggerEvent = Simulator::Schedule(Seconds(m_intervalRv->GetValue()),
+                                         &OranReportTriggerPeriodic::TriggerReport,
+                                         this);
 }
 
 } // namespace ns3
-

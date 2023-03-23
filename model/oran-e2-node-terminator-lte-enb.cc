@@ -29,84 +29,85 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
+#include "oran-e2-node-terminator-lte-enb.h"
+
+#include "oran-command-lte-2-lte-handover.h"
+
 #include <ns3/abort.h>
+#include <ns3/log.h>
 #include <ns3/lte-enb-net-device.h>
 #include <ns3/lte-enb-rrc.h>
 #include <ns3/node.h>
 #include <ns3/pointer.h>
 #include <ns3/string.h>
 
-#include "oran-command-lte-2-lte-handover.h"
+namespace ns3
+{
 
-#include "oran-e2-node-terminator-lte-enb.h"
+NS_LOG_COMPONENT_DEFINE("OranE2NodeTerminatorLteEnb");
 
-namespace ns3 {
-
-NS_LOG_COMPONENT_DEFINE ("OranE2NodeTerminatorLteEnb");
-
-NS_OBJECT_ENSURE_REGISTERED (OranE2NodeTerminatorLteEnb);
+NS_OBJECT_ENSURE_REGISTERED(OranE2NodeTerminatorLteEnb);
 
 TypeId
-OranE2NodeTerminatorLteEnb::GetTypeId (void)
+OranE2NodeTerminatorLteEnb::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranE2NodeTerminatorLteEnb")
-    .SetParent<OranE2NodeTerminator> ()
-    .AddConstructor<OranE2NodeTerminatorLteEnb> ()
-  ;
+    static TypeId tid = TypeId("ns3::OranE2NodeTerminatorLteEnb")
+                            .SetParent<OranE2NodeTerminator>()
+                            .AddConstructor<OranE2NodeTerminatorLteEnb>();
 
- return tid;
+    return tid;
 }
 
-OranE2NodeTerminatorLteEnb::OranE2NodeTerminatorLteEnb (void)
-  : OranE2NodeTerminator ()
+OranE2NodeTerminatorLteEnb::OranE2NodeTerminatorLteEnb(void)
+    : OranE2NodeTerminator()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranE2NodeTerminatorLteEnb::~OranE2NodeTerminatorLteEnb (void)
+OranE2NodeTerminatorLteEnb::~OranE2NodeTerminatorLteEnb(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 OranNearRtRic::NodeType
-OranE2NodeTerminatorLteEnb::GetNodeType (void) const
+OranE2NodeTerminatorLteEnb::GetNodeType(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return OranNearRtRic::NodeType::LTEENB;
+    return OranNearRtRic::NodeType::LTEENB;
 }
 
 void
-OranE2NodeTerminatorLteEnb::ReceiveCommand (Ptr<OranCommand> command)
+OranE2NodeTerminatorLteEnb::ReceiveCommand(Ptr<OranCommand> command)
 {
-  NS_LOG_FUNCTION (this << command);
+    NS_LOG_FUNCTION(this << command);
 
-  if (m_active)
+    if (m_active)
     {
-      if (command->GetInstanceTypeId () == OranCommandLte2LteHandover::GetTypeId ())
+        if (command->GetInstanceTypeId() == OranCommandLte2LteHandover::GetTypeId())
         {
-          Ptr<Node> node = GetNode ();
-          Ptr<OranCommandLte2LteHandover> handoverCommand = command->GetObject<OranCommandLte2LteHandover> ();
-          
-          Ptr<LteEnbRrc> lteEnbRrc = GetNetDevice ()->GetRrc ();
-          lteEnbRrc->SendHandoverRequest (handoverCommand->GetTargetRnti (), 
-              handoverCommand->GetTargetCellId ());
+            Ptr<Node> node = GetNode();
+            Ptr<OranCommandLte2LteHandover> handoverCommand =
+                command->GetObject<OranCommandLte2LteHandover>();
+
+            Ptr<LteEnbRrc> lteEnbRrc = GetNetDevice()->GetRrc();
+            lteEnbRrc->SendHandoverRequest(handoverCommand->GetTargetRnti(),
+                                           handoverCommand->GetTargetCellId());
         }
     }
 }
 
 Ptr<LteEnbNetDevice>
-OranE2NodeTerminatorLteEnb::GetNetDevice (void) const
+OranE2NodeTerminatorLteEnb::GetNetDevice(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  Ptr<LteEnbNetDevice> lteEnbNetDev = GetNode ()->GetDevice (GetNetDeviceIndex ())->GetObject<LteEnbNetDevice> ();
+    Ptr<LteEnbNetDevice> lteEnbNetDev =
+        GetNode()->GetDevice(GetNetDeviceIndex())->GetObject<LteEnbNetDevice>();
 
-  NS_ABORT_MSG_IF (lteEnbNetDev == nullptr, "Unable to find appropriate network device");
+    NS_ABORT_MSG_IF(lteEnbNetDev == nullptr, "Unable to find appropriate network device");
 
-  return lteEnbNetDev;
+    return lteEnbNetDev;
 }
 
 } // namespace ns3
-

@@ -32,22 +32,23 @@
 #ifndef ORAN_REPORTER_H
 #define ORAN_REPORTER_H
 
-#include <string>
+#include "oran-e2-node-terminator.h"
 
 #include <ns3/object.h>
 #include <ns3/ptr.h>
 #include <ns3/random-variable-stream.h>
 
-#include "oran-e2-node-terminator.h"
+#include <string>
 
-namespace ns3 {
+namespace ns3
+{
 
 class OranReportTrigger;
 
 /**
  * \ingroup oran
  *
- * Base class for Reporters that attach to simulation nodes and collect 
+ * Base class for Reporters that attach to simulation nodes and collect
  * specific statistics.
  *
  * This class cannot be instantiated as it does not have an implementatio
@@ -55,78 +56,79 @@ class OranReportTrigger;
  */
 class OranReporter : public Object
 {
-public:
-  /**
-   * Get the TypeId of the OranReporter class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReporter class.
-   */
-  OranReporter (void);
-  /**
-   * Destructor of the OranReporter class.
-   */
-  ~OranReporter (void) override;
-  /**
-   * Activate the reporter and start periodically generating Reports
-   * for the E2 Node Terminator.
-   */
-  virtual void Activate (void);
-  /**
-   * Deactivate the reporter and stop generating Reports.
-   */
-  virtual void Deactivate (void);
-  /**
-   * Indicate if the reporter is active.
-   *
-   * \return True, if the reporter is active; otherwise, false.
-   */
-  virtual bool IsActive (void) const;
-  /**
-   * Get the E2 Node Terminator.
-   * \return The E2 Node Terminator.
-   */
-  Ptr<OranE2NodeTerminator> GetTerminator (void) const;
-  /**
-   * Invoke GenerateReports and send the Reports to the E2 Terminator.
-   */
-  virtual void PerformReport (void);
-  /**
-   * Notifies the reporter that initial registartion has completed successfully.
-   */
-  virtual void NotifyRegistrationComplete (void);
-protected:
-  /**
-   * Dispose of the Reporter.
-   */
-  void DoDispose (void) override;
-  /**
-   * Collect values and metrics from the models, and generate reports
-   * with them.
-   *
-   * \return The collection of Reports.
-   */
-  virtual std::vector<Ptr<OranReport> > GenerateReports (void) = 0;
+  public:
+    /**
+     * Get the TypeId of the OranReporter class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReporter class.
+     */
+    OranReporter(void);
+    /**
+     * Destructor of the OranReporter class.
+     */
+    ~OranReporter(void) override;
+    /**
+     * Activate the reporter and start periodically generating Reports
+     * for the E2 Node Terminator.
+     */
+    virtual void Activate(void);
+    /**
+     * Deactivate the reporter and stop generating Reports.
+     */
+    virtual void Deactivate(void);
+    /**
+     * Indicate if the reporter is active.
+     *
+     * \return True, if the reporter is active; otherwise, false.
+     */
+    virtual bool IsActive(void) const;
+    /**
+     * Get the E2 Node Terminator.
+     * \return The E2 Node Terminator.
+     */
+    Ptr<OranE2NodeTerminator> GetTerminator(void) const;
+    /**
+     * Invoke GenerateReports and send the Reports to the E2 Terminator.
+     */
+    virtual void PerformReport(void);
+    /**
+     * Notifies the reporter that initial registartion has completed successfully.
+     */
+    virtual void NotifyRegistrationComplete(void);
 
-  /**
-   * Flag to indicate if the Reporter is active.
-   */
-  bool m_active;
-  /**
-   * The E2 Node Terminator.
-   */
-  Ptr<OranE2NodeTerminator> m_terminator;
-private:
-  /**
-   * The trigger that generates reports.
-   */
-  Ptr<OranReportTrigger> m_trigger;
+  protected:
+    /**
+     * Dispose of the Reporter.
+     */
+    void DoDispose(void) override;
+    /**
+     * Collect values and metrics from the models, and generate reports
+     * with them.
+     *
+     * \return The collection of Reports.
+     */
+    virtual std::vector<Ptr<OranReport>> GenerateReports(void) = 0;
+
+    /**
+     * Flag to indicate if the Reporter is active.
+     */
+    bool m_active;
+    /**
+     * The E2 Node Terminator.
+     */
+    Ptr<OranE2NodeTerminator> m_terminator;
+
+  private:
+    /**
+     * The trigger that generates reports.
+     */
+    Ptr<OranReportTrigger> m_trigger;
 }; // class OranReporter
 
 } // namespace ns3
 
 #endif /* ORAN_REPORTER_H */
-

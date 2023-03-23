@@ -35,7 +35,8 @@
 #include <ns3/object.h>
 #include <ns3/ptr.h>
 
-namespace ns3 {
+namespace ns3
+{
 
 class OranReport;
 class OranReporter;
@@ -49,32 +50,32 @@ class OranReporter;
  */
 class OranQueryTrigger : public Object
 {
-public:
-  /**
-   * Get the TypeId of the OranQueryTrigger class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Destructor of the OranQueryTrigger class.
-   */
-  ~OranQueryTrigger (void) override;
-  /**
-   * Indicates if a report should trigger query to the Logic Modules.
-   *
-   * \param report The report to consider.
-   * \returns True, if a query to the Logic Modules should occur.
-   */
-  virtual bool QueryLms (Ptr<OranReport> report) = 0;
-protected:
-  /**
-   * Constructor of the OranQueryTrigger class.
-   */
-  OranQueryTrigger (void);
+  public:
+    /**
+     * Get the TypeId of the OranQueryTrigger class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Destructor of the OranQueryTrigger class.
+     */
+    ~OranQueryTrigger(void) override;
+    /**
+     * Indicates if a report should trigger query to the Logic Modules.
+     *
+     * \param report The report to consider.
+     * \returns True, if a query to the Logic Modules should occur.
+     */
+    virtual bool QueryLms(Ptr<OranReport> report) = 0;
+
+  protected:
+    /**
+     * Constructor of the OranQueryTrigger class.
+     */
+    OranQueryTrigger(void);
 }; // class OranQueryTrigger
 
 } // namespace ns3
 
 #endif /* ORAN_QUERY_TRIGGER_H */
-

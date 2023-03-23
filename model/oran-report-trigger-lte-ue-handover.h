@@ -32,14 +32,15 @@
 #ifndef ORAN_REPORT_TRIGGER_LTE_UE_HANDOVER_H
 #define ORAN_REPORT_TRIGGER_LTE_UE_HANDOVER_H
 
-#include <string>
+#include "oran-report-trigger.h"
 
 #include <ns3/object.h>
 #include <ns3/ptr.h>
 
-#include "oran-report-trigger.h"
+#include <string>
 
-namespace ns3 {
+namespace ns3
+{
 
 class OranReporter;
 
@@ -51,57 +52,58 @@ class OranReporter;
  */
 class OranReportTriggerLteUeHandover : public OranReportTrigger
 {
-public:
-  /**
-   * Get the TypeId of the OranReportTriggerLteUeHandover class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranReportTriggerLteUeHandover class.
-   */
-  OranReportTriggerLteUeHandover (void);
-  /**
-   * Destructor of the OranReportTriggerLteUeHandover class.
-   */
-  ~OranReportTriggerLteUeHandover (void) override;
-  /**
-   * Activates this trigger for the given reporter.
-   * \param reporter The reporter to link to.
-   */
-  void Activate (Ptr<OranReporter> reporter) override;
-  /**
-   * Deactivates this trigger and unlinks it from the current reporter.
-   */
-  void Deactivate (void) override;
-protected:
-  /**
-   * Dispose of the Report.
-   */
-  void DoDispose (void) override;
-  /**
-   * The callback for receiving the HandoverEndOk event from an LTE UE.
-   * \param imsi The IMSI of the UE.
-   * \param cellId The ID of the new cell.
-   * \param rnti The new RNTI of the UE.
-   */
-  virtual void HandoverCompleteSink (uint64_t imsi, uint16_t cellId, uint16_t rnti);
-  /**
-   * The callback for receiving the ConnectionEstablished event from an LTE UE.
-   * \param imsi The IMSI of the UE.
-   * \param cellId The ID of the new cell.
-   * \param rnti The new RNTI of the UE.
-   */
-  virtual void ConnectionEstablishedSink (uint64_t imsi, uint16_t cellId, uint16_t rnti);
-private:
-  /**
-   * Disconnects the callback from the LTE UE.
-   */
-  void DisconnectSink (void);
+  public:
+    /**
+     * Get the TypeId of the OranReportTriggerLteUeHandover class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranReportTriggerLteUeHandover class.
+     */
+    OranReportTriggerLteUeHandover(void);
+    /**
+     * Destructor of the OranReportTriggerLteUeHandover class.
+     */
+    ~OranReportTriggerLteUeHandover(void) override;
+    /**
+     * Activates this trigger for the given reporter.
+     * \param reporter The reporter to link to.
+     */
+    void Activate(Ptr<OranReporter> reporter) override;
+    /**
+     * Deactivates this trigger and unlinks it from the current reporter.
+     */
+    void Deactivate(void) override;
+
+  protected:
+    /**
+     * Dispose of the Report.
+     */
+    void DoDispose(void) override;
+    /**
+     * The callback for receiving the HandoverEndOk event from an LTE UE.
+     * \param imsi The IMSI of the UE.
+     * \param cellId The ID of the new cell.
+     * \param rnti The new RNTI of the UE.
+     */
+    virtual void HandoverCompleteSink(uint64_t imsi, uint16_t cellId, uint16_t rnti);
+    /**
+     * The callback for receiving the ConnectionEstablished event from an LTE UE.
+     * \param imsi The IMSI of the UE.
+     * \param cellId The ID of the new cell.
+     * \param rnti The new RNTI of the UE.
+     */
+    virtual void ConnectionEstablishedSink(uint64_t imsi, uint16_t cellId, uint16_t rnti);
+
+  private:
+    /**
+     * Disconnects the callback from the LTE UE.
+     */
+    void DisconnectSink(void);
 }; // class OranReportTriggerLteUeHandover
 
 } // namespace ns3
 
 #endif /* ORAN_REPORT_TRIGGER_LTE_UE_HANDOVER_H */
-

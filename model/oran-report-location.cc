@@ -29,72 +29,68 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include "oran-report-location.h"
+
+#include "oran-report.h"
+
 #include <ns3/log.h>
 #include <ns3/uinteger.h>
 #include <ns3/vector.h>
 
-#include "oran-report.h"
+namespace ns3
+{
 
-#include "oran-report-location.h"
+NS_LOG_COMPONENT_DEFINE("OranReportLocation");
 
-namespace ns3 {
-
-NS_LOG_COMPONENT_DEFINE ("OranReportLocation");
-
-
-NS_OBJECT_ENSURE_REGISTERED (OranReportLocation);
+NS_OBJECT_ENSURE_REGISTERED(OranReportLocation);
 
 TypeId
-OranReportLocation::GetTypeId (void)
+OranReportLocation::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReportLocation")
-    .SetParent<OranReport> ()
-    .AddConstructor<OranReportLocation> ()
-    .AddAttribute ("Location",
-                   "The location of the node.",
-                   VectorValue (),
-                   MakeVectorAccessor (&OranReportLocation::m_location),
-                   MakeVectorChecker ())
-  ;
+    static TypeId tid = TypeId("ns3::OranReportLocation")
+                            .SetParent<OranReport>()
+                            .AddConstructor<OranReportLocation>()
+                            .AddAttribute("Location",
+                                          "The location of the node.",
+                                          VectorValue(),
+                                          MakeVectorAccessor(&OranReportLocation::m_location),
+                                          MakeVectorChecker());
 
- return tid;
+    return tid;
 }
 
-OranReportLocation::OranReportLocation (void)
-  : OranReport ()
+OranReportLocation::OranReportLocation(void)
+    : OranReport()
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReportLocation::~OranReportLocation (void)
+OranReportLocation::~OranReportLocation(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranReportLocation::ToString (void) const
+OranReportLocation::ToString(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  std::stringstream ss;
-  Time time = GetTime ();
-  
-  ss << "OranReportLocation("
-     << "E2NodeId=" <<  GetReporterE2NodeId ()
-     << ";Time=" << time.As (Time::S)
-     << ";Location=" << m_location
-     << ")";
+    std::stringstream ss;
+    Time time = GetTime();
 
-  return ss.str ();
+    ss << "OranReportLocation("
+       << "E2NodeId=" << GetReporterE2NodeId() << ";Time=" << time.As(Time::S)
+       << ";Location=" << m_location << ")";
+
+    return ss.str();
 }
 
 Vector
-OranReportLocation::GetLocation (void) const
+OranReportLocation::GetLocation(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_location;
+    return m_location;
 }
 
 } // namespace ns3
-

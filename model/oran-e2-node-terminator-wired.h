@@ -34,7 +34,8 @@
 
 #include "oran-e2-node-terminator.h"
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup oran
@@ -43,36 +44,36 @@ namespace ns3 {
  */
 class OranE2NodeTerminatorWired : public OranE2NodeTerminator
 {
-public:
-  /**
-   * Get the TypeId of the OranE2NodeTerminatorWired class.
-   *
-   * \return The TypeId.
-   */
-  static TypeId GetTypeId (void);
-  /**
-   * Constructor of the OranE2NodeTerminatorWired class.
-   */
-  OranE2NodeTerminatorWired (void);
-  /**
-   * Destructor of the OranE2NodeTerminatorWired class.
-   */
-  ~OranE2NodeTerminatorWired (void) override;
-  /**
-   * Get the E2 Node Type. For this Terminator this method always returns the
-   * WIRED node type
-   *
-   * \return the E2 Node Type.
-   */
-  OranNearRtRic::NodeType GetNodeType (void) const override;
-  /**
-   * Receive a Command. All Commands are silently discarded.
-   *
-   * Currently this terminator silently discards received commands.
-   *
-   * \param command The received command.
-   */
-  void ReceiveCommand (Ptr<OranCommand> command) override;
+  public:
+    /**
+     * Get the TypeId of the OranE2NodeTerminatorWired class.
+     *
+     * \return The TypeId.
+     */
+    static TypeId GetTypeId(void);
+    /**
+     * Constructor of the OranE2NodeTerminatorWired class.
+     */
+    OranE2NodeTerminatorWired(void);
+    /**
+     * Destructor of the OranE2NodeTerminatorWired class.
+     */
+    ~OranE2NodeTerminatorWired(void) override;
+    /**
+     * Get the E2 Node Type. For this Terminator this method always returns the
+     * WIRED node type
+     *
+     * \return the E2 Node Type.
+     */
+    OranNearRtRic::NodeType GetNodeType(void) const override;
+    /**
+     * Receive a Command. All Commands are silently discarded.
+     *
+     * Currently this terminator silently discards received commands.
+     *
+     * \param command The received command.
+     */
+    void ReceiveCommand(Ptr<OranCommand> command) override;
 }; // class OranE2NodeTerminatorWired
 
 } // namespace ns3

@@ -29,144 +29,144 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/log.h>
-#include <ns3/pointer.h>
-#include <ns3/string.h>
-#include <ns3/simulator.h>
-#include <ns3/nstime.h>
-
-#include "oran-report-trigger.h"
 #include "oran-reporter.h"
 
-namespace ns3 {
+#include "oran-report-trigger.h"
 
-NS_LOG_COMPONENT_DEFINE ("OranReporter");
+#include <ns3/log.h>
+#include <ns3/nstime.h>
+#include <ns3/pointer.h>
+#include <ns3/simulator.h>
+#include <ns3/string.h>
 
-NS_OBJECT_ENSURE_REGISTERED (OranReporter);
+namespace ns3
+{
+
+NS_LOG_COMPONENT_DEFINE("OranReporter");
+
+NS_OBJECT_ENSURE_REGISTERED(OranReporter);
 
 TypeId
-OranReporter::GetTypeId (void)
+OranReporter::GetTypeId(void)
 {
-  static TypeId tid = TypeId ("ns3::OranReporter")
-    .SetParent<Object> ()
-    .AddAttribute ("Terminator",
-                   "The E2 Node terminator.",
-                   PointerValue (nullptr),
-                   MakePointerAccessor (&OranReporter::m_terminator),
-                   MakePointerChecker<OranE2NodeTerminator> ())
-    .AddAttribute ("Trigger",
-                   "The trigger that causes the generation of reports.",
-                   StringValue ("ns3::OranReportTriggerPeriodic"),
-                   MakePointerAccessor (&OranReporter::m_trigger),
-                   MakePointerChecker<OranReportTrigger> ())
-  ;
+    static TypeId tid = TypeId("ns3::OranReporter")
+                            .SetParent<Object>()
+                            .AddAttribute("Terminator",
+                                          "The E2 Node terminator.",
+                                          PointerValue(nullptr),
+                                          MakePointerAccessor(&OranReporter::m_terminator),
+                                          MakePointerChecker<OranE2NodeTerminator>())
+                            .AddAttribute("Trigger",
+                                          "The trigger that causes the generation of reports.",
+                                          StringValue("ns3::OranReportTriggerPeriodic"),
+                                          MakePointerAccessor(&OranReporter::m_trigger),
+                                          MakePointerChecker<OranReportTrigger>());
 
- return tid;
+    return tid;
 }
 
-OranReporter::OranReporter (void)
-  : Object (),
-    m_active (false)
+OranReporter::OranReporter(void)
+    : Object(),
+      m_active(false)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
-OranReporter::~OranReporter (void)
+OranReporter::~OranReporter(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 }
 
 void
-OranReporter::Activate (void)
+OranReporter::Activate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (! m_active
-      && m_terminator != nullptr
-      && m_trigger != nullptr)
+    if (!m_active && m_terminator != nullptr && m_trigger != nullptr)
     {
-      m_active = true;
-      m_trigger->Activate (GetObject<OranReporter> ());
+        m_active = true;
+        m_trigger->Activate(GetObject<OranReporter>());
     }
-  else
+    else
     {
-      Deactivate ();
+        Deactivate();
     }
 }
 
 void
-OranReporter::Deactivate (void)
+OranReporter::Deactivate(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      m_trigger->Deactivate ();
-      m_active = false;
+        m_trigger->Deactivate();
+        m_active = false;
     }
 }
 
 bool
-OranReporter::IsActive (void) const
+OranReporter::IsActive(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_active;
+    return m_active;
 }
 
 void
-OranReporter::PerformReport (void)
+OranReporter::PerformReport(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  if (m_active)
+    if (m_active)
     {
-      if (m_terminator == nullptr) 
+        if (m_terminator == nullptr)
         {
-          // The E2 Node Terminator is not set, so we do not 
-          // know where to send the report. We switch to deactivated state
-          // until we get a pointer
-          Deactivate ();
+            // The E2 Node Terminator is not set, so we do not
+            // know where to send the report. We switch to deactivated state
+            // until we get a pointer
+            Deactivate();
         }
-      else
+        else
         {
-          std::vector<Ptr<OranReport> > reports = GenerateReports ();
+            std::vector<Ptr<OranReport>> reports = GenerateReports();
 
-          for (const auto &r : reports)
+            for (const auto& r : reports)
             {
-              m_terminator->StoreReport (r);
+                m_terminator->StoreReport(r);
             }
-        } 
+        }
     }
 }
 
 void
-OranReporter::NotifyRegistrationComplete (void)
+OranReporter::NotifyRegistrationComplete(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  NS_ABORT_MSG_IF (m_trigger == nullptr, "Attempting to notify successfull registration to NULL trigger.");
+    NS_ABORT_MSG_IF(m_trigger == nullptr,
+                    "Attempting to notify successfull registration to NULL trigger.");
 
-  m_trigger->NotifyRegistrationComplete ();
+    m_trigger->NotifyRegistrationComplete();
 }
+
 void
-OranReporter::DoDispose (void)
+OranReporter::DoDispose(void)
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  m_terminator = nullptr;
-  m_trigger = nullptr;
+    m_terminator = nullptr;
+    m_trigger = nullptr;
 
-  Object::DoDispose ();
+    Object::DoDispose();
 }
 
 Ptr<OranE2NodeTerminator>
-OranReporter::GetTerminator (void) const
+OranReporter::GetTerminator(void) const
 {
-  NS_LOG_FUNCTION (this);
+    NS_LOG_FUNCTION(this);
 
-  return m_terminator;
+    return m_terminator;
 }
 
 } // namespace ns3
-
