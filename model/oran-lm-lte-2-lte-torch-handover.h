@@ -61,6 +61,7 @@ class OranLmLte2LteTorchHandover : public OranLm
         uint16_t cellId; //!< The cell ID.
         uint16_t rnti;   //!< The RNTI ID.
         double loss;     //!< The loss.
+        Vector position; //!< The physical position.
     };
 
     /**
