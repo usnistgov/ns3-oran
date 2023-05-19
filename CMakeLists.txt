@@ -28,7 +28,7 @@
 # employees is not subject to copyright protection within the United States.
 
 if(NOT ${ENABLE_SQLITE})
-  message(STATUS "ORAN requires sqlite3 library")
+  message(FATAL_ERROR "ORAN module requires sqlite3")
   return()
 endif()
 
