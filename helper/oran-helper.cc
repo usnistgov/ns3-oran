@@ -79,7 +79,7 @@ OranHelper::GetTypeId(void)
             .AddAttribute("LmQueryLateCommandPolicy",
                           "The filter to apply on UL CQIs received",
                           EnumValue(OranNearRtRic::DROP),
-                          MakeEnumAccessor(&OranHelper::m_ricLmQueryLateCommandPolicy),
+                          MakeEnumAccessor<OranNearRtRic::LateCommandPolicy>(&OranHelper::m_ricLmQueryLateCommandPolicy),
                           MakeEnumChecker(OranNearRtRic::DROP, "DROP", OranNearRtRic::SAVE, "SAVE"))
             .AddAttribute("E2NodeInactivityThreshold",
                           "The amount of time since an E2 node's last registration request before "
