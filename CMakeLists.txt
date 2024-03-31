@@ -30,14 +30,27 @@
 if(NOT ${ENABLE_SQLITE})
   message(STATUS "ORAN requires sqlite3 library")
   return()
+else()
+  set(sqlite_libraries
+      ${SQLite3_LIBRARIES}
+  )
 endif()
 
-find_external_library(DEPENDENCY_NAME Torch
-                      HEADER_NAME
-                        torch/script.h
-                        torch.h
-                      LIBRARY_NAME torch
-                      SEARCH_PATHS $ENV{LIBTORCHPATH})
+if(DEFINED ENV{LIBTORCHPATH})
+  find_external_library(DEPENDENCY_NAME Torch
+                        HEADER_NAME
+                          torch/script.h
+                          torch.h
+                        LIBRARY_NAME torch
+                        SEARCH_PATHS $ENV{LIBTORCHPATH})
+else()
+  find_external_library(DEPENDENCY_NAME Torch
+                        HEADER_NAME
+                          torch/script.h
+                          torch.h
+                        LIBRARY_NAME torch
+                        SEARCH_PATHS "")
+endif()
 
 if(${Torch_FOUND})
   include_directories(${Torch_INCLUDE_DIRS})
@@ -57,16 +70,29 @@ if(${Torch_FOUND})
   )
 endif()
 
-find_external_library(DEPENDENCY_NAME OnnxRuntime
-                      HEADER_NAME
-                        cpu_provider_factory.h
-                        onnxruntime_c_api.h
-                        onnxruntime_cxx_api.h
-                        onnxruntime_run_options_config_keys.h
-                        onnxruntime_session_options_config_keys.h
-                        provider_options.h
-                      LIBRARY_NAME onnxruntime
-                      SEARCH_PATHS $ENV{LIBONNXPATH})
+if(DEFINED ENV{LIBONNXPATH})
+  find_external_library(DEPENDENCY_NAME OnnxRuntime
+                        HEADER_NAME
+                          cpu_provider_factory.h
+                          onnxruntime_c_api.h
+                          onnxruntime_cxx_api.h
+                          onnxruntime_run_options_config_keys.h
+                          onnxruntime_session_options_config_keys.h
+                          provider_options.h
+                        LIBRARY_NAME onnxruntime
+                        SEARCH_PATHS $ENV{LIBONNXPATH})
+else()
+  find_external_library(DEPENDENCY_NAME OnnxRuntime
+                        HEADER_NAME
+                          cpu_provider_factory.h
+                          onnxruntime_c_api.h
+                          onnxruntime_cxx_api.h
+                          onnxruntime_run_options_config_keys.h
+                          onnxruntime_session_options_config_keys.h
+                          provider_options.h
+                        LIBRARY_NAME onnxruntime
+                        SEARCH_PATHS "")
+endif()
 
 if(${OnnxRuntime_FOUND})
   include_directories(${OnnxRuntime_INCLUDE_DIRS})
@@ -165,9 +191,9 @@ build_lib(
     ${libcore}
     ${libnetwork}
     ${liblte}
-    ${libsqlite3}
-    ${onnx_libraries}
+    ${sqlite_libraries}
     ${torch_libraries}
+    ${onnxruntime_libraries}
   TEST_SOURCES
     test/oran-test-suite.cc
 )
