@@ -358,7 +358,7 @@ example,
 cd ~
 
 # Download the library files
-wget "http://github.com/microsoft/onnxruntime/releases/download/v1.14.1/onnxruntime-linux-x64-1.14.1.tgz"
+wget "https://github.com/microsoft/onnxruntime/releases/download/v1.14.1/onnxruntime-linux-x64-1.14.1.tgz"
 
 # Extract the library files
 tar xzf onnxruntime-linux-x64-1.14.1.tgz
@@ -394,7 +394,7 @@ extracted library to the `LIBTORCHPATH` environment variable. For example,
 cd ~
 
 # Download the library files
-wget "http://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.2.2%2Bcpu.zip"
+wget "https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.2.2%2Bcpu.zip"
 
 # Extract the library files
 unzip libtorch-cxx11-abi-shared-with-deps-2.2.2+cpu.zip
