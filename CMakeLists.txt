@@ -48,8 +48,7 @@ else()
                         HEADER_NAME
                           torch/script.h
                           torch.h
-                        LIBRARY_NAME torch
-                        SEARCH_PATHS "")
+                        LIBRARY_NAME torch)
 endif()
 
 if(${Torch_FOUND})
@@ -90,8 +89,7 @@ else()
                           onnxruntime_run_options_config_keys.h
                           onnxruntime_session_options_config_keys.h
                           provider_options.h
-                        LIBRARY_NAME onnxruntime
-                        SEARCH_PATHS "")
+                        LIBRARY_NAME onnxruntime)
 endif()
 
 if(${OnnxRuntime_FOUND})
