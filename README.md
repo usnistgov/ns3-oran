@@ -394,10 +394,10 @@ extracted library to the `LIBTORCHPATH` environment variable. For example,
 cd ~
 
 # Download the library files
-wget "https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-1.13.1%2Bcpu.zip"
+wget "https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.2.2%2Bcpu.zip"
 
 # Extract the library files
-unzip libtorch-shared-with-deps-1.13.1+cpu.zip
+unzip libtorch-cxx11-abi-shared-with-deps-2.2.2+cpu.zip
 
 # Create environment variable with library location so that cmake knows where
 # to find it
