@@ -111,7 +111,7 @@ This release of the `oran` module contains the following features:
 
 ## Optional Dependencies
 * ONNX Runtime 1.14.1
-* PyTorch 1.13.1
+* PyTorch 2.2.2
 
 # Installation
 ## Clone (Recommended)
