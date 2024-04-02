@@ -105,8 +105,7 @@ This release of the `oran` module contains the following features:
   [PyTorch](https://pytorch.org/) to support Machine Learning (ML)
 
 # Minimum Requirements
-* A C++ compliant compiler
-  * GCC 7.3.0
+* An ns-3 C++ compliant compiler
 * SQLite 3.7.17
 
 ## Optional Dependencies
