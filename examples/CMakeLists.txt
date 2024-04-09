@@ -110,3 +110,13 @@ build_lib_example(
     ${libmobility}
 )
 
+build_lib_example(
+  NAME new-oran-handover-lm
+  SOURCE_FILES new-oran-handover-lm.cc
+  LIBRARIES_TO_LINK
+    ${liboran}
+    ${libnetwork}
+    ${liblte}
+    ${libmobility}
+)
+
