@@ -37,11 +37,16 @@
 #include <ns3/oran-module.h>
 #include <ns3/config-store.h>
 
+#include <fstream>
+#include <iostream>
+#include <string>
 #include <stdio.h>
 
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("NewOranHandoverUsingRSRPlm");
+
+std::ofstream traceFile;
 
 /**
  * Example of the ORAN models.
@@ -53,6 +58,28 @@ NS_LOG_COMPONENT_DEFINE("NewOranHandoverUsingRSRPlm");
  *
  * This example demonstrates how to configure processing delays for the LMs.
  */
+ 
+// Callback function to log positions
+void LogPosition(std::string context, Ptr<const MobilityModel> mobility) {
+    Vector pos = mobility->GetPosition();
+    traceFile << Simulator::Now().GetSeconds() << "\t" << context
+              << "\t" << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
+}
+
+// Setup function to attach the mobility trace sources
+void SetupMobilityTraces(const NodeContainer& ueNodes, const NodeContainer& enbNodes) {
+    // Assuming 'ueNodes' and 'enbNodes' are your NodeContainers
+    for (uint32_t i = 0; i < ueNodes.GetN(); ++i) {
+        Ptr<MobilityModel> mob = ueNodes.Get(i)->GetObject<MobilityModel>();
+        std::string context = "UE_" + std::to_string(i);
+        mob->TraceConnect("CourseChange", context, MakeCallback(&LogPosition));
+    }
+    for (uint32_t i = 0; i < enbNodes.GetN(); ++i) {
+        Ptr<MobilityModel> mob = enbNodes.Get(i)->GetObject<MobilityModel>();
+        std::string context = "eNB_" + std::to_string(i);
+        mob->TraceConnect("CourseChange", context, MakeCallback(&LogPosition));
+    }
+}
 
 void
 NotifyHandoverEndOkEnb(std::string context, uint64_t imsi, uint16_t cellid, uint16_t rnti)
@@ -91,6 +118,8 @@ QueryRcSink(std::string query, std::string args, int rc)
 int
 main(int argc, char* argv[])
 {
+    traceFile.open("myTraceFile.tr"); // Opening the trace file
+    
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
     Time simTime = Seconds(50);
@@ -288,6 +317,9 @@ main(int argc, char* argv[])
     // Trace the end of handovers
     Config::Connect("/NodeList/*/DeviceList/*/LteEnbRrc/HandoverEndOk",
                     MakeCallback(&NotifyHandoverEndOkEnb));
+    
+    // Set up mobility and other components
+    SetupMobilityTraces(ueNodes, enbNodes);
                     
     
     /* Enabling Tracing for the simulation scenario */
@@ -300,5 +332,9 @@ main(int argc, char* argv[])
     Simulator::Run();
 
     Simulator::Destroy();
+    
+    
+    // closing the trace file
+    traceFile.close();
     return 0;
 }
