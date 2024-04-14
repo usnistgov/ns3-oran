@@ -93,11 +93,11 @@ main(int argc, char* argv[])
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
     Time simTime = Seconds(50);
-    Time maxWaitTime = Seconds(0.010);
+    Time maxWaitTime = Seconds(0.010); 
     std::string processingDelayRv = "ns3::NormalRandomVariable[Mean=0.005|Variance=0.000031]";
-    double distance = 50;
+    double distance = 50; // distance between eNBs
     Time interval = Seconds(15);
-    double speed = 1.5;
+    double speed = 1.5; // speed of the ue
     bool dbLog = false;
     Time lmQueryInterval = Seconds(5);
     std::string dbFileName = "oran-repository.db";
@@ -124,21 +124,25 @@ main(int argc, char* argv[])
 
     Config::SetDefault("ns3::LteHelper::UseIdealRrc", BooleanValue(false));
 
-    Ptr<LteHelper> lteHelper = CreateObject<LteHelper>();
-    Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>();
-    lteHelper->SetEpcHelper(epcHelper);
-    lteHelper->SetSchedulerType("ns3::RrFfMacScheduler");
+    /*--- lte and epc helper ---*/
+    Ptr<LteHelper> lteHelper = CreateObject<LteHelper>(); // create lteHelper
+    Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>(); // create epcHelper
+    lteHelper->SetEpcHelper(epcHelper); // connect lte to the evolved packet core, which is the core network
+    lteHelper->SetSchedulerType("ns3::RrFfMacScheduler"); // Round-robin Frequency-first Mac Scheduler for resource distribution
     lteHelper->SetHandoverAlgorithmType("ns3::NoOpHandoverAlgorithm"); // disable automatic handover
 
-    Ptr<Node> pgw = epcHelper->GetPgwNode();
+    // Getting the PGW node; it acts as a gateway between LTE and external network, such as- internet.
+    Ptr<Node> pgw = epcHelper->GetPgwNode(); // PGW: Packet Data Network Gateway
 
-    NodeContainer ueNodes;
+    
+    /*---- Creating RAN nodes using NodeContainer ----*/
+    NodeContainer ueNodes; 
     NodeContainer enbNodes;
     enbNodes.Create(numberOfEnbs);
     ueNodes.Create(numberOfUes);
 
     // Install Mobility Model
-    Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
+    Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>(); // ListPositionAllocator class defines x,y,z position for network node
     for (uint16_t i = 0; i < numberOfEnbs; i++)
     {
         positionAlloc->Add(Vector(distance * i, 0, 20));
