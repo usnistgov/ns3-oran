@@ -48,6 +48,10 @@ NS_LOG_COMPONENT_DEFINE("NewOranHandoverUsingRSRPlm");
 
 std::ofstream traceFile;
 
+// Open a file for output
+std::string traceFileName = "RsrpRsrqSinrTrace.txt";
+Ptr<OutputStreamWrapper> traceStream = Create<OutputStreamWrapper>(traceFileName, std::ios::out);
+
 /**
  * Example of the ORAN models.
  *
@@ -58,7 +62,15 @@ std::ofstream traceFile;
  *
  * This example demonstrates how to configure processing delays for the LMs.
  */
- 
+
+// Tracing rsrp, rsrq, and sinr
+void LogRsrpRsrqSinr(Ptr<OutputStreamWrapper> stream, uint16_t rnti, uint16_t cellId, double rsrp, double rsrq, uint8_t sinr) {
+    *stream->GetStream() << Simulator::Now().GetSeconds() << "\tRNTI: " << rnti
+                         << "\tCell ID: " << cellId
+                         << "\tRSRP: " << rsrp << " dBm"
+                         << "\tRSRQ: " << rsrq << " dB"
+                         << "\tSINR: " << static_cast<int>(sinr) << " dB" << std::endl;
+}
  
 // Tracing TxPower
 void LogTxPower(std::string context, Ptr<LteEnbNetDevice> device) {
@@ -237,6 +249,16 @@ main(int argc, char* argv[])
         }
     }
     
+    // Tracing rsrp, rsrq, and sinr while setting up uePhy
+    for (NetDeviceContainer::Iterator it = ueLteDevs.Begin(); it != ueLteDevs.End(); ++it) {
+        Ptr<NetDevice> device = *it;
+        Ptr<LteUeNetDevice> lteUeDevice = device->GetObject<LteUeNetDevice>();
+        if (lteUeDevice) {
+            Ptr<LteUePhy> uePhy = lteUeDevice->GetPhy();
+            uePhy->TraceConnectWithoutContext("ReportCurrentCellRsrpSinr", MakeBoundCallback(&LogRsrpRsrqSinr, traceStream));
+        }
+    }
+
     
     // Install the IP stack on the UEs
     InternetStackHelper internet;
