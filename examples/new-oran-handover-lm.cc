@@ -59,6 +59,24 @@ std::ofstream traceFile;
  * This example demonstrates how to configure processing delays for the LMs.
  */
  
+ 
+// Tracing TxPower
+void LogTxPower(std::string context, Ptr<LteEnbNetDevice> device) {
+    double txPower = device->GetPhy()->GetTxPower();
+    traceFile << Simulator::Now().GetSeconds() << "\t" << context << "\tTxPower: " << txPower << " dBm" << std::endl;
+}
+
+void SetupTxPowerTraces(NodeContainer enbNodes, NetDeviceContainer enbLteDevs) {
+    for (uint32_t i = 0; i < enbNodes.GetN(); ++i) {
+        Ptr<NetDevice> dev = enbLteDevs.Get(i);
+        Ptr<LteEnbNetDevice> lteEnbDev = dev->GetObject<LteEnbNetDevice>();
+        std::string context = "eNB_" + std::to_string(i);
+        // Assume we have a way to trigger this callback at appropriate times
+        Simulator::Schedule(Seconds(1), &LogTxPower, context, lteEnbDev);
+    }
+}
+
+ 
 // Callback function to log positions
 void LogPosition(std::string context, Ptr<const MobilityModel> mobility) {
     Vector pos = mobility->GetPosition();
@@ -122,7 +140,7 @@ main(int argc, char* argv[])
     
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
-    Time simTime = Seconds(50);
+    Time simTime = Seconds(200);
     Time maxWaitTime = Seconds(0.010); 
     std::string processingDelayRv = "ns3::NormalRandomVariable[Mean=0.005|Variance=0.000031]";
     double distance = 50; // distance between eNBs
@@ -320,6 +338,7 @@ main(int argc, char* argv[])
     
     // Set up mobility and other components
     SetupMobilityTraces(ueNodes, enbNodes);
+    SetupTxPowerTraces(enbNodes, enbLteDevs);
                     
     
     /* Enabling Tracing for the simulation scenario */
