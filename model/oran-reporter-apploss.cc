@@ -48,7 +48,7 @@ NS_LOG_COMPONENT_DEFINE("OranReporterAppLoss");
 NS_OBJECT_ENSURE_REGISTERED(OranReporterAppLoss);
 
 TypeId
-OranReporterAppLoss::GetTypeId(void)
+OranReporterAppLoss::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranReporterAppLoss")
                             .SetParent<OranReporter>()
@@ -57,7 +57,7 @@ OranReporterAppLoss::GetTypeId(void)
     return tid;
 }
 
-OranReporterAppLoss::OranReporterAppLoss(void)
+OranReporterAppLoss::OranReporterAppLoss()
 {
     NS_LOG_FUNCTION(this);
 
@@ -65,7 +65,7 @@ OranReporterAppLoss::OranReporterAppLoss(void)
     m_rx = 0;
 }
 
-OranReporterAppLoss::~OranReporterAppLoss(void)
+OranReporterAppLoss::~OranReporterAppLoss()
 {
     NS_LOG_FUNCTION(this);
 }
@@ -87,7 +87,7 @@ OranReporterAppLoss::AddRx(Ptr<const Packet> p, const Address& from)
 }
 
 std::vector<Ptr<OranReport>>
-OranReporterAppLoss::GenerateReports(void)
+OranReporterAppLoss::GenerateReports()
 {
     NS_LOG_FUNCTION(this);
 

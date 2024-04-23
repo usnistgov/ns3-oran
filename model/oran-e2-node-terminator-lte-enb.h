@@ -53,22 +53,22 @@ class OranE2NodeTerminatorLteEnb : public OranE2NodeTerminator
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Create an instance of the OranE2NodeTerminatorLteEnb class.
      */
-    OranE2NodeTerminatorLteEnb(void);
+    OranE2NodeTerminatorLteEnb();
     /**
      * The destructor of the OranE2NodeTerminatorLteEnb class.
      */
-    ~OranE2NodeTerminatorLteEnb(void) override;
+    ~OranE2NodeTerminatorLteEnb() override;
     /**
      * Get the E2 Node Type. For this Terminator, this method
      * always returns the LTE eNB type.
      *
      * \return the E2 Node Type.
      */
-    OranNearRtRic::NodeType GetNodeType(void) const override;
+    OranNearRtRic::NodeType GetNodeType() const override;
     /**
      * Receive and process a command. If the Command is an LTE Handover Command
      * it will be processed. All other types of Commands are silently discarded..
@@ -81,7 +81,7 @@ class OranE2NodeTerminatorLteEnb : public OranE2NodeTerminator
      *
      * \return The net device.
      */
-    virtual Ptr<LteEnbNetDevice> GetNetDevice(void) const;
+    virtual Ptr<LteEnbNetDevice> GetNetDevice() const;
 }; // class OranE2NodeTermiantorLteEnb
 
 } // namespace ns3

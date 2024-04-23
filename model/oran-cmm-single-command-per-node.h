@@ -57,15 +57,15 @@ class OranCmmSingleCommandPerNode : public OranCmm
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranCmmSingleCommandPerNode class.
      */
-    OranCmmSingleCommandPerNode(void);
+    OranCmmSingleCommandPerNode();
     /**
      * The destructor of the OranCmmSingleCommandPerNode class.
      */
-    ~OranCmmSingleCommandPerNode(void) override;
+    ~OranCmmSingleCommandPerNode() override;
     /**
      * Prompts this Conflict Mitigation Module to execute its logic
      * and filter the input commands. This module makes sure only one
@@ -87,7 +87,7 @@ class OranCmmSingleCommandPerNode : public OranCmm
         override;
 
   protected:
-    void DoDispose(void) override;
+    void DoDispose() override;
 }; // class OranCmmSingleCommandPerNode
 
 } // namespace ns3

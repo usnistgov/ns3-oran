@@ -50,7 +50,7 @@ NS_LOG_COMPONENT_DEFINE("OranReportTriggerLocationChange");
 NS_OBJECT_ENSURE_REGISTERED(OranReportTriggerLocationChange);
 
 TypeId
-OranReportTriggerLocationChange::GetTypeId(void)
+OranReportTriggerLocationChange::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranReportTriggerLocationChange")
                             .SetParent<OranReportTrigger>()
@@ -59,13 +59,13 @@ OranReportTriggerLocationChange::GetTypeId(void)
     return tid;
 }
 
-OranReportTriggerLocationChange::OranReportTriggerLocationChange(void)
+OranReportTriggerLocationChange::OranReportTriggerLocationChange()
     : OranReportTrigger()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReportTriggerLocationChange::~OranReportTriggerLocationChange(void)
+OranReportTriggerLocationChange::~OranReportTriggerLocationChange()
 {
     NS_LOG_FUNCTION(this);
 }
@@ -91,7 +91,7 @@ OranReportTriggerLocationChange::Activate(Ptr<OranReporter> reporter)
 }
 
 void
-OranReportTriggerLocationChange::Deactivate(void)
+OranReportTriggerLocationChange::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -104,7 +104,7 @@ OranReportTriggerLocationChange::Deactivate(void)
 }
 
 void
-OranReportTriggerLocationChange::DoDispose(void)
+OranReportTriggerLocationChange::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -127,7 +127,7 @@ OranReportTriggerLocationChange::CourseChangedSink(Ptr<const MobilityModel> mobi
 }
 
 void
-OranReportTriggerLocationChange::DisconnectSink(void)
+OranReportTriggerLocationChange::DisconnectSink()
 {
     NS_LOG_FUNCTION(this);
 

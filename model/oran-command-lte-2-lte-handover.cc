@@ -42,7 +42,7 @@ NS_LOG_COMPONENT_DEFINE("OranCommandLte2LteHandover");
 NS_OBJECT_ENSURE_REGISTERED(OranCommandLte2LteHandover);
 
 TypeId
-OranCommandLte2LteHandover::GetTypeId(void)
+OranCommandLte2LteHandover::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranCommandLte2LteHandover")
@@ -62,19 +62,19 @@ OranCommandLte2LteHandover::GetTypeId(void)
     return tid;
 }
 
-OranCommandLte2LteHandover::OranCommandLte2LteHandover(void)
+OranCommandLte2LteHandover::OranCommandLte2LteHandover()
     : OranCommand()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranCommandLte2LteHandover::~OranCommandLte2LteHandover(void)
+OranCommandLte2LteHandover::~OranCommandLte2LteHandover()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranCommandLte2LteHandover::ToString(void) const
+OranCommandLte2LteHandover::ToString() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -88,7 +88,7 @@ OranCommandLte2LteHandover::ToString(void) const
 }
 
 uint16_t
-OranCommandLte2LteHandover::GetTargetCellId(void) const
+OranCommandLte2LteHandover::GetTargetCellId() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -96,7 +96,7 @@ OranCommandLte2LteHandover::GetTargetCellId(void) const
 }
 
 uint16_t
-OranCommandLte2LteHandover::GetTargetRnti(void) const
+OranCommandLte2LteHandover::GetTargetRnti() const
 {
     NS_LOG_FUNCTION(this);
 

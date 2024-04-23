@@ -49,7 +49,7 @@ NS_LOG_COMPONENT_DEFINE("OranReporterLteUeCellInfo");
 NS_OBJECT_ENSURE_REGISTERED(OranReporterLteUeCellInfo);
 
 TypeId
-OranReporterLteUeCellInfo::GetTypeId(void)
+OranReporterLteUeCellInfo::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranReporterLteUeCellInfo")
                             .SetParent<OranReporter>()
@@ -58,19 +58,19 @@ OranReporterLteUeCellInfo::GetTypeId(void)
     return tid;
 }
 
-OranReporterLteUeCellInfo::OranReporterLteUeCellInfo(void)
+OranReporterLteUeCellInfo::OranReporterLteUeCellInfo()
     : OranReporter()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReporterLteUeCellInfo::~OranReporterLteUeCellInfo(void)
+OranReporterLteUeCellInfo::~OranReporterLteUeCellInfo()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::vector<Ptr<OranReport>>
-OranReporterLteUeCellInfo::GenerateReports(void)
+OranReporterLteUeCellInfo::GenerateReports()
 {
     NS_LOG_FUNCTION(this);
 

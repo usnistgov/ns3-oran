@@ -45,7 +45,7 @@ NS_LOG_COMPONENT_DEFINE("OranReportLteUeCellInfo");
 NS_OBJECT_ENSURE_REGISTERED(OranReportLteUeCellInfo);
 
 TypeId
-OranReportLteUeCellInfo::GetTypeId(void)
+OranReportLteUeCellInfo::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranReportLteUeCellInfo")
@@ -65,19 +65,19 @@ OranReportLteUeCellInfo::GetTypeId(void)
     return tid;
 }
 
-OranReportLteUeCellInfo::OranReportLteUeCellInfo(void)
+OranReportLteUeCellInfo::OranReportLteUeCellInfo()
     : OranReport()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReportLteUeCellInfo::~OranReportLteUeCellInfo(void)
+OranReportLteUeCellInfo::~OranReportLteUeCellInfo()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranReportLteUeCellInfo::ToString(void) const
+OranReportLteUeCellInfo::ToString() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -92,7 +92,7 @@ OranReportLteUeCellInfo::ToString(void) const
 }
 
 uint16_t
-OranReportLteUeCellInfo::GetCellId(void) const
+OranReportLteUeCellInfo::GetCellId() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -100,7 +100,7 @@ OranReportLteUeCellInfo::GetCellId(void) const
 }
 
 uint16_t
-OranReportLteUeCellInfo::GetRnti(void) const
+OranReportLteUeCellInfo::GetRnti() const
 {
     NS_LOG_FUNCTION(this);
 

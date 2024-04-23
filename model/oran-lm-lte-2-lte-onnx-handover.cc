@@ -48,7 +48,7 @@ NS_LOG_COMPONENT_DEFINE("OranLmLte2LteOnnxHandover");
 NS_OBJECT_ENSURE_REGISTERED(OranLmLte2LteOnnxHandover);
 
 TypeId
-OranLmLte2LteOnnxHandover::GetTypeId(void)
+OranLmLte2LteOnnxHandover::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranLmLte2LteOnnxHandover")
@@ -63,20 +63,20 @@ OranLmLte2LteOnnxHandover::GetTypeId(void)
     return tid;
 }
 
-OranLmLte2LteOnnxHandover::OranLmLte2LteOnnxHandover(void)
+OranLmLte2LteOnnxHandover::OranLmLte2LteOnnxHandover()
 {
     NS_LOG_FUNCTION(this);
 
     m_name = "OranLmLte2LteOnnxHandover";
 }
 
-OranLmLte2LteOnnxHandover::~OranLmLte2LteOnnxHandover(void)
+OranLmLte2LteOnnxHandover::~OranLmLte2LteOnnxHandover()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::vector<Ptr<OranCommand>>
-OranLmLte2LteOnnxHandover::Run(void)
+OranLmLte2LteOnnxHandover::Run()
 {
     NS_LOG_FUNCTION(this);
 

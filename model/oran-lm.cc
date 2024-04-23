@@ -51,7 +51,7 @@ NS_LOG_COMPONENT_DEFINE("OranLm");
 NS_OBJECT_ENSURE_REGISTERED(OranLm);
 
 TypeId
-OranLm::GetTypeId(void)
+OranLm::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranLm")
@@ -75,19 +75,19 @@ OranLm::GetTypeId(void)
     return tid;
 }
 
-OranLm::OranLm(void)
+OranLm::OranLm()
     : Object()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranLm::~OranLm(void)
+OranLm::~OranLm()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranLm::Activate(void)
+OranLm::Activate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -99,7 +99,7 @@ OranLm::Activate(void)
 }
 
 void
-OranLm::Deactivate(void)
+OranLm::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -114,7 +114,7 @@ OranLm::Deactivate(void)
 }
 
 bool
-OranLm::IsActive(void) const
+OranLm::IsActive() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -122,7 +122,7 @@ OranLm::IsActive(void) const
 }
 
 std::string
-OranLm::GetName(void) const
+OranLm::GetName() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -160,7 +160,7 @@ OranLm::Run(Time cycle)
 }
 
 void
-OranLm::CancelRun(void)
+OranLm::CancelRun()
 {
     NS_LOG_FUNCTION(this);
 
@@ -191,7 +191,7 @@ OranLm::CancelRun(void)
 }
 
 bool
-OranLm::IsRunning(void) const
+OranLm::IsRunning() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -199,7 +199,7 @@ OranLm::IsRunning(void) const
 }
 
 void
-OranLm::DoDispose(void)
+OranLm::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -227,7 +227,7 @@ OranLm::LogLogicToRepository(const std::string& msg) const
 }
 
 void
-OranLm::FinishRun(void)
+OranLm::FinishRun()
 {
     NS_LOG_FUNCTION(this);
 

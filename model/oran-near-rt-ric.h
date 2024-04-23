@@ -127,43 +127,43 @@ class OranNearRtRic : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranNearRtRic class.
      */
-    OranNearRtRic(void);
+    OranNearRtRic();
     /**
      * Destructor of the OranNearRtRic class.
      */
-    ~OranNearRtRic(void) override;
+    ~OranNearRtRic() override;
     /**
      * Activate the RIC.
      *
      * This method will propagate and activate the E2 Terminator, the Data
      * Repository, and the Logic Modules.
      */
-    void Activate(void);
+    void Activate();
     /**
      * Deactivate the RIC.
      *
      * This method will propagate and deactivate the E2 Terminator, the Data
      * Repository, and the Logic Modules.
      */
-    void Deactivate(void);
+    void Deactivate();
     /**
      * Get the active status of the RIC.
      *
      * \return True if the RIC is active.
      */
-    bool IsActive(void) const;
+    bool IsActive() const;
     /**
      * Activate and start periodically querying the LMs.
      */
-    void Start(void);
+    void Start();
     /**
      * Deactivate and stop periodically querying the LMs.
      */
-    void Stop(void);
+    void Stop();
 
     /* Getters and Setters for the modules in the Near-RT RIC */
     /**
@@ -171,13 +171,13 @@ class OranNearRtRic : public Object
      *
      * \return The E2 Terminator in the Near-RT RIC.
      */
-    Ptr<OranNearRtRicE2Terminator> GetE2Terminator(void) const;
+    Ptr<OranNearRtRicE2Terminator> GetE2Terminator() const;
     /**
      * Get the Default Logic Module.
      *
      * \return The Default Logic Module.
      */
-    Ptr<OranLm> GetDefaultLogicModule(void) const;
+    Ptr<OranLm> GetDefaultLogicModule() const;
     /**
      * Set the Default Logic Module.
      *
@@ -231,13 +231,13 @@ class OranNearRtRic : public Object
      *
      * \return A pointer to the Data Repository instance.
      */
-    Ptr<OranDataRepository> Data(void) const;
+    Ptr<OranDataRepository> Data() const;
     /**
      * Get the Conflict Mitigation Module.
      *
      * \return The Conflict Mitigation Module.
      */
-    Ptr<OranCmm> GetCmm(void) const;
+    Ptr<OranCmm> GetCmm() const;
     /**
      * Set the Conflict Mitigation Module.
      *
@@ -265,22 +265,22 @@ class OranNearRtRic : public Object
     /**
      * Dispose of the object.
      */
-    virtual void DoDispose(void) override;
+    virtual void DoDispose() override;
 
   private:
     /**
      * Function that tells all logic modules to do their calculations, and
      * collects all the commands generated to pass them to the E2 Terminator.
      */
-    void QueryLms(void);
+    void QueryLms();
     /**
      * Function that checks for node inactivity.
      */
-    void CheckForInactivity(void);
+    void CheckForInactivity();
     /**
      * Processes the commands received for this LM query cycle.
      */
-    void ProcessLmQueryCommands(void);
+    void ProcessLmQueryCommands();
 
     /**
      * The E2 Terminator.

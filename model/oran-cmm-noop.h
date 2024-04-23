@@ -55,15 +55,15 @@ class OranCmmNoop : public OranCmm
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranCmmNoop class.
      */
-    OranCmmNoop(void);
+    OranCmmNoop();
     /**
      * The destructor of the OranCmmNoop class.
      */
-    ~OranCmmNoop(void) override;
+    ~OranCmmNoop() override;
     /**
      * Prompts this Conflict Mitigation Module to execute its logic
      * and filter the input commands. This is a No Operation module,
@@ -78,7 +78,7 @@ class OranCmmNoop : public OranCmm
         override;
 
   protected:
-    void DoDispose(void) override;
+    void DoDispose() override;
 }; // class OranCmmNoop
 
 } // namespace ns3

@@ -59,15 +59,15 @@ class OranReportTriggerPeriodic : public OranReportTrigger
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReportTriggerPeriodic class.
      */
-    OranReportTriggerPeriodic(void);
+    OranReportTriggerPeriodic();
     /**
      * Destructor of the OranReportTriggerPeriodic class.
      */
-    ~OranReportTriggerPeriodic(void) override;
+    ~OranReportTriggerPeriodic() override;
     /**
      * Activates this trigger for the given reporter.
      * \param reporter The reporter to link to.
@@ -76,25 +76,25 @@ class OranReportTriggerPeriodic : public OranReportTrigger
     /**
      * Deactivates this trigger and unlinks it from the current reporter.
      */
-    void Deactivate(void) override;
+    void Deactivate() override;
 
   protected:
     /**
      * Dispose of the Report.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * Triggers a report.
      */
-    void TriggerReport(void) override;
+    void TriggerReport() override;
     /**
      * Cancel the next trigger event.
      */
-    virtual void CancelNextTrigger(void);
+    virtual void CancelNextTrigger();
     /**
      * Schedule the next trigger event.
      */
-    virtual void ScheduleNextTrigger(void);
+    virtual void ScheduleNextTrigger();
 
   private:
     /**

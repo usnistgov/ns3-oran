@@ -61,29 +61,29 @@ class OranNearRtRicE2Terminator : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranNearRtRicE2Terminator class.
      */
-    OranNearRtRicE2Terminator(void);
+    OranNearRtRicE2Terminator();
     /**
      * Destructor of the OranNearRtRicE2Terminator class.
      */
-    ~OranNearRtRicE2Terminator(void) override;
+    ~OranNearRtRicE2Terminator() override;
     /**
      * Activate the E2 Terminator.
      */
-    virtual void Activate(void);
+    virtual void Activate();
     /**
      * Deactivate the E2 Terminator.
      */
-    virtual void Deactivate(void);
+    virtual void Deactivate();
     /**
      * Get the active status of this E2 Terminator.
      *
      * \return True if this E2 Terminator is active; otherwise, false.
      */
-    bool IsActive(void) const;
+    bool IsActive() const;
     /**
      * Receive a registration request. This method stores the Node type and ID
      * in the Data Repository (which returns the assigned E2 Node ID), adds the
@@ -129,7 +129,7 @@ class OranNearRtRicE2Terminator : public Object
     /**
      * Dispose of the object.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
 
   private:
     /**

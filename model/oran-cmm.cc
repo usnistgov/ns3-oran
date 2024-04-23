@@ -49,7 +49,7 @@ NS_LOG_COMPONENT_DEFINE("OranCmm");
 NS_OBJECT_ENSURE_REGISTERED(OranCmm);
 
 TypeId
-OranCmm::GetTypeId(void)
+OranCmm::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranCmm")
@@ -68,20 +68,20 @@ OranCmm::GetTypeId(void)
     return tid;
 }
 
-OranCmm::OranCmm(void)
+OranCmm::OranCmm()
     : m_active(false),
       m_name("Cmm")
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranCmm::~OranCmm(void)
+OranCmm::~OranCmm()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmm::Activate(void)
+OranCmm::Activate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -91,7 +91,7 @@ OranCmm::Activate(void)
 }
 
 void
-OranCmm::Deactivate(void)
+OranCmm::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -99,7 +99,7 @@ OranCmm::Deactivate(void)
 }
 
 bool
-OranCmm::IsActive(void) const
+OranCmm::IsActive() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -107,7 +107,7 @@ OranCmm::IsActive(void) const
 }
 
 std::string
-OranCmm::GetName(void) const
+OranCmm::GetName() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -123,7 +123,7 @@ OranCmm::SetName(const std::string &name)
 }
 
 void
-OranCmm::DoDispose(void)
+OranCmm::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 

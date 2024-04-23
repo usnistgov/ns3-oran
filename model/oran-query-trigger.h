@@ -56,11 +56,11 @@ class OranQueryTrigger : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Destructor of the OranQueryTrigger class.
      */
-    ~OranQueryTrigger(void) override;
+    ~OranQueryTrigger() override;
     /**
      * Indicates if a report should trigger query to the Logic Modules.
      *
@@ -73,7 +73,7 @@ class OranQueryTrigger : public Object
     /**
      * Constructor of the OranQueryTrigger class.
      */
-    OranQueryTrigger(void);
+    OranQueryTrigger();
 }; // class OranQueryTrigger
 
 } // namespace ns3

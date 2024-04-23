@@ -59,15 +59,15 @@ class OranReportTriggerLocationChange : public OranReportTrigger
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReportTriggerLocationChange class.
      */
-    OranReportTriggerLocationChange(void);
+    OranReportTriggerLocationChange();
     /**
      * Destructor of the OranReportTriggerLocationChange class.
      */
-    ~OranReportTriggerLocationChange(void) override;
+    ~OranReportTriggerLocationChange() override;
     /**
      * Activates this trigger for the given reporter.
      * \param reporter The reporter to link to.
@@ -76,13 +76,13 @@ class OranReportTriggerLocationChange : public OranReportTrigger
     /**
      * Deactivates this trigger and unlinks it from the current reporter.
      */
-    void Deactivate(void) override;
+    void Deactivate() override;
 
   protected:
     /**
      * Dispose of the Report.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * The callback for receiving the HandoverEndOk event from an LTE UE.
      * \param mobility
@@ -93,7 +93,7 @@ class OranReportTriggerLocationChange : public OranReportTrigger
     /**
      * Disconnects the callback from the LTE UE.
      */
-    void DisconnectSink(void);
+    void DisconnectSink();
 }; // class OranReportTriggerLocationChange
 
 } // namespace ns3

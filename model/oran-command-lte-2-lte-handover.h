@@ -52,17 +52,17 @@ class OranCommandLte2LteHandover : public OranCommand
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranCommandLte2LteHandover class.
      */
-    OranCommandLte2LteHandover(void);
+    OranCommandLte2LteHandover();
     /**
      * The destructor of the OranCommandLte2LteHandover class.
      */
-    ~OranCommandLte2LteHandover(void) override;
+    ~OranCommandLte2LteHandover() override;
 
-    std::string ToString(void) const override;
+    std::string ToString() const override;
 
   private:
     /**
@@ -80,13 +80,13 @@ class OranCommandLte2LteHandover : public OranCommand
      *
      * \returns The cell ID.
      */
-    uint16_t GetTargetCellId(void) const;
+    uint16_t GetTargetCellId() const;
     /**
      * Gets the RNTI of the UE to handover.
      *
      * \returns The RNTI.
      */
-    uint16_t GetTargetRnti(void) const;
+    uint16_t GetTargetRnti() const;
 }; // class OranCommandLte2LteHandover
 
 } // namespace ns3

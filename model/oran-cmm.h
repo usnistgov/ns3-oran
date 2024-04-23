@@ -66,35 +66,35 @@ class OranCmm : public Object
      *
      * \returns The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranCmm class.
      */
-    OranCmm(void);
+    OranCmm();
     /**
      * The destructor of the OranCmm class.
      */
-    ~OranCmm(void) override;
+    ~OranCmm() override;
     /**
      * Activates the Conflict Mitigation Module.
      */
-    virtual void Activate(void);
+    virtual void Activate();
     /**
      * Deactivates the Conflict Mitigation Module.
      */
-    virtual void Deactivate(void);
+    virtual void Deactivate();
     /**
      * Get the active status of this Conflict Mitigation Module.
      *
      * \return True if this Conflict Mitigation Module is active.
      */
-    bool IsActive(void) const;
+    bool IsActive() const;
     /**
      * Get the name of this module.
      *
      * \return The name of this module.
      */
-    std::string GetName(void) const;
+    std::string GetName() const;
     /**
      * Set the name of this module.
      *
@@ -118,7 +118,7 @@ class OranCmm : public Object
     /**
      * Disposes of the object.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * Log a message to the data storage.
      *

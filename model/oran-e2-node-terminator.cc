@@ -50,7 +50,7 @@ NS_LOG_COMPONENT_DEFINE("OranE2NodeTerminator");
 NS_OBJECT_ENSURE_REGISTERED(OranE2NodeTerminator);
 
 TypeId
-OranE2NodeTerminator::GetTypeId(void)
+OranE2NodeTerminator::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranE2NodeTerminator")
@@ -96,7 +96,7 @@ OranE2NodeTerminator::GetTypeId(void)
     return tid;
 }
 
-OranE2NodeTerminator::OranE2NodeTerminator(void)
+OranE2NodeTerminator::OranE2NodeTerminator()
     : Object(),
       m_active(false),
       m_node(nullptr),
@@ -107,13 +107,13 @@ OranE2NodeTerminator::OranE2NodeTerminator(void)
     NS_LOG_FUNCTION(this);
 }
 
-OranE2NodeTerminator::~OranE2NodeTerminator(void)
+OranE2NodeTerminator::~OranE2NodeTerminator()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranE2NodeTerminator::Activate(void)
+OranE2NodeTerminator::Activate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -157,7 +157,7 @@ OranE2NodeTerminator::Attach(Ptr<Node> node, uint32_t netDeviceIndex)
 }
 
 void
-OranE2NodeTerminator::Deactivate(void)
+OranE2NodeTerminator::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -176,7 +176,7 @@ OranE2NodeTerminator::Deactivate(void)
 }
 
 bool
-OranE2NodeTerminator::IsActive(void) const
+OranE2NodeTerminator::IsActive() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -229,7 +229,7 @@ OranE2NodeTerminator::ReceiveRegistrationResponse(uint64_t e2NodeId)
 }
 
 void
-OranE2NodeTerminator::CancelNextRegistration(void)
+OranE2NodeTerminator::CancelNextRegistration()
 {
     NS_LOG_FUNCTION(this);
 
@@ -240,7 +240,7 @@ OranE2NodeTerminator::CancelNextRegistration(void)
 }
 
 void
-OranE2NodeTerminator::CancelNextSend(void)
+OranE2NodeTerminator::CancelNextSend()
 {
     NS_LOG_FUNCTION(this);
 
@@ -251,7 +251,7 @@ OranE2NodeTerminator::CancelNextSend(void)
 }
 
 void
-OranE2NodeTerminator::Deregister(void)
+OranE2NodeTerminator::Deregister()
 {
     NS_LOG_FUNCTION(this);
 
@@ -266,7 +266,7 @@ OranE2NodeTerminator::Deregister(void)
 }
 
 void
-OranE2NodeTerminator::DoDispose(void)
+OranE2NodeTerminator::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -284,7 +284,7 @@ OranE2NodeTerminator::DoDispose(void)
 }
 
 void
-OranE2NodeTerminator::DoSendReports(void)
+OranE2NodeTerminator::DoSendReports()
 {
     NS_LOG_FUNCTION(this);
 
@@ -307,7 +307,7 @@ OranE2NodeTerminator::DoSendReports(void)
 }
 
 void
-OranE2NodeTerminator::Register(void)
+OranE2NodeTerminator::Register()
 {
     NS_LOG_FUNCTION(this);
 
@@ -341,7 +341,7 @@ OranE2NodeTerminator::Register(void)
 }
 
 void
-OranE2NodeTerminator::ScheduleNextSend(void)
+OranE2NodeTerminator::ScheduleNextSend()
 {
     NS_LOG_FUNCTION(this);
 
@@ -354,7 +354,7 @@ OranE2NodeTerminator::ScheduleNextSend(void)
 }
 
 uint64_t
-OranE2NodeTerminator::GetE2NodeId(void) const
+OranE2NodeTerminator::GetE2NodeId() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -362,7 +362,7 @@ OranE2NodeTerminator::GetE2NodeId(void) const
 }
 
 Ptr<OranNearRtRic>
-OranE2NodeTerminator::GetNearRtRic(void) const
+OranE2NodeTerminator::GetNearRtRic() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -370,7 +370,7 @@ OranE2NodeTerminator::GetNearRtRic(void) const
 }
 
 Ptr<Node>
-OranE2NodeTerminator::GetNode(void) const
+OranE2NodeTerminator::GetNode() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -378,7 +378,7 @@ OranE2NodeTerminator::GetNode(void) const
 }
 
 uint32_t
-OranE2NodeTerminator::GetNetDeviceIndex(void) const
+OranE2NodeTerminator::GetNetDeviceIndex() const
 {
     NS_LOG_FUNCTION(this);
 

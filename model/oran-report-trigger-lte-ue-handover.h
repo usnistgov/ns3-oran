@@ -58,15 +58,15 @@ class OranReportTriggerLteUeHandover : public OranReportTrigger
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReportTriggerLteUeHandover class.
      */
-    OranReportTriggerLteUeHandover(void);
+    OranReportTriggerLteUeHandover();
     /**
      * Destructor of the OranReportTriggerLteUeHandover class.
      */
-    ~OranReportTriggerLteUeHandover(void) override;
+    ~OranReportTriggerLteUeHandover() override;
     /**
      * Activates this trigger for the given reporter.
      * \param reporter The reporter to link to.
@@ -75,13 +75,13 @@ class OranReportTriggerLteUeHandover : public OranReportTrigger
     /**
      * Deactivates this trigger and unlinks it from the current reporter.
      */
-    void Deactivate(void) override;
+    void Deactivate() override;
 
   protected:
     /**
      * Dispose of the Report.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * The callback for receiving the HandoverEndOk event from an LTE UE.
      * \param imsi The IMSI of the UE.
@@ -101,7 +101,7 @@ class OranReportTriggerLteUeHandover : public OranReportTrigger
     /**
      * Disconnects the callback from the LTE UE.
      */
-    void DisconnectSink(void);
+    void DisconnectSink();
 }; // class OranReportTriggerLteUeHandover
 
 } // namespace ns3

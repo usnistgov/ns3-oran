@@ -64,25 +64,25 @@ class OranDataRepositorySqlite : public OranDataRepository
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranDataRepositorySqlite class.
      */
-    OranDataRepositorySqlite(void);
+    OranDataRepositorySqlite();
     /**
      * The destructor of the OranDataRepositorySqlite class.
      */
-    ~OranDataRepositorySqlite(void) override;
+    ~OranDataRepositorySqlite() override;
     /**
      * Activate the data storage. If the database is not open,
      * this method will call OpenDb.
      */
-    void Activate(void) override;
+    void Activate() override;
     /**
      * Deactivate the data storage. If the database is open,
      * this method will call CloseDb.
      */
-    void Deactivate(void) override;
+    void Deactivate() override;
 
     /* Data Storage API */
     bool IsNodeRegistered(uint64_t e2NodeId) override;
@@ -100,11 +100,11 @@ class OranDataRepositorySqlite : public OranDataRepository
                                             Time toTime,
                                             uint64_t maxEntries = 1) override;
     std::tuple<bool, uint16_t, uint16_t> GetLteUeCellInfo(uint64_t e2NodeId) override;
-    std::vector<uint64_t> GetLteUeE2NodeIds(void) override;
+    std::vector<uint64_t> GetLteUeE2NodeIds() override;
     uint64_t GetLteUeE2NodeIdFromCellInfo(uint16_t cellId, uint16_t rnti) override;
     std::tuple<bool, uint16_t> GetLteEnbCellInfo(uint64_t e2NodeId) override;
-    std::vector<uint64_t> GetLteEnbE2NodeIds(void) override;
-    std::vector<std::tuple<uint64_t, Time>> GetLastRegistrationRequests(void) override;
+    std::vector<uint64_t> GetLteEnbE2NodeIds() override;
+    std::vector<std::tuple<uint64_t, Time>> GetLastRegistrationRequests() override;
     double GetAppLoss(uint64_t e2NodeId) override;
 
     void LogCommandE2Terminator(Ptr<OranCommand> cmd) override;
@@ -228,20 +228,20 @@ class OranDataRepositorySqlite : public OranDataRepository
     /**
      * Closes the connection to the database.
      */
-    virtual void CloseDb(void);
+    virtual void CloseDb();
 
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * Indicates if the database connection has been established.
      *
      * \return True, if the database connection is open; otherwise, false.
      */
-    virtual bool IsDbOpen(void) const;
+    virtual bool IsDbOpen() const;
     /**
      * Opens the database file stores the handler. This method
      * calls InitDb to ensure that the required tables and indexes are available.
      */
-    virtual void OpenDb(void);
+    virtual void OpenDb();
     /**
      * Used to report the return code of SQL queries.
      */
@@ -253,12 +253,12 @@ class OranDataRepositorySqlite : public OranDataRepository
      * If the schema already exists, no change is made, allowing for reusing existing
      * database files and extending databases created with previous simulations.
      */
-    void InitDb(void);
+    void InitDb();
 
     /**
      * Initialize the maps with the prepared statements' strings
      */
-    void InitStatements(void);
+    void InitStatements();
 
     /**
      * The database.

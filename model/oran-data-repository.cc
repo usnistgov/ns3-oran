@@ -41,27 +41,27 @@ NS_LOG_COMPONENT_DEFINE("OranDataRepository");
 NS_OBJECT_ENSURE_REGISTERED(OranDataRepository);
 
 TypeId
-OranDataRepository::GetTypeId(void)
+OranDataRepository::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranDataRepository").SetParent<Object>();
 
     return tid;
 }
 
-OranDataRepository::OranDataRepository(void)
+OranDataRepository::OranDataRepository()
     : Object(),
       m_active(false)
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranDataRepository::~OranDataRepository(void)
+OranDataRepository::~OranDataRepository()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranDataRepository::Activate(void)
+OranDataRepository::Activate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -69,7 +69,7 @@ OranDataRepository::Activate(void)
 }
 
 void
-OranDataRepository::Deactivate(void)
+OranDataRepository::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -77,7 +77,7 @@ OranDataRepository::Deactivate(void)
 }
 
 bool
-OranDataRepository::IsActive(void) const
+OranDataRepository::IsActive() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -85,7 +85,7 @@ OranDataRepository::IsActive(void) const
 }
 
 void
-OranDataRepository::DoDispose(void)
+OranDataRepository::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 

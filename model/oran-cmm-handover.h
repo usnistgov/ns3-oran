@@ -53,15 +53,15 @@ class OranCmmHandover : public OranCmm
      *
      * \return The TypeId
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranCmmHandover class.
      */
-    OranCmmHandover(void);
+    OranCmmHandover();
     /**
      * The destructor of the OranCmmHandover class.
      */
-    ~OranCmmHandover(void) override;
+    ~OranCmmHandover() override;
     /**
      * Prompts this conflict mitigation module to execute its logic
      * and filter the input commands. This is a No Operation module,
@@ -78,7 +78,7 @@ class OranCmmHandover : public OranCmm
     /**
      * Disposes of the object.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
 
   private:
     /**

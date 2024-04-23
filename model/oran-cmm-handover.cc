@@ -47,7 +47,7 @@ NS_LOG_COMPONENT_DEFINE("OranCmmHandover");
 NS_OBJECT_ENSURE_REGISTERED(OranCmmHandover);
 
 TypeId
-OranCmmHandover::GetTypeId(void)
+OranCmmHandover::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranCmmHandover").SetParent<OranCmm>().AddConstructor<OranCmmHandover>();
@@ -55,7 +55,7 @@ OranCmmHandover::GetTypeId(void)
     return tid;
 }
 
-OranCmmHandover::OranCmmHandover(void)
+OranCmmHandover::OranCmmHandover()
     : OranCmm()
 {
     NS_LOG_FUNCTION(this);
@@ -63,13 +63,13 @@ OranCmmHandover::OranCmmHandover(void)
     m_name = "CmmHandover";
 }
 
-OranCmmHandover::~OranCmmHandover(void)
+OranCmmHandover::~OranCmmHandover()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmmHandover::DoDispose(void)
+OranCmmHandover::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 

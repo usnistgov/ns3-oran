@@ -55,21 +55,21 @@ class OranReportLocation : public OranReport
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReportLocation class.
      */
-    OranReportLocation(void);
+    OranReportLocation();
     /**
      * Destructor of the OranReportLocation class.
      */
-    ~OranReportLocation(void) override;
+    ~OranReportLocation() override;
     /**
      * Get a string representation of this Report
      *
      * \return A string representation of this Report.
      */
-    std::string ToString(void) const override;
+    std::string ToString() const override;
 
   private:
     /**
@@ -83,7 +83,7 @@ class OranReportLocation : public OranReport
      *
      * \return The reported location.
      */
-    Vector GetLocation(void) const;
+    Vector GetLocation() const;
 }; // class OranReportLocation
 
 } // namespace ns3

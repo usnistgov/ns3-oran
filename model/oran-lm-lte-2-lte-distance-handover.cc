@@ -49,7 +49,7 @@ NS_LOG_COMPONENT_DEFINE("OranLmLte2LteDistanceHandover");
 NS_OBJECT_ENSURE_REGISTERED(OranLmLte2LteDistanceHandover);
 
 TypeId
-OranLmLte2LteDistanceHandover::GetTypeId(void)
+OranLmLte2LteDistanceHandover::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranLmLte2LteDistanceHandover")
                             .SetParent<OranLm>()
@@ -58,7 +58,7 @@ OranLmLte2LteDistanceHandover::GetTypeId(void)
     return tid;
 }
 
-OranLmLte2LteDistanceHandover::OranLmLte2LteDistanceHandover(void)
+OranLmLte2LteDistanceHandover::OranLmLte2LteDistanceHandover()
     : OranLm()
 {
     NS_LOG_FUNCTION(this);
@@ -66,13 +66,13 @@ OranLmLte2LteDistanceHandover::OranLmLte2LteDistanceHandover(void)
     m_name = "OranLmLte2LteDistanceHandover";
 }
 
-OranLmLte2LteDistanceHandover::~OranLmLte2LteDistanceHandover(void)
+OranLmLte2LteDistanceHandover::~OranLmLte2LteDistanceHandover()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::vector<Ptr<OranCommand>>
-OranLmLte2LteDistanceHandover::Run(void)
+OranLmLte2LteDistanceHandover::Run()
 {
     NS_LOG_FUNCTION(this);
 

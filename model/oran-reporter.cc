@@ -47,7 +47,7 @@ NS_LOG_COMPONENT_DEFINE("OranReporter");
 NS_OBJECT_ENSURE_REGISTERED(OranReporter);
 
 TypeId
-OranReporter::GetTypeId(void)
+OranReporter::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranReporter")
                             .SetParent<Object>()
@@ -65,20 +65,20 @@ OranReporter::GetTypeId(void)
     return tid;
 }
 
-OranReporter::OranReporter(void)
+OranReporter::OranReporter()
     : Object(),
       m_active(false)
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReporter::~OranReporter(void)
+OranReporter::~OranReporter()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranReporter::Activate(void)
+OranReporter::Activate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -94,7 +94,7 @@ OranReporter::Activate(void)
 }
 
 void
-OranReporter::Deactivate(void)
+OranReporter::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -106,7 +106,7 @@ OranReporter::Deactivate(void)
 }
 
 bool
-OranReporter::IsActive(void) const
+OranReporter::IsActive() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -114,7 +114,7 @@ OranReporter::IsActive(void) const
 }
 
 void
-OranReporter::PerformReport(void)
+OranReporter::PerformReport()
 {
     NS_LOG_FUNCTION(this);
 
@@ -140,7 +140,7 @@ OranReporter::PerformReport(void)
 }
 
 void
-OranReporter::NotifyRegistrationComplete(void)
+OranReporter::NotifyRegistrationComplete()
 {
     NS_LOG_FUNCTION(this);
 
@@ -151,7 +151,7 @@ OranReporter::NotifyRegistrationComplete(void)
 }
 
 void
-OranReporter::DoDispose(void)
+OranReporter::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -162,7 +162,7 @@ OranReporter::DoDispose(void)
 }
 
 Ptr<OranE2NodeTerminator>
-OranReporter::GetTerminator(void) const
+OranReporter::GetTerminator() const
 {
     NS_LOG_FUNCTION(this);
 

@@ -58,22 +58,22 @@ class OranLmNoop : public OranLm
      *
      * \return The TypeId
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranLmNoop class.
      */
-    OranLmNoop(void);
+    OranLmNoop();
     /**
      * Destructor of the OranLmNoop class.
      */
-    ~OranLmNoop(void) override;
+    ~OranLmNoop() override;
     /**
      * Run the logic of this LM. This is a No Operation LM, so the logic does
      * nothing and generates no commands.
      *
      * \return A vector of commands generated.
      */
-    std::vector<Ptr<OranCommand>> Run(void) override;
+    std::vector<Ptr<OranCommand>> Run() override;
 }; // class OranLmNoop
 
 } // namespace ns3

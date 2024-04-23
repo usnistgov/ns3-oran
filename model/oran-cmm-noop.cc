@@ -45,7 +45,7 @@ NS_LOG_COMPONENT_DEFINE("OranCmmNoop");
 NS_OBJECT_ENSURE_REGISTERED(OranCmmNoop);
 
 TypeId
-OranCmmNoop::GetTypeId(void)
+OranCmmNoop::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranCmmNoop").SetParent<OranCmm>().AddConstructor<OranCmmNoop>();
@@ -53,7 +53,7 @@ OranCmmNoop::GetTypeId(void)
     return tid;
 }
 
-OranCmmNoop::OranCmmNoop(void)
+OranCmmNoop::OranCmmNoop()
     : OranCmm()
 {
     NS_LOG_FUNCTION(this);
@@ -61,13 +61,13 @@ OranCmmNoop::OranCmmNoop(void)
     m_name = "CmmNoop";
 }
 
-OranCmmNoop::~OranCmmNoop(void)
+OranCmmNoop::~OranCmmNoop()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmmNoop::DoDispose(void)
+OranCmmNoop::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 

@@ -57,33 +57,33 @@ class OranReport : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReport class.
      */
-    OranReport(void);
+    OranReport();
     /**
      * Destructor of the OranReport class.
      */
-    ~OranReport(void) override;
+    ~OranReport() override;
     /**
      * Get a string representation of this Report.
      *
      * \return A string representation of this Report.
      */
-    virtual std::string ToString(void) const;
+    virtual std::string ToString() const;
     /**
      * Get the E2 Node ID of the reporter.
      *
      * \return The E2 Node ID of the reporter.
      */
-    uint64_t GetReporterE2NodeId(void) const;
+    uint64_t GetReporterE2NodeId() const;
     /**
      * Get the Time at which the Report was generated.
      *
      * \return The Time at which the Report was generated.
      */
-    Time GetTime(void) const;
+    Time GetTime() const;
 
   private:
     /**
