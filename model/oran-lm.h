@@ -63,37 +63,37 @@ class OranLm : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Create an instance of the OranLm class.
      */
-    OranLm(void);
+    OranLm();
     /**
      * The destructor of the OranLm class.
      */
-    ~OranLm(void) override;
+    ~OranLm() override;
     /**
      * Activate the Logic Module
      */
-    virtual void Activate(void);
+    virtual void Activate();
     /**
      * Deactivate the Logic Module.
      *
      * This also clears the vector of stored commands.
      */
-    virtual void Deactivate(void);
+    virtual void Deactivate();
     /**
      * Check if the Logic Module is active.
      *
      * \return True, if this Logic Module is active; otherwise, false.
      */
-    bool IsActive(void) const;
+    bool IsActive() const;
     /**
      * Get the name of this Logic Module.
      *
      * \return The Name of this Logic Module.
      */
-    std::string GetName(void) const;
+    std::string GetName() const;
     /**
      * Set the name of this Logic Module.
      *
@@ -110,19 +110,19 @@ class OranLm : public Object
     /**
      * Cancels the current run.
      */
-    void CancelRun(void);
+    void CancelRun();
     /**
      * Indicates if the LM is running.
      *
      * \return true, if the LM is running; otherwise, false.
      */
-    bool IsRunning(void) const;
+    bool IsRunning() const;
 
   protected:
     /**
      * Dispose of the object.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * Log a string to the Data Repository
      *
@@ -132,13 +132,13 @@ class OranLm : public Object
     /**
      * Finish running the logic module.
      */
-    virtual void FinishRun(void);
+    virtual void FinishRun();
     /**
      * Generates the commands to provide to the Near-RT RIC.
      *
      * \return The generated commands.
      */
-    virtual std::vector<Ptr<OranCommand>> Run(void) = 0;
+    virtual std::vector<Ptr<OranCommand>> Run() = 0;
 
     /**
      * Pointer to the Near-RT RIC.

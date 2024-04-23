@@ -35,7 +35,7 @@ namespace ns3
 {
 
 void
-OranE2NodeTerminatorContainer::Activate(void)
+OranE2NodeTerminatorContainer::Activate()
 {
     for (auto terminator : m_e2NodeTerminators)
     {
@@ -44,13 +44,13 @@ OranE2NodeTerminatorContainer::Activate(void)
 }
 
 OranE2NodeTerminatorContainer::Iterator
-OranE2NodeTerminatorContainer::Begin(void) const
+OranE2NodeTerminatorContainer::Begin() const
 {
     return m_e2NodeTerminators.begin();
 }
 
 void
-OranE2NodeTerminatorContainer::Deactivate(void)
+OranE2NodeTerminatorContainer::Deactivate()
 {
     for (auto terminator : m_e2NodeTerminators)
     {
@@ -59,13 +59,13 @@ OranE2NodeTerminatorContainer::Deactivate(void)
 }
 
 OranE2NodeTerminatorContainer::Iterator
-OranE2NodeTerminatorContainer::End(void) const
+OranE2NodeTerminatorContainer::End() const
 {
     return m_e2NodeTerminators.end();
 }
 
 uint32_t
-OranE2NodeTerminatorContainer::GetN(void) const
+OranE2NodeTerminatorContainer::GetN() const
 {
     return m_e2NodeTerminators.size();
 }

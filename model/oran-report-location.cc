@@ -45,7 +45,7 @@ NS_LOG_COMPONENT_DEFINE("OranReportLocation");
 NS_OBJECT_ENSURE_REGISTERED(OranReportLocation);
 
 TypeId
-OranReportLocation::GetTypeId(void)
+OranReportLocation::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranReportLocation")
                             .SetParent<OranReport>()
@@ -59,19 +59,19 @@ OranReportLocation::GetTypeId(void)
     return tid;
 }
 
-OranReportLocation::OranReportLocation(void)
+OranReportLocation::OranReportLocation()
     : OranReport()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReportLocation::~OranReportLocation(void)
+OranReportLocation::~OranReportLocation()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranReportLocation::ToString(void) const
+OranReportLocation::ToString() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -86,7 +86,7 @@ OranReportLocation::ToString(void) const
 }
 
 Vector
-OranReportLocation::GetLocation(void) const
+OranReportLocation::GetLocation() const
 {
     NS_LOG_FUNCTION(this);
 

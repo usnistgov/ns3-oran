@@ -47,7 +47,7 @@ NS_LOG_COMPONENT_DEFINE("OranCmmSingleCommandPerNode");
 NS_OBJECT_ENSURE_REGISTERED(OranCmmSingleCommandPerNode);
 
 TypeId
-OranCmmSingleCommandPerNode::GetTypeId(void)
+OranCmmSingleCommandPerNode::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranCmmSingleCommandPerNode")
                             .SetParent<OranCmm>()
@@ -56,7 +56,7 @@ OranCmmSingleCommandPerNode::GetTypeId(void)
     return tid;
 }
 
-OranCmmSingleCommandPerNode::OranCmmSingleCommandPerNode(void)
+OranCmmSingleCommandPerNode::OranCmmSingleCommandPerNode()
     : OranCmm()
 {
     NS_LOG_FUNCTION(this);
@@ -64,13 +64,13 @@ OranCmmSingleCommandPerNode::OranCmmSingleCommandPerNode(void)
     m_name = "CmmSingleCommandPerNode";
 }
 
-OranCmmSingleCommandPerNode::~OranCmmSingleCommandPerNode(void)
+OranCmmSingleCommandPerNode::~OranCmmSingleCommandPerNode()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranCmmSingleCommandPerNode::DoDispose(void)
+OranCmmSingleCommandPerNode::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 

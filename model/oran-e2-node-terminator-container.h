@@ -55,37 +55,37 @@ class OranE2NodeTerminatorContainer
     /**
      * Constructor of the ORanE2NodeTerminatorContainer.
      */
-    OranE2NodeTerminatorContainer(void) = default;
+    OranE2NodeTerminatorContainer() = default;
     /**
      * Destructor of the OranE2NodeTerminatorContainer.
      */
-    virtual ~OranE2NodeTerminatorContainer(void) = default;
+    virtual ~OranE2NodeTerminatorContainer() = default;
     /**
      * Activate all of the E2 Node Terminators in the container.
      */
-    void Activate(void);
+    void Activate();
     /**
      * Get an iterator referencing the first element.
      *
      * \return The iterator.
      */
-    Iterator Begin(void) const;
+    Iterator Begin() const;
     /**
      * Deactivate all of the E2 Node Terminators in the container.
      */
-    void Deactivate(void);
+    void Deactivate();
     /**
      * Get an iterator referencing the last element.
      *
      * \return The iterator.
      */
-    Iterator End(void) const;
+    Iterator End() const;
     /**
      * Get the number of elements in the container.
      *
      * \return The number of elements.
      */
-    uint32_t GetN(void) const;
+    uint32_t GetN() const;
     /**
      * Get an element from the container.
      *

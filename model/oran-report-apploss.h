@@ -52,27 +52,27 @@ class OranReportAppLoss : public OranReport
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReportAppLoss class.
      */
-    OranReportAppLoss(void);
+    OranReportAppLoss();
     /**
      * Destructor of the OranReportAppLoss class.
      */
-    ~OranReportAppLoss(void) override;
+    ~OranReportAppLoss() override;
     /**
      * Get a string representation of this Report
      *
      * \return A string representation of this Report.
      */
-    std::string ToString(void) const override;
+    std::string ToString() const override;
     /**
      * Gets the reported application packet loss.
      *
      * \return The reported application packet loss.
      */
-    double GetLoss(void) const;
+    double GetLoss() const;
 
   private:
     /**

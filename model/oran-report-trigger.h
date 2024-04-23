@@ -57,11 +57,11 @@ class OranReportTrigger : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Destructor of the OranReportTrigger class.
      */
-    ~OranReportTrigger(void) override;
+    ~OranReportTrigger() override;
     /**
      * Activates this trigger for and links it to the given reporter.
      * \param reporter The reporter to link to.
@@ -70,25 +70,25 @@ class OranReportTrigger : public Object
     /**
      * Deactivates this trigger and unlinks it from the current reporter.
      */
-    virtual void Deactivate(void);
+    virtual void Deactivate();
     /**
      * Notifies the trigger that initial registartion has completed successfully.
      */
-    virtual void NotifyRegistrationComplete(void);
+    virtual void NotifyRegistrationComplete();
 
   protected:
     /**
      * Constructor of the OranReportTrigger class.
      */
-    OranReportTrigger(void);
+    OranReportTrigger();
     /**
      * Dispose of the Report.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * Triggers a report.
      */
-    virtual void TriggerReport(void);
+    virtual void TriggerReport();
 
     /**
      * Flag to indicate if the trigger is active.

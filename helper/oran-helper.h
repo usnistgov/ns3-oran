@@ -55,15 +55,15 @@ class OranHelper : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranHelper class.
      */
-    OranHelper(void);
+    OranHelper();
     /**
      * The destructor of the OranHelper class.
      */
-    ~OranHelper(void) override;
+    ~OranHelper() override;
     /**
      * Adds an additional Logic Module to the RIC. This method takes a string
      * with the class name of the LM to deploy, and pairs of attribute name and
@@ -383,7 +383,7 @@ class OranHelper : public Object
      *
      * \return A pointer to the Near-RT RIC created.
      */
-    Ptr<OranNearRtRic> CreateNearRtRic(void);
+    Ptr<OranNearRtRic> CreateNearRtRic();
     /**
      * Activates and Starts a Near-RT RIC.
      *
@@ -432,7 +432,7 @@ class OranHelper : public Object
     /**
      * Disposes of the OranHelper.
      */
-    virtual void DoDispose(void) override;
+    virtual void DoDispose() override;
 
   private:
     /**

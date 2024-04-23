@@ -62,56 +62,56 @@ class OranReporter : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReporter class.
      */
-    OranReporter(void);
+    OranReporter();
     /**
      * Destructor of the OranReporter class.
      */
-    ~OranReporter(void) override;
+    ~OranReporter() override;
     /**
      * Activate the reporter and start periodically generating Reports
      * for the E2 Node Terminator.
      */
-    virtual void Activate(void);
+    virtual void Activate();
     /**
      * Deactivate the reporter and stop generating Reports.
      */
-    virtual void Deactivate(void);
+    virtual void Deactivate();
     /**
      * Indicate if the reporter is active.
      *
      * \return True, if the reporter is active; otherwise, false.
      */
-    virtual bool IsActive(void) const;
+    virtual bool IsActive() const;
     /**
      * Get the E2 Node Terminator.
      * \return The E2 Node Terminator.
      */
-    Ptr<OranE2NodeTerminator> GetTerminator(void) const;
+    Ptr<OranE2NodeTerminator> GetTerminator() const;
     /**
      * Invoke GenerateReports and send the Reports to the E2 Terminator.
      */
-    virtual void PerformReport(void);
+    virtual void PerformReport();
     /**
      * Notifies the reporter that initial registartion has completed successfully.
      */
-    virtual void NotifyRegistrationComplete(void);
+    virtual void NotifyRegistrationComplete();
 
   protected:
     /**
      * Dispose of the Reporter.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
     /**
      * Collect values and metrics from the models, and generate reports
      * with them.
      *
      * \return The collection of Reports.
      */
-    virtual std::vector<Ptr<OranReport>> GenerateReports(void) = 0;
+    virtual std::vector<Ptr<OranReport>> GenerateReports() = 0;
 
     /**
      * Flag to indicate if the Reporter is active.

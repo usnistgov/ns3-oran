@@ -42,7 +42,7 @@ NS_LOG_COMPONENT_DEFINE("OranReport");
 NS_OBJECT_ENSURE_REGISTERED(OranReport);
 
 TypeId
-OranReport::GetTypeId(void)
+OranReport::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranReport")
                             .SetParent<Object>()
@@ -61,19 +61,19 @@ OranReport::GetTypeId(void)
     return tid;
 }
 
-OranReport::OranReport(void)
+OranReport::OranReport()
     : Object()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReport::~OranReport(void)
+OranReport::~OranReport()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranReport::ToString(void) const
+OranReport::ToString() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -81,7 +81,7 @@ OranReport::ToString(void) const
 }
 
 uint64_t
-OranReport::GetReporterE2NodeId(void) const
+OranReport::GetReporterE2NodeId() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -89,7 +89,7 @@ OranReport::GetReporterE2NodeId(void) const
 }
 
 Time
-OranReport::GetTime(void) const
+OranReport::GetTime() const
 {
     NS_LOG_FUNCTION(this);
 

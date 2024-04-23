@@ -41,7 +41,7 @@ NS_LOG_COMPONENT_DEFINE("OranQueryTriggerNoop");
 NS_OBJECT_ENSURE_REGISTERED(OranQueryTriggerNoop);
 
 TypeId
-OranQueryTriggerNoop::GetTypeId(void)
+OranQueryTriggerNoop::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranQueryTriggerNoop")
                             .SetParent<OranQueryTrigger>()
@@ -50,13 +50,13 @@ OranQueryTriggerNoop::GetTypeId(void)
     return tid;
 }
 
-OranQueryTriggerNoop::OranQueryTriggerNoop(void)
+OranQueryTriggerNoop::OranQueryTriggerNoop()
     : OranQueryTrigger()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranQueryTriggerNoop::~OranQueryTriggerNoop(void)
+OranQueryTriggerNoop::~OranQueryTriggerNoop()
 {
     NS_LOG_FUNCTION(this);
 }

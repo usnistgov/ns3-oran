@@ -55,27 +55,27 @@ class OranCommand : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranCommand class.
      */
-    OranCommand(void);
+    OranCommand();
     /**
      * The destructor of the OranCommand class.
      */
-    ~OranCommand(void) override;
+    ~OranCommand() override;
     /**
      * Get a string representation of this command.
      *
      * \return A string representation of this command.
      */
-    virtual std::string ToString(void) const;
+    virtual std::string ToString() const;
     /**
      * Get the target E2 Node ID.
      *
      * \return The target E2 Node Id.
      */
-    uint64_t GetTargetE2NodeId(void) const;
+    uint64_t GetTargetE2NodeId() const;
 
   private:
     /**

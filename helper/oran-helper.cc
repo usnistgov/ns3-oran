@@ -53,7 +53,7 @@ NS_LOG_COMPONENT_DEFINE("OranHelper");
 NS_OBJECT_ENSURE_REGISTERED(OranHelper);
 
 TypeId
-OranHelper::GetTypeId(void)
+OranHelper::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranHelper")
@@ -103,7 +103,7 @@ OranHelper::GetTypeId(void)
     return tid;
 }
 
-OranHelper::OranHelper(void)
+OranHelper::OranHelper()
     : Object(),
       m_lmFactories(std::vector<ObjectFactory>()),
       m_reporterFactories(std::vector<ObjectFactory>())
@@ -119,13 +119,13 @@ OranHelper::OranHelper(void)
     m_e2NodeTerminatorFactory.SetTypeId("ns3::OranE2NodeTerminatorWired");
 }
 
-OranHelper::~OranHelper(void)
+OranHelper::~OranHelper()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranHelper::DoDispose(void)
+OranHelper::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -386,7 +386,7 @@ OranHelper::SetE2NodeTerminator(std::string tid,
 }
 
 Ptr<OranNearRtRic>
-OranHelper::CreateNearRtRic(void)
+OranHelper::CreateNearRtRic()
 {
     NS_LOG_FUNCTION(this);
 

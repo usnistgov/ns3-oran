@@ -50,22 +50,22 @@ class OranE2NodeTerminatorWired : public OranE2NodeTerminator
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranE2NodeTerminatorWired class.
      */
-    OranE2NodeTerminatorWired(void);
+    OranE2NodeTerminatorWired();
     /**
      * Destructor of the OranE2NodeTerminatorWired class.
      */
-    ~OranE2NodeTerminatorWired(void) override;
+    ~OranE2NodeTerminatorWired() override;
     /**
      * Get the E2 Node Type. For this Terminator this method always returns the
      * WIRED node type
      *
      * \return the E2 Node Type.
      */
-    OranNearRtRic::NodeType GetNodeType(void) const override;
+    OranNearRtRic::NodeType GetNodeType() const override;
     /**
      * Receive a Command. All Commands are silently discarded.
      *

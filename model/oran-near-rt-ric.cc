@@ -55,7 +55,7 @@ NS_LOG_COMPONENT_DEFINE("OranNearRtRic");
 NS_OBJECT_ENSURE_REGISTERED(OranNearRtRic);
 
 TypeId
-OranNearRtRic::GetTypeId(void)
+OranNearRtRic::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranNearRtRic")
@@ -113,7 +113,7 @@ OranNearRtRic::GetTypeId(void)
     return tid;
 }
 
-OranNearRtRic::OranNearRtRic(void)
+OranNearRtRic::OranNearRtRic()
     : Object(),
       m_additionalLms(std::map<std::string, Ptr<OranLm>>()),
       m_active(false),
@@ -124,13 +124,13 @@ OranNearRtRic::OranNearRtRic(void)
     NS_LOG_FUNCTION(this);
 }
 
-OranNearRtRic::~OranNearRtRic(void)
+OranNearRtRic::~OranNearRtRic()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranNearRtRic::Activate(void)
+OranNearRtRic::Activate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -164,7 +164,7 @@ OranNearRtRic::Activate(void)
 }
 
 void
-OranNearRtRic::Deactivate(void)
+OranNearRtRic::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -199,7 +199,7 @@ OranNearRtRic::Deactivate(void)
 }
 
 bool
-OranNearRtRic::IsActive(void) const
+OranNearRtRic::IsActive() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -207,7 +207,7 @@ OranNearRtRic::IsActive(void) const
 }
 
 void
-OranNearRtRic::Start(void)
+OranNearRtRic::Start()
 {
     NS_LOG_FUNCTION(this);
 
@@ -223,7 +223,7 @@ OranNearRtRic::Start(void)
 }
 
 void
-OranNearRtRic::Stop(void)
+OranNearRtRic::Stop()
 {
     NS_LOG_FUNCTION(this);
 
@@ -234,7 +234,7 @@ OranNearRtRic::Stop(void)
 }
 
 Ptr<OranNearRtRicE2Terminator>
-OranNearRtRic::GetE2Terminator(void) const
+OranNearRtRic::GetE2Terminator() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -242,7 +242,7 @@ OranNearRtRic::GetE2Terminator(void) const
 }
 
 Ptr<OranLm>
-OranNearRtRic::GetDefaultLogicModule(void) const
+OranNearRtRic::GetDefaultLogicModule() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -367,7 +367,7 @@ OranNearRtRic::RemoveQueryTrigger(std::string name)
 }
 
 Ptr<OranDataRepository>
-OranNearRtRic::Data(void) const
+OranNearRtRic::Data() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -375,7 +375,7 @@ OranNearRtRic::Data(void) const
 }
 
 Ptr<OranCmm>
-OranNearRtRic::GetCmm(void) const
+OranNearRtRic::GetCmm() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -494,7 +494,7 @@ OranNearRtRic::NotifyReportReceived(Ptr<OranReport> report)
 }
 
 void
-OranNearRtRic::DoDispose(void)
+OranNearRtRic::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -516,7 +516,7 @@ OranNearRtRic::DoDispose(void)
 }
 
 void
-OranNearRtRic::QueryLms(void)
+OranNearRtRic::QueryLms()
 {
     NS_LOG_FUNCTION(this);
 
@@ -583,7 +583,7 @@ OranNearRtRic::QueryLms(void)
 }
 
 void
-OranNearRtRic::CheckForInactivity(void)
+OranNearRtRic::CheckForInactivity()
 {
     NS_LOG_FUNCTION(this);
 
@@ -632,7 +632,7 @@ OranNearRtRic::CheckForInactivity(void)
 }
 
 void
-OranNearRtRic::ProcessLmQueryCommands(void)
+OranNearRtRic::ProcessLmQueryCommands()
 {
     NS_LOG_FUNCTION(this);
 

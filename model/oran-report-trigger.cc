@@ -48,7 +48,7 @@ NS_LOG_COMPONENT_DEFINE("OranReportTrigger");
 NS_OBJECT_ENSURE_REGISTERED(OranReportTrigger);
 
 TypeId
-OranReportTrigger::GetTypeId(void)
+OranReportTrigger::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranReportTrigger")
@@ -67,14 +67,14 @@ OranReportTrigger::GetTypeId(void)
     return tid;
 }
 
-OranReportTrigger::OranReportTrigger(void)
+OranReportTrigger::OranReportTrigger()
     : Object(),
       m_active(false)
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReportTrigger::~OranReportTrigger(void)
+OranReportTrigger::~OranReportTrigger()
 {
     NS_LOG_FUNCTION(this);
 }
@@ -95,7 +95,7 @@ OranReportTrigger::Activate(Ptr<OranReporter> reporter)
 }
 
 void
-OranReportTrigger::Deactivate(void)
+OranReportTrigger::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -110,7 +110,7 @@ OranReportTrigger::Deactivate(void)
 }
 
 void
-OranReportTrigger::NotifyRegistrationComplete(void)
+OranReportTrigger::NotifyRegistrationComplete()
 {
     if (m_active && m_initialReport)
     {
@@ -119,7 +119,7 @@ OranReportTrigger::NotifyRegistrationComplete(void)
 }
 
 void
-OranReportTrigger::DoDispose(void)
+OranReportTrigger::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -129,7 +129,7 @@ OranReportTrigger::DoDispose(void)
 }
 
 void
-OranReportTrigger::TriggerReport(void)
+OranReportTrigger::TriggerReport()
 {
     NS_LOG_FUNCTION(this);
 

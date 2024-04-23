@@ -45,14 +45,14 @@ NS_LOG_COMPONENT_DEFINE("OranLmNoop");
 NS_OBJECT_ENSURE_REGISTERED(OranLmNoop);
 
 TypeId
-OranLmNoop::GetTypeId(void)
+OranLmNoop::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranLmNoop").SetParent<OranLm>().AddConstructor<OranLmNoop>();
 
     return tid;
 }
 
-OranLmNoop::OranLmNoop(void)
+OranLmNoop::OranLmNoop()
     : OranLm()
 {
     NS_LOG_FUNCTION(this);
@@ -60,13 +60,13 @@ OranLmNoop::OranLmNoop(void)
     m_name = "OranLmNoop";
 }
 
-OranLmNoop::~OranLmNoop(void)
+OranLmNoop::~OranLmNoop()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::vector<Ptr<OranCommand>>
-OranLmNoop::Run(void)
+OranLmNoop::Run()
 {
     NS_LOG_FUNCTION(this);
 

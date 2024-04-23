@@ -52,22 +52,22 @@ class OranE2NodeTerminatorLteUe : public OranE2NodeTerminator
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranE2NodeTerminatorLteUe class.
      */
-    OranE2NodeTerminatorLteUe(void);
+    OranE2NodeTerminatorLteUe();
     /**
      * Destructor of the OranE2NodeTerminatorLteUe class.
      */
-    ~OranE2NodeTerminatorLteUe(void) override;
+    ~OranE2NodeTerminatorLteUe() override;
     /**
      * Get the E2 Node Type. For this Terminator, this method always returns
      * the LTE UE node type
      *
      * \return the E2 Node Type.
      */
-    OranNearRtRic::NodeType GetNodeType(void) const override;
+    OranNearRtRic::NodeType GetNodeType() const override;
     /**
      * Receive a Command. All Commands are silently ignored.
      *
@@ -79,7 +79,7 @@ class OranE2NodeTerminatorLteUe : public OranE2NodeTerminator
      *
      * \return The net device.
      */
-    virtual Ptr<LteUeNetDevice> GetNetDevice(void) const;
+    virtual Ptr<LteUeNetDevice> GetNetDevice() const;
 }; // class OranE2NodeTerminatorLteUe
 
 } // namespace ns3

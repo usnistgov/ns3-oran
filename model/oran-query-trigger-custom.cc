@@ -41,7 +41,7 @@ NS_LOG_COMPONENT_DEFINE("OranQueryTriggerCustom");
 NS_OBJECT_ENSURE_REGISTERED(OranQueryTriggerCustom);
 
 TypeId
-OranQueryTriggerCustom::GetTypeId(void)
+OranQueryTriggerCustom::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranQueryTriggerCustom")
@@ -59,14 +59,14 @@ OranQueryTriggerCustom::GetTypeId(void)
     return tid;
 }
 
-OranQueryTriggerCustom::OranQueryTriggerCustom(void)
+OranQueryTriggerCustom::OranQueryTriggerCustom()
     : OranQueryTrigger(),
       m_customCb(MakeNullCallback<bool, Ptr<OranReport>>())
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranQueryTriggerCustom::~OranQueryTriggerCustom(void)
+OranQueryTriggerCustom::~OranQueryTriggerCustom()
 {
     NS_LOG_FUNCTION(this);
 }
@@ -80,7 +80,7 @@ OranQueryTriggerCustom::QueryLms(Ptr<OranReport> report)
 }
 
 void
-OranQueryTriggerCustom::DoDispose(void)
+OranQueryTriggerCustom::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 

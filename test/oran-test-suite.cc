@@ -58,7 +58,7 @@ class OranTestCaseMobility1 : public TestCase
     /**
      * Method that runs the simulation for the test
      */
-    virtual void DoRun(void);
+    virtual void DoRun();
 };
 
 OranTestCaseMobility1::OranTestCaseMobility1()
@@ -71,7 +71,7 @@ OranTestCaseMobility1::~OranTestCaseMobility1()
 }
 
 void
-OranTestCaseMobility1::DoRun(void)
+OranTestCaseMobility1::DoRun()
 {
     Time simTime = Seconds(14);
     double speed = 2;

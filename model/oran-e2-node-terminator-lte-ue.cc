@@ -47,7 +47,7 @@ NS_LOG_COMPONENT_DEFINE("OranE2NodeTerminatorLteUe");
 NS_OBJECT_ENSURE_REGISTERED(OranE2NodeTerminatorLteUe);
 
 TypeId
-OranE2NodeTerminatorLteUe::GetTypeId(void)
+OranE2NodeTerminatorLteUe::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranE2NodeTerminatorLteUe")
                             .SetParent<OranE2NodeTerminator>()
@@ -56,19 +56,19 @@ OranE2NodeTerminatorLteUe::GetTypeId(void)
     return tid;
 }
 
-OranE2NodeTerminatorLteUe::OranE2NodeTerminatorLteUe(void)
+OranE2NodeTerminatorLteUe::OranE2NodeTerminatorLteUe()
     : OranE2NodeTerminator()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranE2NodeTerminatorLteUe::~OranE2NodeTerminatorLteUe(void)
+OranE2NodeTerminatorLteUe::~OranE2NodeTerminatorLteUe()
 {
     NS_LOG_FUNCTION(this);
 }
 
 OranNearRtRic::NodeType
-OranE2NodeTerminatorLteUe::GetNodeType(void) const
+OranE2NodeTerminatorLteUe::GetNodeType() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -87,7 +87,7 @@ OranE2NodeTerminatorLteUe::ReceiveCommand(Ptr<OranCommand> command)
 }
 
 Ptr<LteUeNetDevice>
-OranE2NodeTerminatorLteUe::GetNetDevice(void) const
+OranE2NodeTerminatorLteUe::GetNetDevice() const
 {
     NS_LOG_FUNCTION(this);
 

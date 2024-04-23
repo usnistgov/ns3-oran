@@ -50,7 +50,7 @@ NS_LOG_COMPONENT_DEFINE("OranReportTriggerLteUeHandover");
 NS_OBJECT_ENSURE_REGISTERED(OranReportTriggerLteUeHandover);
 
 TypeId
-OranReportTriggerLteUeHandover::GetTypeId(void)
+OranReportTriggerLteUeHandover::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranReportTriggerLteUeHandover")
                             .SetParent<OranReportTrigger>()
@@ -59,13 +59,13 @@ OranReportTriggerLteUeHandover::GetTypeId(void)
     return tid;
 }
 
-OranReportTriggerLteUeHandover::OranReportTriggerLteUeHandover(void)
+OranReportTriggerLteUeHandover::OranReportTriggerLteUeHandover()
     : OranReportTrigger()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReportTriggerLteUeHandover::~OranReportTriggerLteUeHandover(void)
+OranReportTriggerLteUeHandover::~OranReportTriggerLteUeHandover()
 {
     NS_LOG_FUNCTION(this);
 }
@@ -100,7 +100,7 @@ OranReportTriggerLteUeHandover::Activate(Ptr<OranReporter> reporter)
 }
 
 void
-OranReportTriggerLteUeHandover::Deactivate(void)
+OranReportTriggerLteUeHandover::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -113,7 +113,7 @@ OranReportTriggerLteUeHandover::Deactivate(void)
 }
 
 void
-OranReportTriggerLteUeHandover::DoDispose(void)
+OranReportTriggerLteUeHandover::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -148,7 +148,7 @@ OranReportTriggerLteUeHandover::ConnectionEstablishedSink(uint64_t imsi,
 }
 
 void
-OranReportTriggerLteUeHandover::DisconnectSink(void)
+OranReportTriggerLteUeHandover::DisconnectSink()
 {
     NS_LOG_FUNCTION(this);
 

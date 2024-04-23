@@ -56,15 +56,15 @@ class OranQueryTriggerNoop : public OranQueryTrigger
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranQueryTriggerNoop class.
      */
-    OranQueryTriggerNoop(void);
+    OranQueryTriggerNoop();
     /**
      * Destructor of the OranQueryTriggerNoop class.
      */
-    ~OranQueryTriggerNoop(void) override;
+    ~OranQueryTriggerNoop() override;
     /**
      * Indicates if a report should trigger query to the Logic Modules.
      * As this is a No-Operation trigger, it always returns false.

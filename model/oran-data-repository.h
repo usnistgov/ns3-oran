@@ -66,29 +66,29 @@ class OranDataRepository : public Object
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Creates an instance of the OranDataRepository class.
      */
-    OranDataRepository(void);
+    OranDataRepository();
     /**
      * The destructor of the OranDataRepository class.
      */
-    ~OranDataRepository(void) override;
+    ~OranDataRepository() override;
     /**
      * Activate the data storage.
      */
-    virtual void Activate(void);
+    virtual void Activate();
     /**
      * Deactivate the data storage.
      */
-    virtual void Deactivate(void);
+    virtual void Deactivate();
     /**
      * Check if the data storage is active.
      *
      * \return True, if the data storage is active; otherwise, false.
      */
-    virtual bool IsActive(void) const;
+    virtual bool IsActive() const;
 
     /* Data Storage API */
     /**
@@ -207,7 +207,7 @@ class OranDataRepository : public Object
      *
      * \return The collection of E2 Node IDs.
      */
-    virtual std::vector<uint64_t> GetLteUeE2NodeIds(void) = 0;
+    virtual std::vector<uint64_t> GetLteUeE2NodeIds() = 0;
     /**
      * Get the E2 Node ID for an LTE UE given the cell ID and RNTI of the UE in the cell.
      *
@@ -230,13 +230,13 @@ class OranDataRepository : public Object
      *
      * \return The collection of E2 Node IDs.
      */
-    virtual std::vector<uint64_t> GetLteEnbE2NodeIds(void) = 0;
+    virtual std::vector<uint64_t> GetLteEnbE2NodeIds() = 0;
     /**
      * Gets the last time that a registration was received for all registered nodes.
      *
      * \return The collection of last registration times.
      */
-    virtual std::vector<std::tuple<uint64_t, Time>> GetLastRegistrationRequests(void) = 0;
+    virtual std::vector<std::tuple<uint64_t, Time>> GetLastRegistrationRequests() = 0;
     /**
      * Gets the last reported application loss for a node.
      *
@@ -278,7 +278,7 @@ class OranDataRepository : public Object
     /**
      * Disposes of the object.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
 
     /**
      * Flag to keep track of the active status.

@@ -48,7 +48,7 @@ NS_LOG_COMPONENT_DEFINE("OranReportTriggerPeriodic");
 NS_OBJECT_ENSURE_REGISTERED(OranReportTriggerPeriodic);
 
 TypeId
-OranReportTriggerPeriodic::GetTypeId(void)
+OranReportTriggerPeriodic::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranReportTriggerPeriodic")
@@ -64,14 +64,14 @@ OranReportTriggerPeriodic::GetTypeId(void)
     return tid;
 }
 
-OranReportTriggerPeriodic::OranReportTriggerPeriodic(void)
+OranReportTriggerPeriodic::OranReportTriggerPeriodic()
     : OranReportTrigger(),
       m_triggerEvent(EventId())
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranReportTriggerPeriodic::~OranReportTriggerPeriodic(void)
+OranReportTriggerPeriodic::~OranReportTriggerPeriodic()
 {
     NS_LOG_FUNCTION(this);
 }
@@ -90,7 +90,7 @@ OranReportTriggerPeriodic::Activate(Ptr<OranReporter> reporter)
 }
 
 void
-OranReportTriggerPeriodic::Deactivate(void)
+OranReportTriggerPeriodic::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -103,7 +103,7 @@ OranReportTriggerPeriodic::Deactivate(void)
 }
 
 void
-OranReportTriggerPeriodic::DoDispose(void)
+OranReportTriggerPeriodic::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -118,7 +118,7 @@ OranReportTriggerPeriodic::DoDispose(void)
 }
 
 void
-OranReportTriggerPeriodic::TriggerReport(void)
+OranReportTriggerPeriodic::TriggerReport()
 {
     NS_LOG_FUNCTION(this);
 
@@ -131,7 +131,7 @@ OranReportTriggerPeriodic::TriggerReport(void)
 }
 
 void
-OranReportTriggerPeriodic::CancelNextTrigger(void)
+OranReportTriggerPeriodic::CancelNextTrigger()
 {
     NS_LOG_FUNCTION(this);
 
@@ -142,7 +142,7 @@ OranReportTriggerPeriodic::CancelNextTrigger(void)
 }
 
 void
-OranReportTriggerPeriodic::ScheduleNextTrigger(void)
+OranReportTriggerPeriodic::ScheduleNextTrigger()
 {
     NS_LOG_FUNCTION(this);
 

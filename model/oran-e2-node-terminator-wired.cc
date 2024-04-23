@@ -43,7 +43,7 @@ NS_LOG_COMPONENT_DEFINE("OranE2NodeTerminatorWired");
 NS_OBJECT_ENSURE_REGISTERED(OranE2NodeTerminatorWired);
 
 TypeId
-OranE2NodeTerminatorWired::GetTypeId(void)
+OranE2NodeTerminatorWired::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranE2NodeTerminatorWired")
                             .SetParent<OranE2NodeTerminator>()
@@ -52,19 +52,19 @@ OranE2NodeTerminatorWired::GetTypeId(void)
     return tid;
 }
 
-OranE2NodeTerminatorWired::OranE2NodeTerminatorWired(void)
+OranE2NodeTerminatorWired::OranE2NodeTerminatorWired()
     : OranE2NodeTerminator()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranE2NodeTerminatorWired::~OranE2NodeTerminatorWired(void)
+OranE2NodeTerminatorWired::~OranE2NodeTerminatorWired()
 {
     NS_LOG_FUNCTION(this);
 }
 
 OranNearRtRic::NodeType
-OranE2NodeTerminatorWired::GetNodeType(void) const
+OranE2NodeTerminatorWired::GetNodeType() const
 {
     NS_LOG_FUNCTION(this);
 

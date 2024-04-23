@@ -42,7 +42,7 @@ NS_LOG_COMPONENT_DEFINE("OranCommand");
 NS_OBJECT_ENSURE_REGISTERED(OranCommand);
 
 TypeId
-OranCommand::GetTypeId(void)
+OranCommand::GetTypeId()
 {
     static TypeId tid = TypeId("ns3::OranCommand")
                             .SetParent<Object>()
@@ -56,19 +56,19 @@ OranCommand::GetTypeId(void)
     return tid;
 }
 
-OranCommand::OranCommand(void)
+OranCommand::OranCommand()
     : Object()
 {
     NS_LOG_FUNCTION(this);
 }
 
-OranCommand::~OranCommand(void)
+OranCommand::~OranCommand()
 {
     NS_LOG_FUNCTION(this);
 }
 
 std::string
-OranCommand::ToString(void) const
+OranCommand::ToString() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -76,7 +76,7 @@ OranCommand::ToString(void) const
 }
 
 uint64_t
-OranCommand::GetTargetE2NodeId(void) const
+OranCommand::GetTargetE2NodeId() const
 {
     NS_LOG_FUNCTION(this);
 

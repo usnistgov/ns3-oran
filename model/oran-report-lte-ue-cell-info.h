@@ -52,21 +52,21 @@ class OranReportLteUeCellInfo : public OranReport
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReportLteUeCellInfo class.
      */
-    OranReportLteUeCellInfo(void);
+    OranReportLteUeCellInfo();
     /**
      * Destructor of the OranReportLteUeCellInfo class.
      */
-    ~OranReportLteUeCellInfo(void) override;
+    ~OranReportLteUeCellInfo() override;
     /**
      * Get a string representation of this Report.
      *
      * \return A string representation of this Report.
      */
-    std::string ToString(void) const override;
+    std::string ToString() const override;
 
   private:
     /**
@@ -84,13 +84,13 @@ class OranReportLteUeCellInfo : public OranReport
      *
      * \return The reported cell ID.
      */
-    uint16_t GetCellId(void) const;
+    uint16_t GetCellId() const;
     /**
      * Get the reported RNTI.
      *
      * \return The reported RNTI.
      */
-    uint16_t GetRnti(void) const;
+    uint16_t GetRnti() const;
 }; // class OranReportLteUeCellInfo
 
 } // namespace ns3

@@ -44,7 +44,7 @@ NS_LOG_COMPONENT_DEFINE("OranDataRepositorySqlite");
 NS_OBJECT_ENSURE_REGISTERED(OranDataRepositorySqlite);
 
 TypeId
-OranDataRepositorySqlite::GetTypeId(void)
+OranDataRepositorySqlite::GetTypeId()
 {
     static TypeId tid =
         TypeId("ns3::OranDataRepositorySqlite")
@@ -65,7 +65,7 @@ OranDataRepositorySqlite::GetTypeId(void)
     return tid;
 }
 
-OranDataRepositorySqlite::OranDataRepositorySqlite(void)
+OranDataRepositorySqlite::OranDataRepositorySqlite()
     : OranDataRepository(),
       m_db(nullptr)
 {
@@ -74,13 +74,13 @@ OranDataRepositorySqlite::OranDataRepositorySqlite(void)
     InitStatements();
 }
 
-OranDataRepositorySqlite::~OranDataRepositorySqlite(void)
+OranDataRepositorySqlite::~OranDataRepositorySqlite()
 {
     NS_LOG_FUNCTION(this);
 }
 
 void
-OranDataRepositorySqlite::Activate(void)
+OranDataRepositorySqlite::Activate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -93,7 +93,7 @@ OranDataRepositorySqlite::Activate(void)
 }
 
 void
-OranDataRepositorySqlite::Deactivate(void)
+OranDataRepositorySqlite::Deactivate()
 {
     NS_LOG_FUNCTION(this);
 
@@ -457,7 +457,7 @@ OranDataRepositorySqlite::GetLteUeCellInfo(uint64_t e2NodeId)
 }
 
 std::vector<uint64_t>
-OranDataRepositorySqlite::GetLteUeE2NodeIds(void)
+OranDataRepositorySqlite::GetLteUeE2NodeIds()
 {
     NS_LOG_FUNCTION(this);
 
@@ -589,7 +589,7 @@ OranDataRepositorySqlite::GetLteEnbCellInfo(uint64_t e2NodeId)
 }
 
 std::vector<uint64_t>
-OranDataRepositorySqlite::GetLteEnbE2NodeIds(void)
+OranDataRepositorySqlite::GetLteEnbE2NodeIds()
 {
     NS_LOG_FUNCTION(this);
 
@@ -618,7 +618,7 @@ OranDataRepositorySqlite::GetLteEnbE2NodeIds(void)
 }
 
 std::vector<std::tuple<uint64_t, Time>>
-OranDataRepositorySqlite::GetLastRegistrationRequests(void)
+OranDataRepositorySqlite::GetLastRegistrationRequests()
 {
     NS_LOG_FUNCTION(this);
 
@@ -781,7 +781,7 @@ OranDataRepositorySqlite::CheckQueryReturnCode(sqlite3_stmt* stmt,
 }
 
 void
-OranDataRepositorySqlite::CloseDb(void)
+OranDataRepositorySqlite::CloseDb()
 {
     NS_LOG_FUNCTION(this);
 
@@ -790,7 +790,7 @@ OranDataRepositorySqlite::CloseDb(void)
 }
 
 void
-OranDataRepositorySqlite::DoDispose(void)
+OranDataRepositorySqlite::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
@@ -803,7 +803,7 @@ OranDataRepositorySqlite::DoDispose(void)
 }
 
 bool
-OranDataRepositorySqlite::IsDbOpen(void) const
+OranDataRepositorySqlite::IsDbOpen() const
 {
     NS_LOG_FUNCTION(this);
 
@@ -811,7 +811,7 @@ OranDataRepositorySqlite::IsDbOpen(void) const
 }
 
 void
-OranDataRepositorySqlite::OpenDb(void)
+OranDataRepositorySqlite::OpenDb()
 {
     NS_LOG_FUNCTION(this);
 
@@ -857,7 +857,7 @@ OranDataRepositorySqlite::OpenDb(void)
 }
 
 void
-OranDataRepositorySqlite::InitDb(void)
+OranDataRepositorySqlite::InitDb()
 {
     NS_LOG_FUNCTION(this);
 
@@ -904,7 +904,7 @@ OranDataRepositorySqlite::InitDb(void)
 }
 
 void
-OranDataRepositorySqlite::InitStatements(void)
+OranDataRepositorySqlite::InitStatements()
 {
     NS_LOG_FUNCTION(this);
 

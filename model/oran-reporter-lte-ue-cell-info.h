@@ -56,15 +56,15 @@ class OranReporterLteUeCellInfo : public OranReporter
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranReporterLteUeCellInfo class.
      */
-    OranReporterLteUeCellInfo(void);
+    OranReporterLteUeCellInfo();
     /**
      * Destructor of the OranReporterLteUeCellInfo class.
      */
-    ~OranReporterLteUeCellInfo(void) override;
+    ~OranReporterLteUeCellInfo() override;
 
   protected:
     /**
@@ -73,7 +73,7 @@ class OranReporterLteUeCellInfo : public OranReporter
      *
      * \return The generated Report.
      */
-    std::vector<Ptr<OranReport>> GenerateReports(void) override;
+    std::vector<Ptr<OranReport>> GenerateReports() override;
 }; // class OranReporterLteUeCellInfo
 
 } // namespace ns3

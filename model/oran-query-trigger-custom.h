@@ -56,15 +56,15 @@ class OranQueryTriggerCustom : public OranQueryTrigger
      *
      * \return The TypeId.
      */
-    static TypeId GetTypeId(void);
+    static TypeId GetTypeId();
     /**
      * Constructor of the OranQueryTriggerCustom class.
      */
-    OranQueryTriggerCustom(void);
+    OranQueryTriggerCustom();
     /**
      * Destructor of the OranQueryTriggerCustom class.
      */
-    ~OranQueryTriggerCustom(void) override;
+    ~OranQueryTriggerCustom() override;
     /**
      * Indicates if a report should trigger query to the Logic Modules.
      *
@@ -77,7 +77,7 @@ class OranQueryTriggerCustom : public OranQueryTrigger
     /**
      * Dispose of the object.
      */
-    void DoDispose(void) override;
+    void DoDispose() override;
 
   private:
     /**
