@@ -322,7 +322,7 @@ wide, this is not a requirement as it is possible to have a locally compiled
 version of the library and source files in a user's working space. Please note
 that when using these tools with our module, the expectation is that the user
 will have already trained and created an ML model outside of the O-RAN
-simulations, but once this done, that model may be used via the ONNX or
+simulations, but once this is done, that model may be used via the ONNX or
 PyTorch C++ API from the simulation. We provide a class for each tool to
 demonstrate the use of both ONNX and PyTorch, respectively:
 - OranLmLte2LteOnnxHandover
@@ -336,7 +336,9 @@ OranLmLte2LteTorchHandover is defined by the files:
 - 'model/oran-lm-lte-2-lte-torch-handover.h'
 - 'model/oran-lm-lte-2-lte-torch-handover.cc'
 
-There is also an example that we will discuss later that demonstrates the use
+There is also the
+[LTE to LTE ML Handover Example](#lte-to-lte-ml-handover-example)
+that we will discuss later that demonstrates the use
 of these two classes using existing ML models included with this module.
 
 ## ONNX
@@ -549,7 +551,7 @@ progresses with UEs moving and receiving data, the distances of all four UEs
 as well as the recorded packet loss for each UE are fed to an ML model that
 returns a desired configuration that indicates which eNB UE 2 and UE 3 should
 be attached to minimize the overall packet loss. The models that we provide
-are for demonstrate purposes only and have not been thoroughly developed. It
+are for demonstration purposes only and have not been thoroughly developed. It
 should also be noted that "saved_trained_model_pytorch.onnx" is the same
 trained model as "saved_trained_model_pytorch.pt" only it  has been exported
 to the ONNX format.
