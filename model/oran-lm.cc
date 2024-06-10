@@ -195,7 +195,7 @@ OranLm::IsRunning() const
 {
     NS_LOG_FUNCTION(this);
 
-    return m_finishRunEvent.IsRunning();
+    return m_finishRunEvent.IsPending();
 }
 
 void

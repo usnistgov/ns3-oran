@@ -107,7 +107,7 @@ OranReportTriggerPeriodic::DoDispose()
 {
     NS_LOG_FUNCTION(this);
 
-    if (m_triggerEvent.IsRunning())
+    if (m_triggerEvent.IsPending())
     {
         m_triggerEvent.Cancel();
     }
@@ -135,7 +135,7 @@ OranReportTriggerPeriodic::CancelNextTrigger()
 {
     NS_LOG_FUNCTION(this);
 
-    if (m_triggerEvent.IsRunning())
+    if (m_triggerEvent.IsPending())
     {
         m_triggerEvent.Cancel();
     }

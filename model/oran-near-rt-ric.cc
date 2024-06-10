@@ -213,8 +213,8 @@ OranNearRtRic::Start()
 
     Activate();
 
-    NS_ABORT_MSG_IF(m_lmQueryEvent.IsRunning(), "Near-RT RIC has already been started");
-    NS_ABORT_MSG_IF(m_e2NodeInactivityEvent.IsRunning(), "Near-RT RIC has already been started");
+    NS_ABORT_MSG_IF(m_lmQueryEvent.IsPending(), "Near-RT RIC has already been started");
+    NS_ABORT_MSG_IF(m_e2NodeInactivityEvent.IsPending(), "Near-RT RIC has already been started");
 
     m_lmQueryEvent = Simulator::Schedule(m_lmQueryInterval, &OranNearRtRic::QueryLms, this);
     m_e2NodeInactivityEvent = Simulator::Schedule(Seconds(m_e2NodeInactivityIntervalRv->GetValue()),
@@ -411,7 +411,7 @@ OranNearRtRic::NotifyLmFinished(Time cycle, std::vector<Ptr<OranCommand>> comman
     if (cycle == m_lmQueryCycle)
     {
         // Check if commands still have yet to be processed.
-        if (m_processLmQueryCommandsEvent.IsRunning() || m_lmQueryMaxWaitTime == Seconds(0))
+        if (m_processLmQueryCommandsEvent.IsPending() || m_lmQueryMaxWaitTime == Seconds(0))
         {
             NS_LOG_LOGIC("Near-RT RIC received command(s) from \""
                          << lm->GetName() << "\" for cycle " << cycle.GetTimeStep());
@@ -454,7 +454,7 @@ OranNearRtRic::NotifyLmFinished(Time cycle, std::vector<Ptr<OranCommand>> comman
     // before the maiximum wait time has been exceeded or there is no maximum
     // wait time.
     if (m_lmQueryCommands.size() == m_additionalLms.size() + 1 &&
-        (m_processLmQueryCommandsEvent.IsRunning() || m_lmQueryMaxWaitTime == Seconds(0)))
+        (m_processLmQueryCommandsEvent.IsPending() || m_lmQueryMaxWaitTime == Seconds(0)))
     {
         ProcessLmQueryCommands();
     }
@@ -482,7 +482,7 @@ OranNearRtRic::NotifyReportReceived(Ptr<OranReport> report)
 
     if (queryLms)
     {
-        if (m_lmQueryEvent.IsRunning())
+        if (m_lmQueryEvent.IsPending())
         {
             m_lmQueryEvent.Cancel();
         }
@@ -619,7 +619,7 @@ OranNearRtRic::CheckForInactivity()
             }
         }
 
-        if (m_e2NodeInactivityEvent.IsRunning())
+        if (m_e2NodeInactivityEvent.IsPending())
         {
             m_e2NodeInactivityEvent.Cancel();
         }
@@ -640,7 +640,7 @@ OranNearRtRic::ProcessLmQueryCommands()
     {
         NS_LOG_LOGIC("Near-RT RIC processing commands");
 
-        if (m_processLmQueryCommandsEvent.IsRunning())
+        if (m_processLmQueryCommandsEvent.IsPending())
         {
             m_processLmQueryCommandsEvent.Cancel();
         }

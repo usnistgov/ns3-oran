@@ -233,7 +233,7 @@ OranE2NodeTerminator::CancelNextRegistration()
 {
     NS_LOG_FUNCTION(this);
 
-    if (m_registrationEvent.IsRunning())
+    if (m_registrationEvent.IsPending())
     {
         m_registrationEvent.Cancel();
     }
@@ -244,7 +244,7 @@ OranE2NodeTerminator::CancelNextSend()
 {
     NS_LOG_FUNCTION(this);
 
-    if (m_sendEvent.IsRunning())
+    if (m_sendEvent.IsPending())
     {
         m_sendEvent.Cancel();
     }
