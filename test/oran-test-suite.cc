@@ -193,9 +193,9 @@ class OranTestSuite : public TestSuite
 };
 
 OranTestSuite::OranTestSuite()
-    : TestSuite("oran", UNIT)
+    : TestSuite("oran", Type::UNIT)
 {
-    AddTestCase(new OranTestCaseMobility1, TestCase::QUICK);
+    AddTestCase(new OranTestCaseMobility1, Duration::QUICK);
 }
 
 static OranTestSuite soranTestSuite;
