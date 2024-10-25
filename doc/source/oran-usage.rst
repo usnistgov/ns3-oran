@@ -122,7 +122,7 @@ Once we have finished configuring the RIC, we can start deploying E2 Terminators
 
 After the Node E2 Terminator has been configured, the next step is to instantiate and configure any Reporter that will be operating from that node. The next listing shows the instantiation and configuration of an LTE UE Cell Information Reporter. All Reporters need to be provided a pointer to the Node E2 Terminator that they will be reporting to (line 4) and a Report Trigger that will indicate when to generate these reports (lines 5 and 6). As mentioned earlier, once the Reporter is fully configured, we need to add it to the Node E2 Terminator (line 8)::
 
-  Ptr<OranE2NodeTerminatorWired> lteUeTerminator = CreateObject<OranE2NodeTerminatorLteUe> ();
+  Ptr<OranE2NodeTerminatorLteUe> lteUeTerminator = CreateObject<OranE2NodeTerminatorLteUe> ();
   // ....
   Ptr<OranReporterLocation> lteCellInfoReporter = CreateObject<OranReporterLteUeCellInfo> ();
   lteCellInfoReporter->SetAttribute ("Terminator", PointerValue (lteUeTerminator));
