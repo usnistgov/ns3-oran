@@ -111,8 +111,8 @@ build_lib_example(
 )
 
 build_lib_example(
-  NAME oran-lte-rsrp-handover-example
-  SOURCE_FILES oran-lte-rsrp-handover-example.cc
+  NAME oran-lte-2-lte-rsrp-handover-lm-example
+  SOURCE_FILES oran-lte-2-lte-rsrp-handover-lm-example.cc
   LIBRARIES_TO_LINK
     ${liboran}
     ${libnetwork}
