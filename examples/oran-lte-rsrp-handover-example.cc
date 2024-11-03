@@ -152,7 +152,7 @@ main(int argc, char* argv[])
     
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
-    Time simTime = Seconds(200);
+    Time simTime = Seconds(100);
     Time maxWaitTime = Seconds(0.010); 
     std::string processingDelayRv = "ns3::NormalRandomVariable[Mean=0.005|Variance=0.000031]";
     double distance = 50; // distance between eNBs
@@ -299,7 +299,7 @@ main(int argc, char* argv[])
     oranHelper->SetDataRepository("ns3::OranDataRepositorySqlite",
                                   "DatabaseFile",
                                   StringValue(dbFileName));
-    oranHelper->SetDefaultLogicModule("ns3::OranLmLte2LteRsrpHandover",
+    oranHelper->SetDefaultLogicModule("ns3::OranLmNoop",
                                       "ProcessingDelayRv",
                                       StringValue(processingDelayRv));
     oranHelper->SetConflictMitigationModule("ns3::OranCmmNoop");
@@ -307,22 +307,46 @@ main(int argc, char* argv[])
     nearRtRic = oranHelper->CreateNearRtRic();
 
     // UE Nodes setup
-    oranHelper->SetE2NodeTerminator("ns3::OranE2NodeTerminatorLteUe",
-                                    "RegistrationIntervalRv",
-                                    StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-                                    "SendIntervalRv",
-                                    StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+    for (uint32_t idx = 0; idx < ueNodes.GetN(); idx++)
+    {
+        Ptr<OranReporterLocation> locationReporter = CreateObject<OranReporterLocation>();
+        Ptr<OranReporterLteUeCellInfo> lteUeCellInfoReporter =
+            CreateObject<OranReporterLteUeCellInfo>();
+        Ptr<OranReporterLteUeRsrpRsrq> rsrpRsrqReporter = CreateObject<OranReporterLteUeRsrpRsrq>();
+        Ptr<OranE2NodeTerminatorLteUe> lteUeTerminator =
+            CreateObject<OranE2NodeTerminatorLteUe>();
 
-    oranHelper->AddReporter("ns3::OranReporterLocation",
-                            "Trigger",
-                            StringValue("ns3::OranReportTriggerPeriodic"));
+        locationReporter->SetAttribute("Terminator", PointerValue(lteUeTerminator));
 
-    oranHelper->AddReporter("ns3::OranReporterLteUeCellInfo",
-                            "Trigger",
-                            StringValue("ns3::OranReportTriggerLteUeHandover[InitialReport=true]"));
+        lteUeCellInfoReporter->SetAttribute("Terminator", PointerValue(lteUeTerminator));
 
-    e2NodeTerminatorsUes.Add(oranHelper->DeployTerminators(nearRtRic, ueNodes));
+        rsrpRsrqReporter->SetAttribute("Terminator", PointerValue(lteUeTerminator));
 
+        for (uint32_t netDevIdx = 0; netDevIdx < ueNodes.Get(idx)->GetNDevices(); netDevIdx++)
+        {
+            Ptr<LteUeNetDevice> lteUeDevice = ueNodes.Get(idx)->GetDevice(netDevIdx)->GetObject<LteUeNetDevice>();
+            if (lteUeDevice)
+            {
+                Ptr<LteUePhy> uePhy = lteUeDevice->GetPhy();
+                uePhy->TraceConnectWithoutContext("ReportUeMeasurements", MakeCallback(&ns3::OranReporterLteUeRsrpRsrq::ReportRsrpRsrq, rsrpRsrqReporter));
+            }
+        }
+
+        lteUeTerminator->SetAttribute("NearRtRic", PointerValue(nearRtRic));
+        lteUeTerminator->SetAttribute("RegistrationIntervalRv",
+                                      StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+        lteUeTerminator->SetAttribute("SendIntervalRv",
+                                      StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+
+        lteUeTerminator->AddReporter(locationReporter);
+        lteUeTerminator->AddReporter(lteUeCellInfoReporter);
+        lteUeTerminator->AddReporter(rsrpRsrqReporter);
+
+        lteUeTerminator->Attach(ueNodes.Get(idx));
+
+        Simulator::Schedule(Seconds(1), &OranE2NodeTerminatorLteUe::Activate, lteUeTerminator);
+    }
+    
     // ENb Nodes setup
     oranHelper->SetE2NodeTerminator("ns3::OranE2NodeTerminatorLteEnb",
                                     "RegistrationIntervalRv",
