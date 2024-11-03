@@ -187,33 +187,39 @@ OranLmLte2LteRsrpHandover::GetHandoverCommands(
     // issue a handover command.
     for (auto ueInfo : ueInfos)
     {
-        double min = DBL_MAX;               // The minimum distance recorded.
+        double max = -DBL_MAX;               // The maximum RSRP recorded.
         uint64_t oldCellNodeId;             // The ID of the cell currently serving the UE.
         uint16_t newCellId = ueInfo.cellId; // The ID of the closest cell.
-        for (const auto& enbInfo : enbInfos)
+        auto rsrpMeasurements = data->GetLteUeRsrpRsrq(ueInfo.nodeId);
+        for (auto rsrpMeasurement : rsrpMeasurements)
         {
-            // Calculate the distance between the UE and eNB.
-            double dist = std::sqrt(std::pow(ueInfo.position.x - enbInfo.position.x, 2) +
-                                    std::pow(ueInfo.position.y - enbInfo.position.y, 2) +
-                                    std::pow(ueInfo.position.z - enbInfo.position.z, 2));
-
-            LogLogicToRepository("Distance from UE with RNTI " + std::to_string(ueInfo.rnti) +
+            uint16_t rnti;
+            uint16_t cellId;
+            double rsrp;
+            double rsrq;
+            bool isServingCell;
+            uint16_t componentCarrierId;
+            std::tie(rnti, cellId, rsrp, rsrq, isServingCell, componentCarrierId) = rsrpMeasurement;
+            LogLogicToRepository("RSRP from UE with RNTI " + std::to_string(rnti) +
                                  " in CellID " + std::to_string(ueInfo.cellId) +
-                                 " to eNB with CellID " + std::to_string(enbInfo.cellId) + " is " +
-                                 std::to_string(dist));
+                                 " to eNB with CellID " + std::to_string(cellId) + " is " +
+                                 std::to_string(rsrp));
 
-            // Check if the distance is shorter than the current minimum
-            if (dist < min)
+            // Check if the RSRP is greater than the current maximum
+            if (rsrp > max)
             {
                 // Record the new minimum
-                min = dist;
+                max = rsrp;
                 // Record the ID of the cell that produced the new minimum.
-                newCellId = enbInfo.cellId;
+                newCellId = cellId;
 
-                LogLogicToRepository("Distance to eNB with CellID " +
-                                     std::to_string(enbInfo.cellId) + " is shortest so far");
+                LogLogicToRepository("RSRP to eNB with CellID " +
+                                     std::to_string(cellId) + " is largest so far");
             }
+        }
 
+        for (const auto& enbInfo : enbInfos)
+        {
             // Check if this cell is the currently serving this UE.
             if (ueInfo.cellId == enbInfo.cellId)
             {
@@ -241,7 +247,7 @@ OranLmLte2LteRsrpHandover::GetHandoverCommands(
             // Add the command to send.
             commands.push_back(handoverCommand);
 
-            LogLogicToRepository("Closest eNB (CellID " + std::to_string(newCellId) + ")" +
+            LogLogicToRepository("eNB (CellID " + std::to_string(newCellId) + ")" +
                                  " is different than the currently attached eNB" + " (CellID " +
                                  std::to_string(ueInfo.cellId) + ")." +
                                  " Issuing handover command.");

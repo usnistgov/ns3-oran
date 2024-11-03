@@ -299,7 +299,7 @@ main(int argc, char* argv[])
     oranHelper->SetDataRepository("ns3::OranDataRepositorySqlite",
                                   "DatabaseFile",
                                   StringValue(dbFileName));
-    oranHelper->SetDefaultLogicModule("ns3::OranLmNoop",
+    oranHelper->SetDefaultLogicModule("ns3::OranLmLte2LteRsrpHandover",
                                       "ProcessingDelayRv",
                                       StringValue(processingDelayRv));
     oranHelper->SetConflictMitigationModule("ns3::OranCmmNoop");

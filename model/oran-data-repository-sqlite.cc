@@ -722,7 +722,7 @@ OranDataRepositorySqlite::GetLteUeRsrpRsrq(uint64_t e2NodeId)
                 retVal.push_back(std::make_tuple(rnti, cellId, rsrp, rsrq, isServing, componentCarrierId));
             }
 
-            CheckQueryReturnCode(stmt, rc, FormatBoundArgsList(e2NodeId));
+            CheckQueryReturnCode(stmt, rc, FormatBoundArgsList(e2NodeId, e2NodeId));
             sqlite3_finalize(stmt);
         }
     }
@@ -1163,8 +1163,8 @@ OranDataRepositorySqlite::InitStatements()
         "ORDER BY simulationtime DESC, entryid DESC LIMIT ? ;";
 
     m_queryStmtsStrings[GET_LTE_UE_RSRP_RSRQ] =
-        "SELECT rnti, cellid, rsrp, rsrq, servering, ccid "
-        "FROM lteuersrprsq "
+        "SELECT rnti, cellid, rsrp, rsrq, serving, ccid "
+        "FROM lteuersrprsrq "
         "WHERE nodeid = ? "
           "AND simulationtime IN ("
             "SELECT simulationtime "
