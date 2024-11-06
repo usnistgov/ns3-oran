@@ -963,12 +963,12 @@ OranDataRepositorySqlite::InitDb()
     RunCreateStatement(m_createStmtsStrings[TABLE_LTE_UE]);
     RunCreateStatement(m_createStmtsStrings[INDEX_LTE_UE_NODEID]);
     RunCreateStatement(m_createStmtsStrings[INDEX_LTE_UE_IMSI]);
-    RunCreateStatement(m_createStmtsStrings[INDEX_LTE_UE_IMSI]);
 
     // LTE UE Cell Information
     RunCreateStatement(m_createStmtsStrings[TABLE_LTE_UE_CELL]);
     RunCreateStatement(m_createStmtsStrings[TABLE_LTE_UE_RSRP_RSRQ]);
     RunCreateStatement(m_createStmtsStrings[INDEX_LTE_UE_CELL_NODEID]);
+    RunCreateStatement(m_createStmtsStrings[INDEX_LTE_UE_CELL_CELLID]);
 
     RunCreateStatement(m_createStmtsStrings[TABLE_APPLOSS_COMMAND]);
 

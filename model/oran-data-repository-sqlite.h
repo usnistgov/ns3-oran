@@ -154,7 +154,7 @@ class OranDataRepositorySqlite : public OranDataRepository
         INSERT_NODE_UPDATE,                //!< Update an E2 node's information
         INSERT_NODE_LOCATION,              //!< Add an E2 node's location
         INSERT_NODE_REGISTRATION,          //!< Add an E2 node registration request
-        INSERT_LTE_UE_RSRP_RSRQ,           //!< Add LTE UE RSRP and RSRQ an E2 node
+        INSERT_LTE_UE_RSRP_RSRQ,           //!< Add LTE UE RSRP and RSRQ
         LOG_CMM_ACTION,                    //!< Log a CM module action
         LOG_E2TERMINATOR_COMMAND,          //!< Log an E2 terminator command from the RIC
         LOG_LM_ACTION,                     //!< Log an LM action

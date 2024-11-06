@@ -208,9 +208,9 @@ OranLmLte2LteRsrpHandover::GetHandoverCommands(
             // Check if the RSRP is greater than the current maximum
             if (rsrp > max)
             {
-                // Record the new minimum
+                // Record the new maximum
                 max = rsrp;
-                // Record the ID of the cell that produced the new minimum.
+                // Record the ID of the cell that produced the new maximum.
                 newCellId = cellId;
 
                 LogLogicToRepository("RSRP to eNB with CellID " +
