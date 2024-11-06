@@ -93,7 +93,7 @@ main(int argc, char* argv[])
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
     Time simTime = Seconds(50);
-    Time maxWaitTime = Seconds(0.010); 
+    Time maxWaitTime = Seconds(0.010);
     std::string processingDelayRv = "ns3::NormalRandomVariable[Mean=0.005|Variance=0.000031]";
     double distance = 50; // distance between eNBs
     Time interval = Seconds(15);
