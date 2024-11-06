@@ -46,12 +46,6 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("NewOranHandoverUsingRSRPlm");
 
-std::ofstream traceFile;
-
-// Open a file for output
-std::string traceFileName = "RsrpRsrqSinrTrace.txt";
-Ptr<OutputStreamWrapper> traceStream = Create<OutputStreamWrapper>(traceFileName, std::ios::out);
-
 /**
  * Example of the ORAN models.
  *
@@ -72,49 +66,17 @@ void LogRsrpRsrqSinr(Ptr<OutputStreamWrapper> stream, uint16_t rnti, uint16_t ce
                          << "\tSINR: " << static_cast<int>(sinr) << " dB" << std::endl;
 }
  
-// Tracing TxPower
-void LogTxPower(std::string context, Ptr<LteEnbNetDevice> device) {
-    double txPower = device->GetPhy()->GetTxPower();
-    traceFile << Simulator::Now().GetSeconds() << "\t" << context << "\tTxPower: " << txPower << " dBm" << std::endl;
-}
-
-void SetupTxPowerTraces(NodeContainer enbNodes, NetDeviceContainer enbLteDevs) {
-    for (uint32_t i = 0; i < enbNodes.GetN(); ++i) {
-        Ptr<NetDevice> dev = enbLteDevs.Get(i);
-        Ptr<LteEnbNetDevice> lteEnbDev = dev->GetObject<LteEnbNetDevice>();
-        std::string context = "eNB_" + std::to_string(i);
-        // Assume we have a way to trigger this callback at appropriate times
-        Simulator::Schedule(Seconds(1), &LogTxPower, context, lteEnbDev);
-    }
-}
-
- 
 // Callback function to log positions
-void LogPosition(std::string context, Ptr<const MobilityModel> mobility) {
+void LogPosition(Ptr<OutputStreamWrapper> stream, Ptr<Node> node,  Ptr<const MobilityModel> mobility) {
     Vector pos = mobility->GetPosition();
-    traceFile << Simulator::Now().GetSeconds() << "\t" << context
-              << "\t" << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
-}
-
-// Setup function to attach the mobility trace sources
-void SetupMobilityTraces(const NodeContainer& ueNodes, const NodeContainer& enbNodes) {
-    // Assuming 'ueNodes' and 'enbNodes' are your NodeContainers
-    for (uint32_t i = 0; i < ueNodes.GetN(); ++i) {
-        Ptr<MobilityModel> mob = ueNodes.Get(i)->GetObject<MobilityModel>();
-        std::string context = "UE_" + std::to_string(i);
-        mob->TraceConnect("CourseChange", context, MakeCallback(&LogPosition));
-    }
-    for (uint32_t i = 0; i < enbNodes.GetN(); ++i) {
-        Ptr<MobilityModel> mob = enbNodes.Get(i)->GetObject<MobilityModel>();
-        std::string context = "eNB_" + std::to_string(i);
-        mob->TraceConnect("CourseChange", context, MakeCallback(&LogPosition));
-    }
+    *stream->GetStream() << Simulator::Now().GetSeconds() << "\t" << node->GetId()
+                         << "\t" << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
 }
 
 void
-NotifyHandoverEndOkEnb(std::string context, uint64_t imsi, uint16_t cellid, uint16_t rnti)
+NotifyHandoverEndOkEnb(uint64_t imsi, uint16_t cellid, uint16_t rnti)
 {
-    std::cout << Simulator::Now().As(Time::S) << " " << context << " eNB CellId " << cellid
+    std::cout << Simulator::Now().As(Time::S) << " eNB CellId " << cellid
               << ": completed handover of UE with IMSI " << imsi << " RNTI " << rnti << std::endl;
 }
 
@@ -148,8 +110,6 @@ QueryRcSink(std::string query, std::string args, int rc)
 int
 main(int argc, char* argv[])
 {
-    traceFile.open("myTraceFile.tr"); // Opening the trace file
-    
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
     Time simTime = Seconds(100);
@@ -248,17 +208,6 @@ main(int argc, char* argv[])
             enbPhy->SetTxPower(25); // Set the transmission power to 30 dBm
         }
     }
-    
-    // Tracing rsrp, rsrq, and sinr while setting up uePhy
-    for (NetDeviceContainer::Iterator it = ueLteDevs.Begin(); it != ueLteDevs.End(); ++it) {
-        Ptr<NetDevice> device = *it;
-        Ptr<LteUeNetDevice> lteUeDevice = device->GetObject<LteUeNetDevice>();
-        if (lteUeDevice) {
-            Ptr<LteUePhy> uePhy = lteUeDevice->GetPhy();
-            uePhy->TraceConnectWithoutContext("ReportCurrentCellRsrpSinr", MakeBoundCallback(&LogRsrpRsrqSinr, traceStream));
-        }
-    }
-
     
     // Install the IP stack on the UEs
     InternetStackHelper internet;
@@ -367,7 +316,10 @@ main(int argc, char* argv[])
     }
 
     // Activate and the components
-    Simulator::Schedule(Seconds(1), &OranHelper::ActivateAndStartNearRtRic, oranHelper, nearRtRic);
+    Simulator::Schedule(Seconds(1),
+                        &OranHelper::ActivateAndStartNearRtRic,
+                        oranHelper,
+                        nearRtRic);
     Simulator::Schedule(Seconds(1.5),
                         &OranHelper::ActivateE2NodeTerminators,
                         oranHelper,
@@ -379,13 +331,34 @@ main(int argc, char* argv[])
     // ORAN Models -- END
 
     // Trace the end of handovers
-    Config::Connect("/NodeList/*/DeviceList/*/LteEnbRrc/HandoverEndOk",
-                    MakeCallback(&NotifyHandoverEndOkEnb));
+    Config::ConnectWithoutContext("/NodeList/*/DeviceList/*/LteEnbRrc/HandoverEndOk",
+                                  MakeCallback(&NotifyHandoverEndOkEnb));
     
-    // Set up mobility and other components
-    SetupMobilityTraces(ueNodes, enbNodes);
-    SetupTxPowerTraces(enbNodes, enbLteDevs);
-                    
+    // Assuming 'ueNodes' and 'enbNodes' are your NodeContainers
+    Ptr<OutputStreamWrapper> mobilityTrace = Create<OutputStreamWrapper>("MobilityTrace.tr", std::ios::out);
+    for (uint32_t i = 0; i < ueNodes.GetN(); ++i)
+    {
+        Ptr<MobilityModel> mob = ueNodes.Get(i)->GetObject<MobilityModel>();
+        mob->TraceConnectWithoutContext("CourseChange", MakeBoundCallback(&LogPosition, mobilityTrace, ueNodes.Get(i)));
+    }
+    for (uint32_t i = 0; i < enbNodes.GetN(); ++i)
+    {
+        Ptr<MobilityModel> mob = enbNodes.Get(i)->GetObject<MobilityModel>();
+        mob->TraceConnectWithoutContext("CourseChange", MakeBoundCallback(&LogPosition, mobilityTrace, ueNodes.Get(i)));
+    }
+     
+    // Tracing rsrp, rsrq, and sinr while setting up uePhy
+    Ptr<OutputStreamWrapper> rsrpSinrTrace = Create<OutputStreamWrapper>("RsrpRsrqSinrTrace.tr", std::ios::out);
+    for (NetDeviceContainer::Iterator it = ueLteDevs.Begin(); it != ueLteDevs.End(); ++it)
+    {
+        Ptr<NetDevice> device = *it;
+        Ptr<LteUeNetDevice> lteUeDevice = device->GetObject<LteUeNetDevice>();
+        if (lteUeDevice)
+        {
+            Ptr<LteUePhy> uePhy = lteUeDevice->GetPhy();
+            uePhy->TraceConnectWithoutContext("ReportCurrentCellRsrpSinr", MakeBoundCallback(&LogRsrpRsrqSinr, rsrpSinrTrace));
+        }
+    }
     
     /* Enabling Tracing for the simulation scenario */
     lteHelper->EnablePhyTraces();
@@ -398,8 +371,5 @@ main(int argc, char* argv[])
 
     Simulator::Destroy();
     
-    
-    // closing the trace file
-    traceFile.close();
     return 0;
 }
