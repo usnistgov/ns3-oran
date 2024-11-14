@@ -371,6 +371,45 @@ OranDataRepositorySqlite::SaveAppLoss(uint64_t e2NodeId, double appLoss, Time t)
     }
 }
 
+void
+OranDataRepositorySqlite::SaveLteUeRsrpRsrq(uint64_t e2NodeId,
+                                            Time t,
+                                            uint16_t rnti,
+                                            uint16_t cellId,
+                                            double rsrp,
+                                            double rsrq,
+                                            bool isServing,
+                                            uint8_t componentCarrierId)
+{
+    NS_LOG_FUNCTION(this << e2NodeId << t << +rnti << +cellId << rsrp << rsrq << isServing << +componentCarrierId);
+
+    if (m_active)
+    {
+        if (IsNodeRegistered(e2NodeId))
+        {
+            int rc;
+            std::string query;
+            sqlite3_stmt* stmt = nullptr;
+
+            sqlite3_prepare_v2(m_db, m_queryStmtsStrings[INSERT_LTE_UE_RSRP_RSRQ].c_str(), -1, &stmt, 0);
+
+            sqlite3_bind_int64(stmt, 1, e2NodeId);
+            sqlite3_bind_int64(stmt, 2, t.GetTimeStep());
+            sqlite3_bind_int(stmt, 3, rnti);
+            sqlite3_bind_int(stmt, 4, cellId);
+            sqlite3_bind_double(stmt, 5, rsrp);
+            sqlite3_bind_double(stmt, 6, rsrq);
+            sqlite3_bind_int(stmt, 7, isServing);
+            sqlite3_bind_int(stmt, 8, componentCarrierId);
+
+            rc = sqlite3_step(stmt);
+
+            CheckQueryReturnCode(stmt, rc, FormatBoundArgsList(e2NodeId, t.GetTimeStep(), rnti, cellId, rsrp, rsrq, isServing, componentCarrierId));
+            sqlite3_finalize(stmt);
+        }
+    }
+}
+
 std::map<Time, Vector>
 OranDataRepositorySqlite::GetNodePositions(uint64_t e2NodeId,
                                            Time fromTime,
@@ -649,6 +688,48 @@ OranDataRepositorySqlite::GetLastRegistrationRequests()
     return requests;
 }
 
+std::vector<std::tuple<uint16_t, uint16_t, double, double, bool, uint8_t>>
+OranDataRepositorySqlite::GetLteUeRsrpRsrq(uint64_t e2NodeId)
+{
+    NS_LOG_FUNCTION(this << e2NodeId);
+
+    std::vector<std::tuple<uint16_t, uint16_t, double, double, bool, uint8_t>> retVal;
+
+    if (m_active)
+    {
+        if (IsNodeRegistered(e2NodeId))
+        {
+            int rc;
+            sqlite3_stmt* stmt = nullptr;
+
+            sqlite3_prepare_v2(m_db,
+                               m_queryStmtsStrings[GET_LTE_UE_RSRP_RSRQ].c_str(),
+                               -1,
+                               &stmt,
+                               0);
+            sqlite3_bind_int64(stmt, 1, e2NodeId);
+            sqlite3_bind_int64(stmt, 2, e2NodeId);
+
+            while ((rc = sqlite3_step(stmt)) == SQLITE_ROW)
+            {
+                uint16_t rnti = sqlite3_column_int(stmt, 0);
+                uint16_t cellId = sqlite3_column_int(stmt, 1);
+                double rsrp = sqlite3_column_double(stmt, 2);
+                double rsrq = sqlite3_column_double(stmt, 3);
+                bool isServing = sqlite3_column_int(stmt, 4);
+                uint8_t componentCarrierId = sqlite3_column_int(stmt, 5);
+
+                retVal.push_back(std::make_tuple(rnti, cellId, rsrp, rsrq, isServing, componentCarrierId));
+            }
+
+            CheckQueryReturnCode(stmt, rc, FormatBoundArgsList(e2NodeId, e2NodeId));
+            sqlite3_finalize(stmt);
+        }
+    }
+    return retVal;
+}
+
+
 void
 OranDataRepositorySqlite::LogCommandE2Terminator(Ptr<OranCommand> cmd)
 {
@@ -885,6 +966,7 @@ OranDataRepositorySqlite::InitDb()
 
     // LTE UE Cell Information
     RunCreateStatement(m_createStmtsStrings[TABLE_LTE_UE_CELL]);
+    RunCreateStatement(m_createStmtsStrings[TABLE_LTE_UE_RSRP_RSRQ]);
     RunCreateStatement(m_createStmtsStrings[INDEX_LTE_UE_CELL_NODEID]);
     RunCreateStatement(m_createStmtsStrings[INDEX_LTE_UE_CELL_CELLID]);
 
@@ -978,6 +1060,20 @@ OranDataRepositorySqlite::InitStatements()
         "FOREIGN KEY(cellid) REFERENCES lteenb(cellid), "
         "FOREIGN KEY(nodeid) REFERENCES lteue(nodeid));";
 
+    m_createStmtsStrings[TABLE_LTE_UE_RSRP_RSRQ] =
+        "CREATE TABLE IF NOT EXISTS lteuersrprsrq ("
+        "entryid        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+        "nodeid         INTEGER                           NOT NULL, "
+        "simulationtime INTEGER                           NOT NULL, "
+        "rnti           INTEGER                           NOT NULL, "
+        "cellid         INTEGER                           NOT NULL, "
+        "rsrp           REAL                              NOT NULL, "
+        "rsrq           REAL                              NOT NULL, "
+        "serving        BOOLEAN                           NOT NULL, "
+        "ccid           BOOLEAN                           NOT NULL, "
+        "FOREIGN KEY(cellid) REFERENCES lteenb(cellid), "
+        "FOREIGN KEY(nodeid) REFERENCES lteue(nodeid));";
+
     m_createStmtsStrings[TABLE_NODE] =
         "CREATE TABLE IF NOT EXISTS node ("
         "nodeid         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
@@ -1066,6 +1162,17 @@ OranDataRepositorySqlite::InitStatements()
         "WHERE nodeid = ? AND simulationtime >= ? AND simulationtime <= ? "
         "ORDER BY simulationtime DESC, entryid DESC LIMIT ? ;";
 
+    m_queryStmtsStrings[GET_LTE_UE_RSRP_RSRQ] =
+        "SELECT rnti, cellid, rsrp, rsrq, serving, ccid "
+        "FROM lteuersrprsrq "
+        "WHERE nodeid = ? "
+          "AND simulationtime IN ("
+            "SELECT simulationtime "
+            "FROM lteuersrprsrq "
+            "WHERE nodeid = ? "
+            "ORDER BY simulationtime DESC LIMIT 1"
+          ");";
+
     m_queryStmtsStrings[INSERT_LTE_ENB_NODE] = "INSERT OR REPLACE INTO lteenb "
                                                "(nodeid, cellid) VALUES (?, ?);";
 
@@ -1089,6 +1196,10 @@ OranDataRepositorySqlite::InitStatements()
     m_queryStmtsStrings[INSERT_NODE_REGISTRATION] =
         "INSERT INTO noderegistration "
         "(nodeid, registered, simulationtime) VALUES (?, ?, ?);";
+
+    m_queryStmtsStrings[INSERT_LTE_UE_RSRP_RSRQ] =
+        "INSERT INTO lteuersrprsrq "
+        "(nodeid, simulationtime, rnti, cellid, rsrp, rsrq, serving, ccid) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
     m_queryStmtsStrings[LOG_CMM_ACTION] =
         "INSERT INTO cmmaction "

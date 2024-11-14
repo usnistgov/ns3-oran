@@ -94,6 +94,14 @@ class OranDataRepositorySqlite : public OranDataRepository
     void SavePosition(uint64_t e2NodeId, Vector pos, Time t) override;
     void SaveLteUeCellInfo(uint64_t e2NodeId, uint16_t cellId, uint16_t rnti, Time t) override;
     void SaveAppLoss(uint64_t e2NodeId, double appLoss, Time t) override;
+    void SaveLteUeRsrpRsrq(uint64_t e2NodeId,
+                      Time t,
+                      uint16_t rnti,
+                      uint16_t cellId,
+                      double rsrp,
+                      double rsrq,
+                      bool isServingCell,
+                      uint8_t componentCarrierId) override;
 
     std::map<Time, Vector> GetNodePositions(uint64_t e2NodeId,
                                             Time fromTime,
@@ -106,6 +114,7 @@ class OranDataRepositorySqlite : public OranDataRepository
     std::vector<uint64_t> GetLteEnbE2NodeIds() override;
     std::vector<std::tuple<uint64_t, Time>> GetLastRegistrationRequests() override;
     double GetAppLoss(uint64_t e2NodeId) override;
+    std::vector<std::tuple<uint16_t, uint16_t, double, double, bool, uint8_t>> GetLteUeRsrpRsrq(uint64_t e2NodeId) override;
 
     void LogCommandE2Terminator(Ptr<OranCommand> cmd) override;
     void LogCommandLm(std::string lm, Ptr<OranCommand> cmd) override;
@@ -136,6 +145,7 @@ class OranDataRepositorySqlite : public OranDataRepository
         GET_LTE_CELLID_FROM_E2NODEID,      //!< Get the cell ID of an LTE eNB from its E2 Node ID
         GET_LTE_UE_CELLINFO,               //!< Get the cell information associated with LTE UE
         GET_LTE_UE_E2NODEID_FROM_CELLINFO, //!< Get the E2 ID of a UE from the cell information
+        GET_LTE_UE_RSRP_RSRQ,              //!< Get the UE RSRP and RSRQ measurements
         GET_NODE_ALL_POSITIONS,            //!< The location of all nodes E2 nodes
         INSERT_LTE_ENB_NODE,               //!< Add an LTE eNB E2 node
         INSERT_LTE_UE_CELL,                //!< Add LTE UE cell information for an E2 node
@@ -144,6 +154,7 @@ class OranDataRepositorySqlite : public OranDataRepository
         INSERT_NODE_UPDATE,                //!< Update an E2 node's information
         INSERT_NODE_LOCATION,              //!< Add an E2 node's location
         INSERT_NODE_REGISTRATION,          //!< Add an E2 node registration request
+        INSERT_LTE_UE_RSRP_RSRQ,           //!< Add LTE UE RSRP and RSRQ
         LOG_CMM_ACTION,                    //!< Log a CM module action
         LOG_E2TERMINATOR_COMMAND,          //!< Log an E2 terminator command from the RIC
         LOG_LM_ACTION,                     //!< Log an LM action
@@ -173,6 +184,7 @@ class OranDataRepositorySqlite : public OranDataRepository
         TABLE_LTE_ENB,            //!< Table with LTE eNB information
         TABLE_LTE_UE,             //!< Table with LTE UE information
         TABLE_LTE_UE_CELL,        //!< Table with LTE UE Cell Information
+        TABLE_LTE_UE_RSRP_RSRQ,   //!< Table with LTE UE RSRP and RSRQ Information
         TABLE_NODE,               //!< Table with E2 Node Information
         TABLE_NODE_LOCATION,      //!< Table with Node Locations
         TABLE_NODE_REGISTRATION,  //!< Table with Node Registrations

@@ -110,3 +110,13 @@ build_lib_example(
     ${libmobility}
 )
 
+build_lib_example(
+  NAME oran-lte-2-lte-rsrp-handover-lm-example
+  SOURCE_FILES oran-lte-2-lte-rsrp-handover-lm-example.cc
+  LIBRARIES_TO_LINK
+    ${liboran}
+    ${libnetwork}
+    ${liblte}
+    ${libmobility}
+)
+

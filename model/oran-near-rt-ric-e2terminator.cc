@@ -37,10 +37,11 @@
 #include "oran-e2-node-terminator-lte-ue.h"
 #include "oran-e2-node-terminator.h"
 #include "oran-near-rt-ric.h"
+#include "oran-report.h"
 #include "oran-report-apploss.h"
 #include "oran-report-location.h"
 #include "oran-report-lte-ue-cell-info.h"
-#include "oran-report.h"
+#include "oran-report-lte-ue-rsrp-rsrq.h"
 
 #include <ns3/abort.h>
 #include <ns3/log.h>
@@ -218,6 +219,18 @@ OranNearRtRicE2Terminator::ReceiveReport(Ptr<OranReport> report)
             m_data->SaveAppLoss(appLossRpt->GetReporterE2NodeId(),
                                 appLossRpt->GetLoss(),
                                 appLossRpt->GetTime());
+        }
+        else if (report->GetInstanceTypeId() == TypeId::LookupByName("ns3::OranReportLteUeRsrpRsrq"))
+        {
+            Ptr<OranReportLteUeRsrpRsrq> rsrpRsrqRpt = report->GetObject<OranReportLteUeRsrpRsrq>();
+            m_data->SaveLteUeRsrpRsrq(rsrpRsrqRpt->GetReporterE2NodeId(),
+                                rsrpRsrqRpt->GetTime(),
+                                rsrpRsrqRpt->GetRnti(),
+                                rsrpRsrqRpt->GetCellId(),
+                                rsrpRsrqRpt->GetRsrp(),
+                                rsrpRsrqRpt->GetRsrq(),
+                                rsrpRsrqRpt->GetIsServingCell(),
+                                rsrpRsrqRpt->GetComponentCarrierId());
         }
 
         m_nearRtRic->NotifyReportReceived(report);
