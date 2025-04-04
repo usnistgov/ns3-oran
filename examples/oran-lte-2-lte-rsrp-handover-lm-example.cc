@@ -29,28 +29,23 @@
  * employees is not subject to copyright protection within the United States.
  */
 
+#include <ns3/applications-module.h>
 #include <ns3/core-module.h>
 #include <ns3/internet-module.h>
 #include <ns3/lte-module.h>
 #include <ns3/mobility-module.h>
-#include <ns3/network-module.h>
 #include <ns3/oran-module.h>
-#include <ns3/config-store.h>
-
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <stdio.h>
+#include <ns3/point-to-point-module.h>
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("NewOranHandoverUsingRSRPlm");
+NS_LOG_COMPONENT_DEFINE("OranLte2LteRsrpHandoverExample");
 
 /**
  * Example of the ORAN models.
  *
  * The scenario consists of an LTE UE moving back and forth
- * between 2 LTE eNBs. The LTE UE reports to the RIC its location
+ * between 2 LTE eNBs. The LTE UE reports its location to the RIC
  * and current Cell ID. In the RIC, an LM will periodically check
  * the RSRP and RSRQ of UE, and if needed, issue a handover command.
  *
@@ -58,28 +53,94 @@ NS_LOG_COMPONENT_DEFINE("NewOranHandoverUsingRSRPlm");
  */
 
 // Tracing rsrp, rsrq, and sinr
-void LogRsrpRsrqSinr(Ptr<OutputStreamWrapper> stream, uint16_t rnti, uint16_t cellId, double rsrp, double rsrq, uint8_t sinr) {
-    *stream->GetStream() << Simulator::Now().GetSeconds() << "\tRNTI: " << rnti
-                         << "\tCell ID: " << cellId
-                         << "\tRSRP: " << rsrp << " dBm"
-                         << "\tRSRQ: " << rsrq << " dB"
-                         << "\tSINR: " << static_cast<int>(sinr) << " dB" << std::endl;
-}
- 
-// Callback function to log positions
-void LogPosition(Ptr<OutputStreamWrapper> stream, Ptr<Node> node,  Ptr<const MobilityModel> mobility) {
-    Vector pos = mobility->GetPosition();
-    *stream->GetStream() << Simulator::Now().GetSeconds() << "\t" << node->GetId()
-                         << "\t" << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
-}
-
-void
-NotifyHandoverEndOkEnb(uint64_t imsi, uint16_t cellid, uint16_t rnti)
+void TraceRsrpRsrqSinr(Ptr<OutputStreamWrapper> stream, uint16_t rnti, uint16_t cellId, double rsrp, double rsrq, uint8_t sinr)
 {
-    std::cout << Simulator::Now().As(Time::S) << " eNB CellId " << cellid
-              << ": completed handover of UE with IMSI " << imsi << " RNTI " << rnti << std::endl;
+    *stream->GetStream()
+        << Simulator::Now().GetSeconds() << " "
+        << rnti << " "
+        << cellId << " "
+        << rsrp << " "
+        << rsrq << " "
+        << +sinr << " "
+        << std::endl;
 }
 
+
+// Trace RX'd packets
+void
+RxTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Packet> p, const Address& from, const Address& to)
+{
+    uint16_t ueId = (InetSocketAddress::ConvertFrom(to).GetPort() / 1000);
+
+    *stream->GetStream()
+      << Simulator::Now().GetSeconds() << " "
+      << ueId
+      << " RX "
+      << p->GetSize()
+      << std::endl;
+}
+
+// Trace TX'd packets
+void
+TxTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Packet> p, const Address& from, const Address& to)
+{
+    uint16_t ueId = (InetSocketAddress::ConvertFrom(to).GetPort() / 1000);
+
+    *stream->GetStream()
+      << Simulator::Now().GetSeconds() << " "
+      << ueId
+      << " TX "
+      << p->GetSize()
+      << std::endl;
+}
+
+// Trace each node's location
+void
+PositionTrace(Ptr<OutputStreamWrapper> stream, NodeContainer nodes)
+{
+    for (uint32_t i = 0; i < nodes.GetN(); i++)
+    {
+        Vector pos = nodes.Get(i)->GetObject<MobilityModel>()->GetPosition();
+        *stream->GetStream()
+            << Simulator::Now().GetSeconds() << " "
+            << nodes.Get(i)->GetId() << " "
+            << pos.x << " "
+            << pos.y
+            << std::endl;
+    }
+
+    Simulator::Schedule(Seconds(1), &PositionTrace, stream, nodes);
+}
+
+// Trace handover events
+void
+HandoverTrace(Ptr<OutputStreamWrapper> stream, uint64_t imsi, uint16_t cellid, uint16_t rnti)
+{
+    *stream->GetStream()
+        << Simulator::Now().GetSeconds() << " "
+        << imsi << " "
+        << cellid << " "
+        << rnti
+        << std::endl;
+}
+
+// Output DB queries
+void
+QueryRcSink(std::string query, std::string args, int rc)
+{
+    std::cout << Simulator::Now().GetSeconds() << " Query "
+              << ((rc == SQLITE_OK || rc == SQLITE_DONE) ? "OK" : "ERROR") << "(" << rc << "): \""
+              << query << "\"";
+
+    if (!args.empty())
+    {
+        std::cout << " (" << args << ")";
+    }
+
+    std::cout << std::endl;
+}
+
+// Function to change node velocities
 void
 ReverseVelocity(NodeContainer nodes, Time interval)
 {
@@ -93,31 +154,17 @@ ReverseVelocity(NodeContainer nodes, Time interval)
     Simulator::Schedule(interval, &ReverseVelocity, nodes, interval);
 }
 
-void
-QueryRcSink(std::string query, std::string args, int rc)
-{
-    std::cout << Simulator::Now().GetSeconds() << " Query "
-              << ((rc == SQLITE_OK || rc == SQLITE_DONE) ? "OK" : "ERROR") << "(" << rc << "): \""
-              << query << "\"";
-
-    if (!args.empty())
-    {
-        std::cout << " (" << args << ")";
-    }
-    std::cout << std::endl;
-}
-
 int
 main(int argc, char* argv[])
 {
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
-    Time simTime = Seconds(100);
+    Time simTime = Seconds(30);
     Time maxWaitTime = Seconds(0.010); 
     std::string processingDelayRv = "ns3::NormalRandomVariable[Mean=0.005|Variance=0.000031]";
     double distance = 50; // distance between eNBs
     Time interval = Seconds(15);
-    double speed = 1.5; // speed of the ue
+    double speed = 2; // speed of the ue
     bool dbLog = false;
     Time lmQueryInterval = Seconds(5);
     std::string dbFileName = "oran-repository.db";
@@ -142,20 +189,49 @@ main(int argc, char* argv[])
 
     LogComponentEnable("OranNearRtRic", (LogLevel)(LOG_PREFIX_TIME | LOG_WARN));
 
-    Config::SetDefault("ns3::LteHelper::UseIdealRrc", BooleanValue(false));
+    // Increase the buffer size to accomodate the application demand
+    Config::SetDefault("ns3::LteRlcUm::MaxTxBufferSize", UintegerValue(1000 * 1024));
+    // Disabled to prevent the automatic cell reselection when signal quality is bad.
+    Config::SetDefault("ns3::LteUePhy::EnableRlfDetection", BooleanValue(false));
 
-    /*--- lte and epc helper ---*/
-    Ptr<LteHelper> lteHelper = CreateObject<LteHelper>(); // create lteHelper
-    Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>(); // create epcHelper
-    lteHelper->SetEpcHelper(epcHelper); // connect lte to the evolved packet core, which is the core network
-    lteHelper->SetSchedulerType("ns3::RrFfMacScheduler"); // Round-robin Frequency-first Mac Scheduler for resource distribution
-    lteHelper->SetHandoverAlgorithmType("ns3::NoOpHandoverAlgorithm"); // disable automatic handover
-
-    // Getting the PGW node; it acts as a gateway between LTE and external network, such as- internet.
-    Ptr<Node> pgw = epcHelper->GetPgwNode(); // PGW: Packet Data Network Gateway
-
+    // Configure the LTE parameters (pathloss, bandwidth, scheduler)
+    Ptr<LteHelper> lteHelper = CreateObject<LteHelper>();
+    lteHelper->SetAttribute("PathlossModel", StringValue("ns3::Cost231PropagationLossModel"));
+    lteHelper->SetEnbDeviceAttribute("DlBandwidth", UintegerValue(50));
+    lteHelper->SetEnbDeviceAttribute("UlBandwidth", UintegerValue(50));
+    lteHelper->SetSchedulerType("ns3::RrFfMacScheduler");
+    lteHelper->SetSchedulerAttribute("HarqEnabled", BooleanValue(true));
+    lteHelper->SetHandoverAlgorithmType("ns3::NoOpHandoverAlgorithm");
     
-    /*---- Creating RAN nodes using NodeContainer ----*/
+    // Deploy the EPC
+    Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>();
+    lteHelper->SetEpcHelper(epcHelper);
+
+    Ptr<Node> pgw = epcHelper->GetPgwNode();
+
+    // Create a single remote host
+    NodeContainer remoteHostContainer;
+    remoteHostContainer.Create(1);
+    Ptr<Node> remoteHost = remoteHostContainer.Get(0);
+    InternetStackHelper internet;
+    internet.Install(remoteHostContainer);
+
+    // IP configuration
+    PointToPointHelper p2ph;
+    p2ph.SetDeviceAttribute("DataRate", DataRateValue(DataRate("100Gb/s")));
+    p2ph.SetDeviceAttribute("Mtu", UintegerValue(65000));
+    p2ph.SetChannelAttribute("Delay", TimeValue(MilliSeconds(0)));
+    NetDeviceContainer internetDevices = p2ph.Install(pgw, remoteHost);
+    Ipv4AddressHelper ipv4h;
+    ipv4h.SetBase("1.0.0.0", "255.0.0.0");
+    Ipv4InterfaceContainer internetIpIfaces = ipv4h.Assign(internetDevices);
+
+    Ipv4StaticRoutingHelper ipv4RoutingHelper;
+    Ptr<Ipv4StaticRouting> remoteHostStaticRouting =
+        ipv4RoutingHelper.GetStaticRouting(remoteHost->GetObject<Ipv4>());
+    remoteHostStaticRouting->AddNetworkRouteTo(Ipv4Address("7.0.0.0"), Ipv4Mask("255.0.0.0"), 1);
+
+    // Create nodes and node containers
     NodeContainer ueNodes; 
     NodeContainer enbNodes;
     enbNodes.Create(numberOfEnbs);
@@ -190,31 +266,26 @@ main(int argc, char* argv[])
         mobility->SetVelocity(Vector(speed, 0, 0));
     }
 
-
     // Schedule the first direction switch
     Simulator::Schedule(interval, &ReverseVelocity, ueNodes, interval);
 
     // Install LTE Devices in eNB and UEs
     NetDeviceContainer enbLteDevs = lteHelper->InstallEnbDevice(enbNodes);
     NetDeviceContainer ueLteDevs = lteHelper->InstallUeDevice(ueNodes);
-    
-    // Setting TxPower to 30dBm for all eNbs 
-    // Assuming enbLteDevs is your NetDeviceContainer for eNodeBs
-    for (NetDeviceContainer::Iterator it = enbLteDevs.Begin(); it != enbLteDevs.End(); ++it) {
-        Ptr<NetDevice> device = *it;
-        Ptr<LteEnbNetDevice> enbLteDevice = device->GetObject<LteEnbNetDevice>();
-        if (enbLteDevice) {
-            Ptr<LteEnbPhy> enbPhy = enbLteDevice->GetPhy();
-            enbPhy->SetTxPower(25); // Set the transmission power to 30 dBm
-        }
-    }
-    
-    // Install the IP stack on the UEs
-    InternetStackHelper internet;
+ 
     internet.Install(ueNodes);
-    Ipv4InterfaceContainer ueIpIfaces;
-    ueIpIfaces = epcHelper->AssignUeIpv4Address(NetDeviceContainer(ueLteDevs));
-
+    Ipv4InterfaceContainer ueIpIface;
+    ueIpIface = epcHelper->AssignUeIpv4Address(NetDeviceContainer(ueLteDevs));
+    // Assign IP address to UEs, and install applications
+    for (uint32_t u = 0; u < ueNodes.GetN(); ++u)
+    {
+        Ptr<Node> ueNode = ueNodes.Get(u);
+        // Set the default gateway for the UE
+        Ptr<Ipv4StaticRouting> ueStaticRouting =
+            ipv4RoutingHelper.GetStaticRouting(ueNode->GetObject<Ipv4>());
+        ueStaticRouting->SetDefaultRoute(epcHelper->GetUeDefaultGatewayAddress(), 1);
+    }
+   
     // Attach all UEs to the first eNodeB
     for (uint16_t i = 0; i < numberOfUes; i++)
     {
@@ -223,6 +294,56 @@ main(int argc, char* argv[])
 
     // Add X2 interface
     lteHelper->AddX2Interface(enbNodes);
+
+    // Install and start applications on UEs and remote host
+    uint16_t basePort = 1000;
+    ApplicationContainer remoteApps;
+    ApplicationContainer ueApps;
+
+    Ptr<RandomVariableStream> onTimeRv = CreateObject<UniformRandomVariable>();
+    onTimeRv->SetAttribute("Min", DoubleValue(1.0));
+    onTimeRv->SetAttribute("Max", DoubleValue(5.0));
+    Ptr<RandomVariableStream> offTimeRv = CreateObject<UniformRandomVariable>();
+    offTimeRv->SetAttribute("Min", DoubleValue(1.0));
+    offTimeRv->SetAttribute("Max", DoubleValue(5.0));
+
+    Ptr<OutputStreamWrapper> packetTraceStream = Create<OutputStreamWrapper>("packet.tr", std::ios::out);
+
+    for (uint16_t i = 0; i < ueNodes.GetN(); i++)
+    {
+        uint16_t port = basePort * (i + 1);
+
+        PacketSinkHelper dlPacketSinkHelper("ns3::UdpSocketFactory",
+                                            InetSocketAddress(Ipv4Address::GetAny(), port));
+        ueApps.Add(dlPacketSinkHelper.Install(ueNodes.Get(i)));
+        // Enable the tracing of RX packets
+        ueApps.Get(i)->TraceConnectWithoutContext("RxWithAddresses", MakeBoundCallback(&RxTrace, packetTraceStream));
+
+        Ptr<OnOffApplication> streamingServer = CreateObject<OnOffApplication>();
+        remoteApps.Add(streamingServer);
+        // Attributes
+        streamingServer->SetAttribute(
+            "Remote",
+            AddressValue(InetSocketAddress(ueIpIface.GetAddress(i), port)));
+        streamingServer->SetAttribute("DataRate", DataRateValue(DataRate("3000000bps")));
+        streamingServer->SetAttribute("PacketSize", UintegerValue(1500));
+        streamingServer->SetAttribute("OnTime", PointerValue(onTimeRv));
+        streamingServer->SetAttribute("OffTime", PointerValue(offTimeRv));
+
+        remoteHost->AddApplication(streamingServer);
+        streamingServer->TraceConnectWithoutContext("TxWithAddresses", MakeBoundCallback(&TxTrace, packetTraceStream));
+    }
+
+    // Inidcate when to start streaming
+    remoteApps.Start(Seconds(2));
+    // Indicate when to stop streaming
+    remoteApps.Stop(simTime + Seconds(10));
+
+    // UE applications start listening
+    ueApps.Start(Seconds(1));
+    // UE applications stop listening
+    ueApps.Stop(simTime + Seconds(15));
+
 
     // ORAN Models -- BEGIN
     Ptr<OranNearRtRic> nearRtRic = nullptr;
@@ -330,25 +451,17 @@ main(int argc, char* argv[])
                         e2NodeTerminatorsUes);
     // ORAN Models -- END
 
-    // Trace the end of handovers
+    // Trace successful handovers
+    Ptr<OutputStreamWrapper> handoverTraceStream = Create<OutputStreamWrapper>("handover.tr", std::ios::out);
     Config::ConnectWithoutContext("/NodeList/*/DeviceList/*/LteEnbRrc/HandoverEndOk",
-                                  MakeCallback(&NotifyHandoverEndOkEnb));
+                                  MakeBoundCallback(&HandoverTrace, handoverTraceStream));
     
-    // Assuming 'ueNodes' and 'enbNodes' are your NodeContainers
-    Ptr<OutputStreamWrapper> mobilityTrace = Create<OutputStreamWrapper>("MobilityTrace.tr", std::ios::out);
-    for (uint32_t i = 0; i < ueNodes.GetN(); ++i)
-    {
-        Ptr<MobilityModel> mob = ueNodes.Get(i)->GetObject<MobilityModel>();
-        mob->TraceConnectWithoutContext("CourseChange", MakeBoundCallback(&LogPosition, mobilityTrace, ueNodes.Get(i)));
-    }
-    for (uint32_t i = 0; i < enbNodes.GetN(); ++i)
-    {
-        Ptr<MobilityModel> mob = enbNodes.Get(i)->GetObject<MobilityModel>();
-        mob->TraceConnectWithoutContext("CourseChange", MakeBoundCallback(&LogPosition, mobilityTrace, ueNodes.Get(i)));
-    }
+    // Periodically trace node positions
+    Ptr<OutputStreamWrapper> positionTraceStream = Create<OutputStreamWrapper>("positions.tr", std::ios::out);
+    Simulator::Schedule(Seconds(1), &PositionTrace, positionTraceStream, ueNodes);
      
-    // Tracing rsrp, rsrq, and sinr while setting up uePhy
-    Ptr<OutputStreamWrapper> rsrpSinrTrace = Create<OutputStreamWrapper>("RsrpRsrqSinrTrace.tr", std::ios::out);
+    // Trace rsrp, rsrq, and sinr
+    Ptr<OutputStreamWrapper> rsrpRsrqSinrTraceStream = Create<OutputStreamWrapper>("rsrp-rsrq-sinr.tr", std::ios::out);
     for (NetDeviceContainer::Iterator it = ueLteDevs.Begin(); it != ueLteDevs.End(); ++it)
     {
         Ptr<NetDevice> device = *it;
@@ -356,7 +469,7 @@ main(int argc, char* argv[])
         if (lteUeDevice)
         {
             Ptr<LteUePhy> uePhy = lteUeDevice->GetPhy();
-            uePhy->TraceConnectWithoutContext("ReportCurrentCellRsrpSinr", MakeBoundCallback(&LogRsrpRsrqSinr, rsrpSinrTrace));
+            uePhy->TraceConnectWithoutContext("ReportCurrentCellRsrpSinr", MakeBoundCallback(&TraceRsrpRsrqSinr, rsrpRsrqSinrTraceStream));
         }
     }
     
