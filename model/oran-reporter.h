@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,9 +33,9 @@
 
 #include "oran-e2-node-terminator.h"
 
-#include <ns3/object.h>
-#include <ns3/ptr.h>
-#include <ns3/random-variable-stream.h>
+#include "ns3/object.h"
+#include "ns3/ptr.h"
+#include "ns3/random-variable-stream.h"
 
 #include <string>
 
@@ -46,7 +45,7 @@ namespace ns3
 class OranReportTrigger;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Base class for Reporters that attach to simulation nodes and collect
  * specific statistics.
@@ -60,7 +59,7 @@ class OranReporter : public Object
     /**
      * Get the TypeId of the OranReporter class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -83,12 +82,12 @@ class OranReporter : public Object
     /**
      * Indicate if the reporter is active.
      *
-     * \return True, if the reporter is active; otherwise, false.
+     * @return True, if the reporter is active; otherwise, false.
      */
     virtual bool IsActive() const;
     /**
      * Get the E2 Node Terminator.
-     * \return The E2 Node Terminator.
+     * @return The E2 Node Terminator.
      */
     Ptr<OranE2NodeTerminator> GetTerminator() const;
     /**
@@ -109,7 +108,7 @@ class OranReporter : public Object
      * Collect values and metrics from the models, and generate reports
      * with them.
      *
-     * \return The collection of Reports.
+     * @return The collection of Reports.
      */
     virtual std::vector<Ptr<OranReport>> GenerateReports() = 0;
 

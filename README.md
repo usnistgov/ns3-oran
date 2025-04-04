@@ -1,5 +1,5 @@
 # ORAN ns-3 Module
-A module that can be used in [ns-3](https://www.nsnam.org/) to simulate and 
+A module that can be used in [ns-3](https://www.nsnam.org/) to simulate and
 model behavior based on the [O-RAN](https://www.o-ran.org) specifications.
 
 # Table of Contents
@@ -56,48 +56,48 @@ The point of contact for this project is Evan Black ([evan.black@nist.gov](mailt
 
 
 # Model Description
-The `oran` module for `ns-3` implements the classes required to model a 
-network architecture based on the O-RAN specifications. These models include 
-a RAN Intelligent Controller (RIC) that is functionally equivalent to 
-O-RAN's Near-Real Time (Near-RT) RIC, and reporting modules that attach to 
-simulation nodes and serve as communication endpoints with the RIC in a 
-similar fashion as the E2 Terminators in O-RAN. 
+The `oran` module for `ns-3` implements the classes required to model a
+network architecture based on the O-RAN specifications. These models include
+a RAN Intelligent Controller (RIC) that is functionally equivalent to
+O-RAN's Near-Real Time (Near-RT) RIC, and reporting modules that attach to
+simulation nodes and serve as communication endpoints with the RIC in a
+similar fashion as the E2 Terminators in O-RAN.
 
-These models have been designed to provide the infrastructure and access to 
-data so that developers and researchers can focus on implementing their 
-solutions, and minimize the time and effort spent on handling interactions 
-between models. With this in mind, all the components that contain logic that 
-may be modified by end users have been modeled hierarchically (so that parent 
-classes can take care of common actions and methods and leave child models to 
-focus on the logic itself), and at least one example is provided, to serve as 
+These models have been designed to provide the infrastructure and access to
+data so that developers and researchers can focus on implementing their
+solutions, and minimize the time and effort spent on handling interactions
+between models. With this in mind, all the components that contain logic that
+may be modified by end users have been modeled hierarchically (so that parent
+classes can take care of common actions and methods and leave child models to
+focus on the logic itself), and at least one example is provided, to serve as
 reference for new models.
 
-The RIC model uses a data repository to store all the information exchanged 
-between the RIC and the modules, as well as to serve as a logging endpoint. 
-This release provides an [SQLite](https://www.sqlite.org) storage backend for 
-the data repository. The database file is accessible after the simulation and 
+The RIC model uses a data repository to store all the information exchanged
+between the RIC and the modules, as well as to serve as a logging endpoint.
+This release provides an [SQLite](https://www.sqlite.org) storage backend for
+the data repository. The database file is accessible after the simulation and
 can be accessed by any SQLite-compatible tool and interface.
 
-Modeling of the reporting and communication models for the simulation nodes 
-has been implemented using existing traces and methods, which means there is 
-no need to modify the models provided by the `ns-3` distribution to make use 
+Modeling of the reporting and communication models for the simulation nodes
+has been implemented using existing traces and methods, which means there is
+no need to modify the models provided by the `ns-3` distribution to make use
 of the full capabilities of this module.
 
 # Features
 This release of the `oran` module contains the following features:
 - Near-RT RIC model, including:
   - Data access API independent of the data repository backend
-  - SQLite database repository implementation for Reports, Commands, and 
+  - SQLite database repository implementation for Reports, Commands, and
     logging
-  - Support for Logic Modules that serve as O-RAN's `xApps` 
-  - Separation of Logic Modules into `default` (only one, mandatory) and 
+  - Support for Logic Modules that serve as O-RAN's `xApps`
+  - Separation of Logic Modules into `default` (only one, mandatory) and
     `additional` (zero to many, optional)
   - Support for addition and removal of Logic Modules during the simulation
   - Conflict Mitigation API
   - Logic Module and Conflict Mitigation logic logging to the data repository
   - Periodic invocation of the Logic Module's algorithms
 - Periodic reporting of metrics from the simulation nodes to the Near-RT RIC
-- Reporting capabilities for node location (any simulation node) and LTE cell 
+- Reporting capabilities for node location (any simulation node) and LTE cell
   attachment (LTE UE nodes)
 - Generation and execution of LTE-to-LTE handover Commands
 - Activation and deactivation for individual components and RIC
@@ -115,7 +115,7 @@ This release of the `oran` module contains the following features:
 
 # Installation
 ## Clone (Recommended)
-Clone the project into a directory called `oran` in the `contrib` directory 
+Clone the project into a directory called `oran` in the `contrib` directory
 of a supported version of `ns-3`.
 
 1) `cd` into the `contrib` directory of `ns-3`
@@ -162,7 +162,7 @@ wget https://github.com/usnistgov/ns3-oran/archive/refs/heads/master.zip
 unzip ns3-oran-master.zip
 ```
 
-3) Rename the resulting directory to `oran`, as `ns-3` will not accept a 
+3) Rename the resulting directory to `oran`, as `ns-3` will not accept a
 module named differently than its directory
 
 ```shell
@@ -170,7 +170,7 @@ mv ns3-oran-master oran
 ```
 
 ## Connecting the Module Quickly
-If you are linking your module/program to the `oran` module add the following 
+If you are linking your module/program to the `oran` module add the following
 to your `CMakeLists.txt`(CMake).
 
 ### CMake (Quick Connect)
@@ -200,16 +200,16 @@ build_lib(
 ```
 
 ## Connecting the Module Safely
-You may wish for your module to not have a hard dependency on the `oran` 
-module. The following steps will link the `oran` module, but still allow you 
+You may wish for your module to not have a hard dependency on the `oran`
+module. The following steps will link the `oran` module, but still allow you
 to build and run your module without the `oran` module present.
 
 ### CMake (Safe Connect)
-Check for `oran` in the `ns3-all-enabled-modules` list to confirm that the 
+Check for `oran` in the `ns3-all-enabled-modules` list to confirm that the
 module is present.
 
-Note: If the module that links to the `oran` module is in the `src/` 
-directory, then you will need to add the `ENABLE_ORAN` C++ define yourself when 
+Note: If the module that links to the `oran` module is in the `src/`
+directory, then you will need to add the `ENABLE_ORAN` C++ define yourself when
 you check for the presence of the module.
 
 ```cmake
@@ -235,7 +235,7 @@ endif()
 
 # Module
 build_lib(
-  LIBNAME your-module 
+  LIBNAME your-module
   SOURCE_FILES
     # ...
   HEADER_FILES
@@ -254,13 +254,13 @@ build_lib_example(
 ```
 
 ### Code (Safe Connect)
-In addition to the variable in the build environment, the module also defines 
-a C++ macro also named `ENABLE_ORAN`. This macro may be used in C++ code to 
+In addition to the variable in the build environment, the module also defines
+a C++ macro also named `ENABLE_ORAN`. This macro may be used in C++ code to
 check for the presence of the `oran` module.
 
-Note: If you are using CMake and the module is in the `src/` directory, you 
-may have to add this definition yourself (`scratch/` and module examples are 
-fine). See 
+Note: If you are using CMake and the module is in the `src/` directory, you
+may have to add this definition yourself (`scratch/` and module examples are
+fine). See
 [the CMake build system section for more information](#build-system).
 
 ```cpp
@@ -285,7 +285,7 @@ int main ()
 
 # Updating
 ## Clone
-To update the cloned module, move to the module's root directory and perform 
+To update the cloned module, move to the module's root directory and perform
 a `git pull`.
 
 ```shell
@@ -295,7 +295,7 @@ git pull
 ```
 
 ## ZIP
-To update a ZIP installation, remove the old module and replace it with the 
+To update a ZIP installation, remove the old module and replace it with the
 updated one.
 
 ```shell
@@ -369,7 +369,7 @@ export LIBONNXPATH="$(pwd)/onnxruntime-linux-x64-1.14.1"
 ```
 
 At this point, the user should be able to navigate to their working directory
-of `ns-3` and run 
+of `ns-3` and run
 
 ```shell
 ./ns3 configure
@@ -412,10 +412,10 @@ Torch was found," indicating that the library and necessary source
 files were discovered.
 
 # Documentation
-[Sphinx](https://www.sphinx-doc.org/en/master/) is required to build the 
+[Sphinx](https://www.sphinx-doc.org/en/master/) is required to build the
 documentation.
 
-To run Sphinx to build the documentation, cd into the `doc` directory in the 
+To run Sphinx to build the documentation, cd into the `doc` directory in the
 module and run `make [type]` for the type of documentation you wish to build.
 
 ```shell
@@ -442,7 +442,7 @@ The built documentation can now be found in `doc/build/[type]`.
 Listed below are the commands to run the examples provided with the module.
 
 ## Random Walk Example
-Example with a very simple topology in which `ns-3` nodes move randomly and 
+Example with a very simple topology in which `ns-3` nodes move randomly and
 periodically report their position to the Near-RT RIC.
 
 ```shell
@@ -450,11 +450,11 @@ periodically report their position to the Near-RT RIC.
 ```
 
 ## LTE to LTE Distance Handover Example
-A complex scenario that shows how to configure and deploy each of the models 
-manually, without using the `oran`'s helper. This scenario consists of 2 LTE 
-eNBs and 1 LTE UE that moves back and forth between both eNBs. The UE is 
-initially attached to the closest eNB, but as it moves closer to the other 
-eNB, the Logic Module in the RIC will issue a handover Command and the UE 
+A complex scenario that shows how to configure and deploy each of the models
+manually, without using the `oran`'s helper. This scenario consists of 2 LTE
+eNBs and 1 LTE UE that moves back and forth between both eNBs. The UE is
+initially attached to the closest eNB, but as it moves closer to the other
+eNB, the Logic Module in the RIC will issue a handover Command and the UE
 will be handed over to the other eNB.
 
 ```shell
@@ -462,9 +462,9 @@ will be handed over to the other eNB.
 ```
 
 ## LTE to LTE Distance Handover With Helper Example
-Functionally the same scenario as the 
+Functionally the same scenario as the
 [LTE to LTE Distance Handover Example](#lte-to-lte-distance-handover-example),
-however, in this scenario the helper is used to configure and deploy the 
+however, in this scenario the helper is used to configure and deploy the
 models.
 
 ```shell
@@ -472,9 +472,9 @@ models.
 ```
 
 ## LTE to LTE Distance Handover With LM Processing Delay Example
-Similar to the 
-[LTE to LTE Distance Handover With Helper Example](#lte-to-lte-distance-handover-with-helper-example), 
-however, in this scenario the Logic Module is configured with a processing 
+Similar to the
+[LTE to LTE Distance Handover With Helper Example](#lte-to-lte-distance-handover-with-helper-example),
+however, in this scenario the Logic Module is configured with a processing
 delay.
 
 ```shell
@@ -482,11 +482,11 @@ delay.
 ```
 
 ## LTE to LTE Distance Handover With LM Query Trigger Example
-Similar to the 
-[LTE to LTE Distance Handover With Helper Example](#lte-to-lte-distance-handover-with-helper-example) 
-example, however, in this scenario the Near-RT RIC is configured with a 
-custom Query Trigger (provided in the scenario) that may initiate the Logic 
-Module querying process as soon as Reports with certain characteristics are 
+Similar to the
+[LTE to LTE Distance Handover With Helper Example](#lte-to-lte-distance-handover-with-helper-example)
+example, however, in this scenario the Near-RT RIC is configured with a
+custom Query Trigger (provided in the scenario) that may initiate the Logic
+Module querying process as soon as Reports with certain characteristics are
 received by the Near-RT RIC.
 
 ```shell
@@ -494,11 +494,11 @@ received by the Near-RT RIC.
 ```
 
 ## Keep-Alive Example
-This example showcases how the keep-alive mechanism works. A single node 
-moving in a straight line periodically reports its position to the Near-RT 
-RIC. However, not all of these Reports will be accepted by the Near-RT RIC 
-because the configuration of the timing for sending Registration messages in 
-the node means that the node will frequently be marked as ’inactive’ by the 
+This example showcases how the keep-alive mechanism works. A single node
+moving in a straight line periodically reports its position to the Near-RT
+RIC. However, not all of these Reports will be accepted by the Near-RT RIC
+because the configuration of the timing for sending Registration messages in
+the node means that the node will frequently be marked as ’inactive’ by the
 Near-RT RIC.
 
 ```shell
@@ -506,11 +506,11 @@ NS_LOG="OranE2NodeTerminator=prefix_time|warn" ./ns3 run "oran-keep-alive-exampl
 ```
 
 ## Data Repository Example
-This example showcases how the Data Repository API can be used to store and 
-retrieve information. This example performs all these operations from the 
-scenario for simplicity, but the same methods can be used by any model in the 
-simulation that can access the RIC. This will be important when developing 
-custom Logic Modules, and can also be used in scenarios for debugging, 
+This example showcases how the Data Repository API can be used to store and
+retrieve information. This example performs all these operations from the
+scenario for simplicity, but the same methods can be used by any model in the
+simulation that can access the RIC. This will be important when developing
+custom Logic Modules, and can also be used in scenarios for debugging,
 testing and validation.
 
 ```shell
@@ -518,9 +518,9 @@ testing and validation.
 ```
 
 ## Multiple Network Devices Example
-Similar to the 
-[LTE to LTE Distance Handover Wth Helper Example](#lte-to-lte-distance-handover-with-helper-example) 
-this example showcases how a node with several network devices can interact 
+Similar to the
+[LTE to LTE Distance Handover Wth Helper Example](#lte-to-lte-distance-handover-with-helper-example)
+this example showcases how a node with several network devices can interact
 with the Near-RT RIC separately.
 
 ```shell

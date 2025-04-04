@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,9 +33,9 @@
 
 #include "oran-report-trigger.h"
 
-#include <ns3/mobility-model.h>
-#include <ns3/object.h>
-#include <ns3/ptr.h>
+#include "ns3/mobility-model.h"
+#include "ns3/object.h"
+#include "ns3/ptr.h"
 
 #include <string>
 
@@ -46,7 +45,7 @@ namespace ns3
 class OranReporter;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * A class that triggers reports based on position changes
  * UE.
@@ -57,7 +56,7 @@ class OranReportTriggerLocationChange : public OranReportTrigger
     /**
      * Get the TypeId of the OranReportTriggerLocationChange class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -70,7 +69,7 @@ class OranReportTriggerLocationChange : public OranReportTrigger
     ~OranReportTriggerLocationChange() override;
     /**
      * Activates this trigger for the given reporter.
-     * \param reporter The reporter to link to.
+     * @param reporter The reporter to link to.
      */
     void Activate(Ptr<OranReporter> reporter) override;
     /**
@@ -85,7 +84,7 @@ class OranReportTriggerLocationChange : public OranReportTrigger
     void DoDispose() override;
     /**
      * The callback for receiving the HandoverEndOk event from an LTE UE.
-     * \param mobility
+     * @param mobility
      */
     virtual void CourseChangedSink(Ptr<const MobilityModel> mobility);
 

@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -35,7 +34,7 @@
 #include "oran-report.h"
 #include "oran-reporter.h"
 
-#include <ns3/ptr.h>
+#include "ns3/ptr.h"
 
 #include <vector>
 
@@ -43,7 +42,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Reporter that attaches to an LTE UE and captures the LTE Cell ID
  * of the eNB the UE is attached to.
@@ -54,7 +53,7 @@ class OranReporterLteUeCellInfo : public OranReporter
     /**
      * Get the TypeId of the OranReporterLteUeCellInfo class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -71,7 +70,7 @@ class OranReporterLteUeCellInfo : public OranReporter
      * Get the Cell ID of the attached LTE cell, and generate an
      * OranReportLteUeCEllInfo.
      *
-     * \return The generated Report.
+     * @return The generated Report.
      */
     std::vector<Ptr<OranReport>> GenerateReports() override;
 }; // class OranReporterLteUeCellInfo

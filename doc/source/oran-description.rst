@@ -4,7 +4,7 @@
 O-RAN Model Description
 -----------------------
 
-The ``oran`` module for ns-3 implements the classes required to model a network architecture based on the `O-RAN`_ specifications. These models include a RAN Intelligent Controller (RIC) that is functionally equivalent to O-RAN's Near-Real Time (Near-RT) RIC, and reporting modules that attach to simulation nodes and serve as communication endpoints with the RIC in a similar fashion as the E2 Terminators in O-RAN. 
+The ``oran`` module for ns-3 implements the classes required to model a network architecture based on the `O-RAN`_ specifications. These models include a RAN Intelligent Controller (RIC) that is functionally equivalent to O-RAN's Near-Real Time (Near-RT) RIC, and reporting modules that attach to simulation nodes and serve as communication endpoints with the RIC in a similar fashion as the E2 Terminators in O-RAN.
 
 These models have been designed to provide the infrastructure and access to data so that developers and researchers can focus on implementing their solutions, and minimize the time and effort spent on handling interactions between models. With this in mind, all the components that contain logic that may be modified by end users have been modeled hierarchically (so that parent classes can take care of common actions and methods, and leave child models to focus on the logic itself), and at least one example is provided, to serve as reference for new models.
 
@@ -23,7 +23,7 @@ This release of the ``oran`` module contains the following features:
 
   - Data access API independent of the data repository backend.
   - SQLite database repository implementation for Reports, Commands, and logging.
-  - Support for Logic Modules that serve as O-RAN's ``xApps``. 
+  - Support for Logic Modules that serve as O-RAN's ``xApps``.
   - Separation of Logic Modules into ``default`` (only one, mandatory) and ``additional`` (zero to many, optional).
   - Support for addition and removal of Logic Modules during the simulation.
   - Conflict Mitigation API.

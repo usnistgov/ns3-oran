@@ -11,7 +11,7 @@ This Section presents the examples distributed with the release, and gives a qui
 Random Walk Example
 *******************
 
-The first and simplest example is the Random Walk Example, distributed in the example file ``oran-random-walk-example.cc``. This example presents a very simple topology in which ns-3 nodes move randomly and periodically reports its position to the Near-RT RIC. This scenario shows how the RIC can be configured to collect and gather information from the simulation, without any logic processing or Command issuing taking place. 
+The first and simplest example is the Random Walk Example, distributed in the example file ``oran-random-walk-example.cc``. This example presents a very simple topology in which ns-3 nodes move randomly and periodically reports its position to the Near-RT RIC. This scenario shows how the RIC can be configured to collect and gather information from the simulation, without any logic processing or Command issuing taking place.
 
 This example provides two methods for optionally printing the position of a node to the terminal when its direction is altered (method ``CourseChange``), and the database queries used to store and access data in the RIC along with their result (method ``QueryRcSink``). These two methods can be enabled or disabled with the command line switch ``--verbose``.
 
@@ -51,7 +51,7 @@ LTE to LTE Handover With Helper Example
 
 The LTE to LTE Distance Handover Helper Example, distributed in the example file ``oran-lte-2-lte-distance-handover-helper-example.cc``, is functionally the same scenario as the previous example. However, in this scenario the ``OranHelper`` is used to configure and deploy the models.
 
-The Helper is instantiated on line 181. After that, the Helper is configured with several attributes that will be passed to the models as they are instantiated (lines 183 to 189), the model names and parameters of the RIC modules that we want to use (lines 197 to 201), and the RIC is instantiated (line 203). 
+The Helper is instantiated on line 181. After that, the Helper is configured with several attributes that will be passed to the models as they are instantiated (lines 183 to 189), the model names and parameters of the RIC modules that we want to use (lines 197 to 201), and the RIC is instantiated (line 203).
 
 The instantiation and configuration of the models for the LTE UE nodes is achieved with lines 206 to 217, and the LTE eNB nodes are setup on lines 220 to 228.
 
@@ -101,10 +101,10 @@ The Keep-Alive Example, distributed in the example file ``oran-keep-alive-exampl
 
 The configuration parameters relevant in this example are:
 
-- In the Near-RT RIC: 
+- In the Near-RT RIC:
    - The maximum time since a previous registration before marking an E2 Node as 'Deregistered'. Configured on line 83 to be 1 second.
    - The Random Variable for the inteval between periodic checks of E2 Nodes to see if any of them should be marked as 'Deregistered'. Configured on line 84 to be a constant interval of 0.5 seconds.
-- In the E2 Node Terminator: 
+- In the E2 Node Terminator:
    - The Random Variable for the inteval between sending periodic Registration messages to the Near-RT RIC. Configured on line 101 to be a uniform interval between 2 and 3 seconds.
 
 Note that the values used for the Random Variables and timings have been chosen to showcase the workings of the Keep-Alive mechanism and the effects of E2 Nodes being deregisted from the Near-RT RIC. These values are not recommended for use in actual scenarios.

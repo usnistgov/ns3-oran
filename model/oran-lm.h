@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -32,10 +31,10 @@
 #ifndef ORAN_LM_H
 #define ORAN_LM_H
 
-#include <ns3/event-id.h>
-#include <ns3/nstime.h>
-#include <ns3/object.h>
-#include <ns3/random-variable-stream.h>
+#include "ns3/event-id.h"
+#include "ns3/nstime.h"
+#include "ns3/object.h"
+#include "ns3/random-variable-stream.h"
 
 #include <string_view>
 #include <vector>
@@ -47,7 +46,7 @@ class OranNearRtRic;
 class OranCommand;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Base class for the Logic Modules that make up the logic of the Near-RT RIC.
  * This base class provides implementations for common operations, like activation,
@@ -61,7 +60,7 @@ class OranLm : public Object
     /**
      * Get the TypeId of the OranLm class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -85,26 +84,26 @@ class OranLm : public Object
     /**
      * Check if the Logic Module is active.
      *
-     * \return True, if this Logic Module is active; otherwise, false.
+     * @return True, if this Logic Module is active; otherwise, false.
      */
     bool IsActive() const;
     /**
      * Get the name of this Logic Module.
      *
-     * \return The Name of this Logic Module.
+     * @return The Name of this Logic Module.
      */
     std::string GetName() const;
     /**
      * Set the name of this Logic Module.
      *
-     * \param name The name of this Logic Module.
+     * @param name The name of this Logic Module.
      */
     void SetName(std::string_view name);
     /**
      * Prompts this Logical Module to execute its logic and generate any
      * necessary commands.
      *
-     * \param cycle The cycle to run for.
+     * @param cycle The cycle to run for.
      */
     void Run(Time cycle);
     /**
@@ -114,7 +113,7 @@ class OranLm : public Object
     /**
      * Indicates if the LM is running.
      *
-     * \return true, if the LM is running; otherwise, false.
+     * @return true, if the LM is running; otherwise, false.
      */
     bool IsRunning() const;
 
@@ -126,7 +125,7 @@ class OranLm : public Object
     /**
      * Log a string to the Data Repository
      *
-     * \param msg The string to log to the Data Repository
+     * @param msg The string to log to the Data Repository
      */
     void LogLogicToRepository(const std::string& msg) const;
     /**
@@ -136,7 +135,7 @@ class OranLm : public Object
     /**
      * Generates the commands to provide to the Near-RT RIC.
      *
-     * \return The generated commands.
+     * @return The generated commands.
      */
     virtual std::vector<Ptr<OranCommand>> Run() = 0;
 

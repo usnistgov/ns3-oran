@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -35,8 +34,8 @@
 #include "oran-query-trigger.h"
 #include "oran-report.h"
 
-#include <ns3/object.h>
-#include <ns3/ptr.h>
+#include "ns3/object.h"
+#include "ns3/ptr.h"
 
 namespace ns3
 {
@@ -44,7 +43,7 @@ namespace ns3
 class OranReporter;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * No-operation class for triggering LM queries in the Near-RT RIC.
  */
@@ -54,7 +53,7 @@ class OranQueryTriggerNoop : public OranQueryTrigger
     /**
      * Get the TypeId of the OranQueryTriggerNoop class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -69,8 +68,8 @@ class OranQueryTriggerNoop : public OranQueryTrigger
      * Indicates if a report should trigger query to the Logic Modules.
      * As this is a No-Operation trigger, it always returns false.
      *
-     * \param report The report to consider.
-     * \returns True, if a query to the Logic Modules should occur.
+     * @param report The report to consider.
+     * @returns True, if a query to the Logic Modules should occur.
      */
     bool QueryLms(Ptr<OranReport> report) override;
 }; // class OranQueryTriggerNoop

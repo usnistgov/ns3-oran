@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -31,10 +30,10 @@
 
 #include "oran-data-repository-sqlite.h"
 
-#include <ns3/abort.h>
-#include <ns3/log.h>
-#include <ns3/simulator.h>
-#include <ns3/string.h>
+#include "ns3/abort.h"
+#include "ns3/log.h"
+#include "ns3/simulator.h"
+#include "ns3/string.h"
 
 namespace ns3
 {
@@ -381,7 +380,8 @@ OranDataRepositorySqlite::SaveLteUeRsrpRsrq(uint64_t e2NodeId,
                                             bool isServing,
                                             uint8_t componentCarrierId)
 {
-    NS_LOG_FUNCTION(this << e2NodeId << t << +rnti << +cellId << rsrp << rsrq << isServing << +componentCarrierId);
+    NS_LOG_FUNCTION(this << e2NodeId << t << +rnti << +cellId << rsrp << rsrq << isServing
+                         << +componentCarrierId);
 
     if (m_active)
     {
@@ -391,7 +391,11 @@ OranDataRepositorySqlite::SaveLteUeRsrpRsrq(uint64_t e2NodeId,
             std::string query;
             sqlite3_stmt* stmt = nullptr;
 
-            sqlite3_prepare_v2(m_db, m_queryStmtsStrings[INSERT_LTE_UE_RSRP_RSRQ].c_str(), -1, &stmt, 0);
+            sqlite3_prepare_v2(m_db,
+                               m_queryStmtsStrings[INSERT_LTE_UE_RSRP_RSRQ].c_str(),
+                               -1,
+                               &stmt,
+                               0);
 
             sqlite3_bind_int64(stmt, 1, e2NodeId);
             sqlite3_bind_int64(stmt, 2, t.GetTimeStep());
@@ -404,7 +408,16 @@ OranDataRepositorySqlite::SaveLteUeRsrpRsrq(uint64_t e2NodeId,
 
             rc = sqlite3_step(stmt);
 
-            CheckQueryReturnCode(stmt, rc, FormatBoundArgsList(e2NodeId, t.GetTimeStep(), rnti, cellId, rsrp, rsrq, isServing, componentCarrierId));
+            CheckQueryReturnCode(stmt,
+                                 rc,
+                                 FormatBoundArgsList(e2NodeId,
+                                                     t.GetTimeStep(),
+                                                     rnti,
+                                                     cellId,
+                                                     rsrp,
+                                                     rsrq,
+                                                     isServing,
+                                                     componentCarrierId));
             sqlite3_finalize(stmt);
         }
     }
@@ -719,7 +732,8 @@ OranDataRepositorySqlite::GetLteUeRsrpRsrq(uint64_t e2NodeId)
                 bool isServing = sqlite3_column_int(stmt, 4);
                 uint8_t componentCarrierId = sqlite3_column_int(stmt, 5);
 
-                retVal.push_back(std::make_tuple(rnti, cellId, rsrp, rsrq, isServing, componentCarrierId));
+                retVal.push_back(
+                    std::make_tuple(rnti, cellId, rsrp, rsrq, isServing, componentCarrierId));
             }
 
             CheckQueryReturnCode(stmt, rc, FormatBoundArgsList(e2NodeId, e2NodeId));
@@ -728,7 +742,6 @@ OranDataRepositorySqlite::GetLteUeRsrpRsrq(uint64_t e2NodeId)
     }
     return retVal;
 }
-
 
 void
 OranDataRepositorySqlite::LogCommandE2Terminator(Ptr<OranCommand> cmd)
@@ -1162,16 +1175,15 @@ OranDataRepositorySqlite::InitStatements()
         "WHERE nodeid = ? AND simulationtime >= ? AND simulationtime <= ? "
         "ORDER BY simulationtime DESC, entryid DESC LIMIT ? ;";
 
-    m_queryStmtsStrings[GET_LTE_UE_RSRP_RSRQ] =
-        "SELECT rnti, cellid, rsrp, rsrq, serving, ccid "
-        "FROM lteuersrprsrq "
-        "WHERE nodeid = ? "
-          "AND simulationtime IN ("
-            "SELECT simulationtime "
-            "FROM lteuersrprsrq "
-            "WHERE nodeid = ? "
-            "ORDER BY simulationtime DESC LIMIT 1"
-          ");";
+    m_queryStmtsStrings[GET_LTE_UE_RSRP_RSRQ] = "SELECT rnti, cellid, rsrp, rsrq, serving, ccid "
+                                                "FROM lteuersrprsrq "
+                                                "WHERE nodeid = ? "
+                                                "AND simulationtime IN ("
+                                                "SELECT simulationtime "
+                                                "FROM lteuersrprsrq "
+                                                "WHERE nodeid = ? "
+                                                "ORDER BY simulationtime DESC LIMIT 1"
+                                                ");";
 
     m_queryStmtsStrings[INSERT_LTE_ENB_NODE] = "INSERT OR REPLACE INTO lteenb "
                                                "(nodeid, cellid) VALUES (?, ?);";
@@ -1199,7 +1211,8 @@ OranDataRepositorySqlite::InitStatements()
 
     m_queryStmtsStrings[INSERT_LTE_UE_RSRP_RSRQ] =
         "INSERT INTO lteuersrprsrq "
-        "(nodeid, simulationtime, rnti, cellid, rsrp, rsrq, serving, ccid) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        "(nodeid, simulationtime, rnti, cellid, rsrp, rsrq, serving, ccid) VALUES (?, ?, ?, ?, ?, "
+        "?, ?, ?);";
 
     m_queryStmtsStrings[LOG_CMM_ACTION] =
         "INSERT INTO cmmaction "

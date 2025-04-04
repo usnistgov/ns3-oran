@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -32,10 +31,10 @@
 #ifndef ORAN_NEAR_RT_RIC_H
 #define ORAN_NEAR_RT_RIC_H
 
-#include <ns3/event-id.h>
-#include <ns3/nstime.h>
-#include <ns3/object.h>
-#include <ns3/random-variable-stream.h>
+#include "ns3/event-id.h"
+#include "ns3/nstime.h"
+#include "ns3/object.h"
+#include "ns3/random-variable-stream.h"
 
 #include <map>
 
@@ -51,10 +50,10 @@ class OranQueryTrigger;
 class OranReport;
 
 /**
- * \defgroup oran O-RAN architecture
+ * @defgroup oran O-RAN architecture
  */
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Model for the Near-RT RIC
  *
@@ -125,7 +124,7 @@ class OranNearRtRic : public Object
     /**
      * Get the TypeId of the OranNearRtRic class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -153,7 +152,7 @@ class OranNearRtRic : public Object
     /**
      * Get the active status of the RIC.
      *
-     * \return True if the RIC is active.
+     * @return True if the RIC is active.
      */
     bool IsActive() const;
     /**
@@ -169,87 +168,87 @@ class OranNearRtRic : public Object
     /**
      * Get the E2 Terminator.
      *
-     * \return The E2 Terminator in the Near-RT RIC.
+     * @return The E2 Terminator in the Near-RT RIC.
      */
     Ptr<OranNearRtRicE2Terminator> GetE2Terminator() const;
     /**
      * Get the Default Logic Module.
      *
-     * \return The Default Logic Module.
+     * @return The Default Logic Module.
      */
     Ptr<OranLm> GetDefaultLogicModule() const;
     /**
      * Set the Default Logic Module.
      *
-     * \param newDefaultLm The Logic Module to set as default.
+     * @param newDefaultLm The Logic Module to set as default.
      */
     void SetDefaultLogicModule(Ptr<OranLm> newDefaultLm);
     /**
      * Get an additional Logic Modules by name. If there is no additional Logic
      * Module with that name, return a null pointer.
      *
-     * \param name The name of the additional Logic Module we want to retrieve.
+     * @param name The name of the additional Logic Module we want to retrieve.
      *
-     * \return A pointer to the additional Logic Module with the name provided.
+     * @return A pointer to the additional Logic Module with the name provided.
      */
     Ptr<OranLm> GetAdditionalLogicModule(std::string name) const;
     /**
      * Add an additional logic module.
      *
-     * \param newLm The new logic module.
+     * @param newLm The new logic module.
      *
-     * \return The result of adding the Logic Module
+     * @return The result of adding the Logic Module
      */
     OranNearRtRic::AddLmResult AddLogicModule(Ptr<OranLm> newLm);
     /**
      * Remove an additional logic module.
      *
-     * \param name A string with the name of the logic module to remove
+     * @param name A string with the name of the logic module to remove
      *
-     * \return The result of removing the Logic Module
+     * @return The result of removing the Logic Module
      */
     OranNearRtRic::RemoveLmResult RemoveLogicModule(std::string name);
     /**
      * Add an LM query trigger.
      *
-     * \param name The name of the trigger.
-     * \param trigger The trigger to add.
+     * @param name The name of the trigger.
+     * @param trigger The trigger to add.
      *
-     * \return True, if the trigger was added successfully; otherwise, false.
+     * @return True, if the trigger was added successfully; otherwise, false.
      */
     bool AddQueryTrigger(std::string name, Ptr<OranQueryTrigger> trigger);
     /**
      * Removes an LM query trigger.
      *
-     * \param name The name of the trigger.
+     * @param name The name of the trigger.
      *
-     * \return True, if the trigger was removed successfully; otherwise, false.
+     * @return True, if the trigger was removed successfully; otherwise, false.
      */
     bool RemoveQueryTrigger(std::string name);
     /**
      * Get a pointer to the Data Repository instance.
      *
-     * \return A pointer to the Data Repository instance.
+     * @return A pointer to the Data Repository instance.
      */
     Ptr<OranDataRepository> Data() const;
     /**
      * Get the Conflict Mitigation Module.
      *
-     * \return The Conflict Mitigation Module.
+     * @return The Conflict Mitigation Module.
      */
     Ptr<OranCmm> GetCmm() const;
     /**
      * Set the Conflict Mitigation Module.
      *
-     * \param newCmm The Conflict Mitigation Module to use.
+     * @param newCmm The Conflict Mitigation Module to use.
      */
     void SetCmm(Ptr<OranCmm> newCmm);
     /**
      * Notifies the Near-RT RIC that a Logic Module has finished running.
      *
-     * \param lmQueryCycle The lmQueryCycle that the commands were generated for.
-     * \param commands The commands that were generated.
-     * \param lm The Logic Module that generated the commands.
+     * @param lmQueryCycle The lmQueryCycle that the commands were generated for.
+     * @param commands The commands that were generated.
+     * @param lm The Logic Module that generated the commands.
      */
     void NotifyLmFinished(Time lmQueryCycle,
                           std::vector<Ptr<OranCommand>> commands,
@@ -257,7 +256,7 @@ class OranNearRtRic : public Object
     /**
      * Notifies the Near-RT RIC that a report was received.
      *
-     * \param report The report that was received.
+     * @param report The report that was received.
      */
     void NotifyReportReceived(Ptr<OranReport> report);
 

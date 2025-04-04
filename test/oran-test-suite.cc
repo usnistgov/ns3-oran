@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -30,15 +29,15 @@
  */
 
 // An essential include is test.h
-#include <ns3/core-module.h>
-#include <ns3/mobility-module.h>
-#include <ns3/oran-module.h>
-#include <ns3/test.h>
+#include "ns3/core-module.h"
+#include "ns3/mobility-module.h"
+#include "ns3/oran-module.h"
+#include "ns3/test.h"
 
 using namespace ns3;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Class that tests that node location is reported, stored, and retrieved as expected.
  */
@@ -179,7 +178,7 @@ OranTestCaseMobility1::DoRun()
 }
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Test suite for the O-RAN module
  */

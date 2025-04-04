@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -40,7 +39,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * A Container for E2 Node Terminator. This Container allows the Activation and
  * Deactivation of all Terminators in it at once.
@@ -67,7 +66,7 @@ class OranE2NodeTerminatorContainer
     /**
      * Get an iterator referencing the first element.
      *
-     * \return The iterator.
+     * @return The iterator.
      */
     Iterator Begin() const;
     /**
@@ -77,33 +76,33 @@ class OranE2NodeTerminatorContainer
     /**
      * Get an iterator referencing the last element.
      *
-     * \return The iterator.
+     * @return The iterator.
      */
     Iterator End() const;
     /**
      * Get the number of elements in the container.
      *
-     * \return The number of elements.
+     * @return The number of elements.
      */
     uint32_t GetN() const;
     /**
      * Get an element from the container.
      *
-     * \param i The index of the element to return.
+     * @param i The index of the element to return.
      *
-     * \return The element.
+     * @return The element.
      */
     Ptr<OranE2NodeTerminator> Get(uint32_t i) const;
     /**
      * Add the elements of another container to this container.
      *
-     * \param other The other container.
+     * @param other The other container.
      */
     void Add(OranE2NodeTerminatorContainer other);
     /**
      * Add an element to this container.
      *
-     * \param e2NodeTerminator The element to add.
+     * @param e2NodeTerminator The element to add.
      */
     void Add(Ptr<OranE2NodeTerminator> e2NodeTerminator);
 

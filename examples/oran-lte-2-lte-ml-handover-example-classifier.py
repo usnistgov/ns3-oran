@@ -40,50 +40,50 @@ from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 
 # DataSet class that will be used to feed data to the neural network
 # dynamically, according to the training speed and available memory
-# We just need to implement the methods shown here and perform any 
+# We just need to implement the methods shown here and perform any
 # processing if needed
 class ClassifierDataset(Dataset):
-    
+
     def __init__(self, X_data, Y_data):
         self.X_data = X_data
         self.Y_data = Y_data
-        
+
     def __getitem__(self, index):
         return self.X_data[index], self.Y_data[index]
-        
+
     def __len__ (self):
         return len(self.X_data)
 
 
 # Class that implements the neural network model
-# This is a simple 4-layer neural network that inherits 
+# This is a simple 4-layer neural network that inherits
 # from MulticlassClassification
 class MulticlassClassification(nn.Module):
     def __init__(self, num_feature, num_class):
         super(MulticlassClassification, self).__init__()
-        
+
         self.layer_1 = nn.Linear(num_feature, 512)
         self.layer_2 = nn.Linear(512, 128)
         self.layer_3 = nn.Linear(128, 64)
-        self.layer_out = nn.Linear(64, num_class) 
-        
+        self.layer_out = nn.Linear(64, num_class)
+
         self.relu = nn.ReLU()
-        
+
     # The forward method defines the topology, the connections
     # between the layers and components defined in the __init__
     # method
     def forward(self, x):
         x = self.layer_1(x)
         x = self.relu(x)
-        
+
         x = self.layer_2(x)
         x = self.relu(x)
-        
+
         x = self.layer_3(x)
         x = self.relu(x)
-        
+
         x = self.layer_out(x)
-        
+
         return x
 
 # Method that defines the accuracy calculation for the training iterations
@@ -91,13 +91,13 @@ class MulticlassClassification(nn.Module):
 # count the correct classifications, and get the ratio of correct over total
 def multi_acc(Y_pred, Y_test):
     Y_pred_softmax = torch.log_softmax(Y_pred, dim = 1)
-    _, Y_pred_tags = torch.max(Y_pred_softmax, dim = 1)    
-    
+    _, Y_pred_tags = torch.max(Y_pred_softmax, dim = 1)
+
     correct_pred = (Y_pred_tags == Y_test).float()
     acc = correct_pred.sum() / len(correct_pred)
-    
+
     acc = torch.round(acc) * 100
-    
+
     return acc
 
 # Method that gets the class distribution in the training dataset.
@@ -109,19 +109,19 @@ def get_class_distribution(obj):
         "C": 0,
         "D": 0,
     }
-    
+
     for i in obj:
-        if i == 0: 
+        if i == 0:
             count_dict["A"] += 1
-        elif i == 1: 
+        elif i == 1:
             count_dict["B"] += 1
-        elif i == 2: 
+        elif i == 2:
             count_dict["C"] += 1
-        elif i == 3: 
+        elif i == 3:
             count_dict["D"] += 1
         else:
             print("Check classes.")
-            
+
     return count_dict
 
 
@@ -143,9 +143,9 @@ X_train, Y_train = np.array (X_train), np.array (Y_train)
 X_val, Y_val = np.array (X_val), np.array (Y_val)
 X_test, Y_test = np.array (X_test), np.array (Y_test)
 
-# Convert the raw input into PyTorch datasets. 
+# Convert the raw input into PyTorch datasets.
 # These datasets will be managed by DataLoaders that will throttle the speed at which the input file is read
-# depending on parallelization capabilities, training speed, and memory available 
+# depending on parallelization capabilities, training speed, and memory available
 train_dataset = ClassifierDataset(torch.from_numpy(X_train).float(), torch.from_numpy(Y_train).long())
 val_dataset = ClassifierDataset(torch.from_numpy(X_val).float(), torch.from_numpy(Y_val).long())
 test_dataset = ClassifierDataset(torch.from_numpy(X_test).float(), torch.from_numpy(Y_test).long())
@@ -154,15 +154,15 @@ test_dataset = ClassifierDataset(torch.from_numpy(X_test).float(), torch.from_nu
 target_list = []
 for _, t in train_dataset:
     target_list.append(t)
-    
-# And use the list to randomly select the order of the 
+
+# And use the list to randomly select the order of the
 # classes for the output
 target_list = torch.tensor(target_list)
 target_list = target_list[torch.randperm(len(target_list))]
 
 # Compute the class weights for the random sampling
 class_count = [i for i in get_class_distribution(Y_train).values()]
-class_weights = 1./torch.tensor(class_count, dtype=torch.float) 
+class_weights = 1./torch.tensor(class_count, dtype=torch.float)
 
 # Create a weighted random sampler for out training data
 class_weights_all = class_weights[target_list]
@@ -222,19 +222,19 @@ for e in  (range (1, EPOCHS + 1)):
         X_train_batch, Y_train_batch = X_train_batch.to(device), Y_train_batch.to(device)
         # Reset the optimizer gradients to 0...
         optimizer.zero_grad()
-        
+
         # Train the model
         Y_train_pred = model(X_train_batch)
-        
+
         # Compute loss and accuracy for the batch
         train_loss = criterion(Y_train_pred, Y_train_batch)
         train_acc = multi_acc(Y_train_pred, Y_train_batch)
-        
+
         # Perform backpropagation
         train_loss.backward()
         # Update optimizer gradients
         optimizer.step()
-        
+
         # Update training statistics
         train_epoch_loss += train_loss.item()
         train_epoch_acc += train_acc.item()
@@ -242,23 +242,23 @@ for e in  (range (1, EPOCHS + 1)):
     # In each epoch, after training we do validation. We set the environment
     # in a state in which the gradients will not be updated
     with torch.no_grad():
-        
+
         val_epoch_loss = 0
         val_epoch_acc = 0
-        
+
         # Set the model in no-training mode
         model.eval()
         # Load the data from the validation loader
         for X_val_batch, Y_val_batch in val_loader:
             X_val_batch, Y_val_batch = X_val_batch.to(device), Y_val_batch.to(device)
-            
+
             # Run the inputs through the model
             Y_val_pred = model(X_val_batch)
 
-            # Compute loss and accuracy 
+            # Compute loss and accuracy
             val_loss = criterion(Y_val_pred, Y_val_batch)
             val_acc = multi_acc(Y_val_pred, Y_val_batch)
-            
+
             # Accumulate statistics
             val_epoch_loss += val_loss.item()
             val_epoch_acc += val_acc.item()

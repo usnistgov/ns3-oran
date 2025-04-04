@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,7 +33,7 @@
 
 #include "oran-lm.h"
 
-#include <ns3/object.h>
+#include "ns3/object.h"
 
 #include <vector>
 
@@ -45,7 +44,7 @@ class OranNearRtRic;
 class OranCommand;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Logic Module that does nothing. This is useful for using as defult LM in the
  * Near-RT RIC when we are not interested in doing anything.
@@ -56,7 +55,7 @@ class OranLmNoop : public OranLm
     /**
      * Get the TypeId of the OranLmNoop class.
      *
-     * \return The TypeId
+     * @return The TypeId
      */
     static TypeId GetTypeId();
     /**
@@ -71,7 +70,7 @@ class OranLmNoop : public OranLm
      * Run the logic of this LM. This is a No Operation LM, so the logic does
      * nothing and generates no commands.
      *
-     * \return A vector of commands generated.
+     * @return A vector of commands generated.
      */
     std::vector<Ptr<OranCommand>> Run() override;
 }; // class OranLmNoop

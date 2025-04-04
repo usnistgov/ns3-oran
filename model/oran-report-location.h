@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,8 +33,8 @@
 
 #include "oran-report.h"
 
-#include <ns3/object.h>
-#include <ns3/vector.h>
+#include "ns3/object.h"
+#include "ns3/vector.h"
 
 #include <string>
 
@@ -43,7 +42,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Report with the position of a node at a given time.
  */
@@ -53,7 +52,7 @@ class OranReportLocation : public OranReport
     /**
      * Get the TypeId of the OranReportLocation class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -67,7 +66,7 @@ class OranReportLocation : public OranReport
     /**
      * Get a string representation of this Report
      *
-     * \return A string representation of this Report.
+     * @return A string representation of this Report.
      */
     std::string ToString() const override;
 
@@ -81,7 +80,7 @@ class OranReportLocation : public OranReport
     /**
      * Get the reported location.
      *
-     * \return The reported location.
+     * @return The reported location.
      */
     Vector GetLocation() const;
 }; // class OranReportLocation

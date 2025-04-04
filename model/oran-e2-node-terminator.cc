@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,13 +33,13 @@
 #include "oran-near-rt-ric-e2terminator.h"
 #include "oran-reporter.h"
 
-#include <ns3/abort.h>
-#include <ns3/log.h>
-#include <ns3/object-vector.h>
-#include <ns3/pointer.h>
-#include <ns3/simulator.h>
-#include <ns3/string.h>
-#include <ns3/uinteger.h>
+#include "ns3/abort.h"
+#include "ns3/log.h"
+#include "ns3/object-vector.h"
+#include "ns3/pointer.h"
+#include "ns3/simulator.h"
+#include "ns3/string.h"
+#include "ns3/uinteger.h"
 
 namespace ns3
 {

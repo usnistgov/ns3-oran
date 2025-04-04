@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -32,8 +31,8 @@
 #ifndef ORAN_QUERY_TRIGGER_H
 #define ORAN_QUERY_TRIGGER_H
 
-#include <ns3/object.h>
-#include <ns3/ptr.h>
+#include "ns3/object.h"
+#include "ns3/ptr.h"
 
 namespace ns3
 {
@@ -42,7 +41,7 @@ class OranReport;
 class OranReporter;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Base class for Report-based triggers for initiating the LM querying process.
  *
@@ -54,7 +53,7 @@ class OranQueryTrigger : public Object
     /**
      * Get the TypeId of the OranQueryTrigger class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -64,8 +63,8 @@ class OranQueryTrigger : public Object
     /**
      * Indicates if a report should trigger query to the Logic Modules.
      *
-     * \param report The report to consider.
-     * \returns True, if a query to the Logic Modules should occur.
+     * @param report The report to consider.
+     * @returns True, if a query to the Logic Modules should occur.
      */
     virtual bool QueryLms(Ptr<OranReport> report) = 0;
 

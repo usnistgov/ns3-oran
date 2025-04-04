@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -38,12 +37,12 @@
 #include "oran-near-rt-ric-e2terminator.h"
 #include "oran-query-trigger.h"
 
-#include <ns3/abort.h>
-#include <ns3/enum.h>
-#include <ns3/log.h>
-#include <ns3/pointer.h>
-#include <ns3/simulator.h>
-#include <ns3/string.h>
+#include "ns3/abort.h"
+#include "ns3/enum.h"
+#include "ns3/log.h"
+#include "ns3/pointer.h"
+#include "ns3/simulator.h"
+#include "ns3/string.h"
 
 #include <vector>
 
@@ -92,11 +91,12 @@ OranNearRtRic::GetTypeId()
                           TimeValue(Seconds(0)),
                           MakeTimeAccessor(&OranNearRtRic::m_lmQueryMaxWaitTime),
                           MakeTimeChecker())
-            .AddAttribute("LmQueryLateCommandPolicy",
-                          "The filter to apply on UL CQIs received",
-                          EnumValue(OranNearRtRic::DROP),
-                          MakeEnumAccessor<LateCommandPolicy>(&OranNearRtRic::m_lmQueryLateCommandPolicy),
-                          MakeEnumChecker(OranNearRtRic::DROP, "DROP", OranNearRtRic::SAVE, "SAVE"))
+            .AddAttribute(
+                "LmQueryLateCommandPolicy",
+                "The filter to apply on UL CQIs received",
+                EnumValue(OranNearRtRic::DROP),
+                MakeEnumAccessor<LateCommandPolicy>(&OranNearRtRic::m_lmQueryLateCommandPolicy),
+                MakeEnumChecker(OranNearRtRic::DROP, "DROP", OranNearRtRic::SAVE, "SAVE"))
             .AddAttribute("E2NodeInactivityThreshold",
                           "The amount of time from a node's last registration request before "
                           "becoming inactive.",

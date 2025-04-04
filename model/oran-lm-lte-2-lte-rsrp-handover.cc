@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,10 +33,10 @@
 #include "oran-command-lte-2-lte-handover.h"
 #include "oran-data-repository.h"
 
-#include <ns3/abort.h>
-#include <ns3/log.h>
-#include <ns3/simulator.h>
-#include <ns3/uinteger.h>
+#include "ns3/abort.h"
+#include "ns3/log.h"
+#include "ns3/simulator.h"
+#include "ns3/uinteger.h"
 
 #include <cfloat>
 
@@ -187,7 +186,7 @@ OranLmLte2LteRsrpHandover::GetHandoverCommands(
     // issue a handover command.
     for (auto ueInfo : ueInfos)
     {
-        double max = -DBL_MAX;               // The maximum RSRP recorded.
+        double max = -DBL_MAX;              // The maximum RSRP recorded.
         uint64_t oldCellNodeId;             // The ID of the cell currently serving the UE.
         uint16_t newCellId = ueInfo.cellId; // The ID of the closest cell.
         auto rsrpMeasurements = data->GetLteUeRsrpRsrq(ueInfo.nodeId);
@@ -200,10 +199,9 @@ OranLmLte2LteRsrpHandover::GetHandoverCommands(
             bool isServingCell;
             uint16_t componentCarrierId;
             std::tie(rnti, cellId, rsrp, rsrq, isServingCell, componentCarrierId) = rsrpMeasurement;
-            LogLogicToRepository("RSRP from UE with RNTI " + std::to_string(rnti) +
-                                 " in CellID " + std::to_string(ueInfo.cellId) +
-                                 " to eNB with CellID " + std::to_string(cellId) + " is " +
-                                 std::to_string(rsrp));
+            LogLogicToRepository("RSRP from UE with RNTI " + std::to_string(rnti) + " in CellID " +
+                                 std::to_string(ueInfo.cellId) + " to eNB with CellID " +
+                                 std::to_string(cellId) + " is " + std::to_string(rsrp));
 
             // Check if the RSRP is greater than the current maximum
             if (rsrp > max)
@@ -213,8 +211,8 @@ OranLmLte2LteRsrpHandover::GetHandoverCommands(
                 // Record the ID of the cell that produced the new maximum.
                 newCellId = cellId;
 
-                LogLogicToRepository("RSRP to eNB with CellID " +
-                                     std::to_string(cellId) + " is largest so far");
+                LogLogicToRepository("RSRP to eNB with CellID " + std::to_string(cellId) +
+                                     " is largest so far");
             }
         }
 

@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,8 +33,8 @@
 
 #include "oran-report-trigger.h"
 
-#include <ns3/object.h>
-#include <ns3/ptr.h>
+#include "ns3/object.h"
+#include "ns3/ptr.h"
 
 #include <string>
 
@@ -45,7 +44,7 @@ namespace ns3
 class OranReporter;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * A class that triggers reports based on the successful handover of an LTE
  * UE.
@@ -56,7 +55,7 @@ class OranReportTriggerLteUeHandover : public OranReportTrigger
     /**
      * Get the TypeId of the OranReportTriggerLteUeHandover class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -69,7 +68,7 @@ class OranReportTriggerLteUeHandover : public OranReportTrigger
     ~OranReportTriggerLteUeHandover() override;
     /**
      * Activates this trigger for the given reporter.
-     * \param reporter The reporter to link to.
+     * @param reporter The reporter to link to.
      */
     void Activate(Ptr<OranReporter> reporter) override;
     /**
@@ -84,16 +83,16 @@ class OranReportTriggerLteUeHandover : public OranReportTrigger
     void DoDispose() override;
     /**
      * The callback for receiving the HandoverEndOk event from an LTE UE.
-     * \param imsi The IMSI of the UE.
-     * \param cellId The ID of the new cell.
-     * \param rnti The new RNTI of the UE.
+     * @param imsi The IMSI of the UE.
+     * @param cellId The ID of the new cell.
+     * @param rnti The new RNTI of the UE.
      */
     virtual void HandoverCompleteSink(uint64_t imsi, uint16_t cellId, uint16_t rnti);
     /**
      * The callback for receiving the ConnectionEstablished event from an LTE UE.
-     * \param imsi The IMSI of the UE.
-     * \param cellId The ID of the new cell.
-     * \param rnti The new RNTI of the UE.
+     * @param imsi The IMSI of the UE.
+     * @param cellId The ID of the new cell.
+     * @param rnti The new RNTI of the UE.
      */
     virtual void ConnectionEstablishedSink(uint64_t imsi, uint16_t cellId, uint16_t rnti);
 

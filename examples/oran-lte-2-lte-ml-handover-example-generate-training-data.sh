@@ -44,7 +44,7 @@
 # that was experienced in the past second for each UE. In addition to those 12
 # columns, the last column indicates to the ML model wich configuration
 # provides the least amount of packet loss for all four UEs. Using these
-# inputs to train the ML model, the model should be able to correlate UE 
+# inputs to train the ML model, the model should be able to correlate UE
 # distances from eNodeBs and UE packet losses with the configuration that
 # minimizes the total packet loss. Therefore, once the ML model is trained,
 # the 12 columns that indicate UE distances from eNodeBs and UE packet loss

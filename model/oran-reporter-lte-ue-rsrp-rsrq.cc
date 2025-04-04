@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -33,14 +32,14 @@
 
 #include "oran-report-lte-ue-rsrp-rsrq.h"
 
-#include <ns3/abort.h>
-#include <ns3/address.h>
-#include <ns3/boolean.h>
-#include <ns3/double.h>
-#include <ns3/log.h>
-#include <ns3/packet.h>
-#include <ns3/simulator.h>
-#include <ns3/uinteger.h>
+#include "ns3/abort.h"
+#include "ns3/address.h"
+#include "ns3/boolean.h"
+#include "ns3/double.h"
+#include "ns3/log.h"
+#include "ns3/packet.h"
+#include "ns3/simulator.h"
+#include "ns3/uinteger.h"
 
 namespace ns3
 {
@@ -70,19 +69,14 @@ OranReporterLteUeRsrpRsrq::~OranReporterLteUeRsrpRsrq()
 
 void
 OranReporterLteUeRsrpRsrq::ReportRsrpRsrq(uint16_t rnti,
-                        uint16_t cellId,
-                        double rsrp,
-                        double rsrq,
-                        bool isServingCell,
-                        uint8_t componentCarrierId)
+                                          uint16_t cellId,
+                                          double rsrp,
+                                          double rsrq,
+                                          bool isServingCell,
+                                          uint8_t componentCarrierId)
 {
-    NS_LOG_FUNCTION(this
-                    << +rnti
-                    << +cellId
-                    << rsrp
-                    << rsrq
-                    << isServingCell
-                    << componentCarrierId);
+    NS_LOG_FUNCTION(this << +rnti << +cellId << rsrp << rsrq << isServingCell
+                         << componentCarrierId);
 
     if (m_active)
     {
@@ -102,7 +96,6 @@ OranReporterLteUeRsrpRsrq::ReportRsrpRsrq(uint16_t rnti,
         m_reports.push_back(report);
     }
 }
-
 
 std::vector<Ptr<OranReport>>
 OranReporterLteUeRsrpRsrq::GenerateReports()

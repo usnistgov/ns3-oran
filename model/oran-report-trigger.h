@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -32,8 +31,8 @@
 #ifndef ORAN_REPORT_TRIGGER_H
 #define ORAN_REPORT_TRIGGER_H
 
-#include <ns3/object.h>
-#include <ns3/ptr.h>
+#include "ns3/object.h"
+#include "ns3/ptr.h"
 
 #include <string>
 
@@ -43,7 +42,7 @@ namespace ns3
 class OranReporter;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Base class for triggering the generation of a Report.
  *
@@ -55,7 +54,7 @@ class OranReportTrigger : public Object
     /**
      * Get the TypeId of the OranReportTrigger class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -64,7 +63,7 @@ class OranReportTrigger : public Object
     ~OranReportTrigger() override;
     /**
      * Activates this trigger for and links it to the given reporter.
-     * \param reporter The reporter to link to.
+     * @param reporter The reporter to link to.
      */
     virtual void Activate(Ptr<OranReporter> reporter);
     /**

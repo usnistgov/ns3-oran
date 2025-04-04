@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -40,7 +39,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Report with the application packet loss of a node at a given time.
  */
@@ -50,7 +49,7 @@ class OranReportLteUeRsrpRsrq : public OranReport
     /**
      * Get the TypeId of the OranReportLteUeRsrpRsrq class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -64,43 +63,43 @@ class OranReportLteUeRsrpRsrq : public OranReport
     /**
      * Get a string representation of this Report
      *
-     * \return A string representation of this Report.
+     * @return A string representation of this Report.
      */
     std::string ToString() const override;
     /**
      * Gets the RNTI.
      *
-     * \return The RNTI.
+     * @return The RNTI.
      */
     uint16_t GetRnti() const;
     /**
      * Gets the cell ID.
      *
-     * \return The cell ID.
+     * @return The cell ID.
      */
     uint16_t GetCellId() const;
     /**
      * Gets the reported RSRP.
      *
-     * \return The reported RSRP.
+     * @return The reported RSRP.
      */
     double GetRsrp() const;
     /**
      * Gets the reported RSRQ.
      *
-     * \return The reported RSRQ.
+     * @return The reported RSRQ.
      */
     double GetRsrq() const;
     /**
      * Gets the flag that indicates if this is for the serving cell.
      *
-     * \return The flag.
+     * @return The flag.
      */
     bool GetIsServingCell() const;
     /**
      * Gets the component carrier ID.
      *
-     * \return The component carrier ID.
+     * @return The component carrier ID.
      */
     uint16_t GetComponentCarrierId() const;
 

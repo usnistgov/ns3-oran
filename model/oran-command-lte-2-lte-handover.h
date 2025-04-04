@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -38,7 +37,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  * A Command instructing an LTE eNB to handover a UE to another LTE eNB.
  * In this command the Target E2 Node ID is the serving LTE eNB, and the command
  * contains the cell ID of the eNB to handover to, and the RNTI of the UE to be
@@ -50,7 +49,7 @@ class OranCommandLte2LteHandover : public OranCommand
     /**
      * Gets the TypeId of the OranCommandLte2LteHandover class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -78,13 +77,13 @@ class OranCommandLte2LteHandover : public OranCommand
     /**
      * Gets the ID of the cell to handover to.
      *
-     * \returns The cell ID.
+     * @returns The cell ID.
      */
     uint16_t GetTargetCellId() const;
     /**
      * Gets the RNTI of the UE to handover.
      *
-     * \returns The RNTI.
+     * @returns The RNTI.
      */
     uint16_t GetTargetRnti() const;
 }; // class OranCommandLte2LteHandover

@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -36,8 +35,8 @@
 #include "oran-data-repository.h"
 #include "oran-near-rt-ric.h"
 
-#include <ns3/abort.h>
-#include <ns3/log.h>
+#include "ns3/abort.h"
+#include "ns3/log.h"
 
 namespace ns3
 {

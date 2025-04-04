@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -31,19 +30,19 @@
 
 #include "oran-helper.h"
 
-#include <ns3/abort.h>
-#include <ns3/boolean.h>
-#include <ns3/enum.h>
-#include <ns3/log.h>
-#include <ns3/oran-cmm.h>
-#include <ns3/oran-data-repository.h>
-#include <ns3/oran-e2-node-terminator.h>
-#include <ns3/oran-lm.h>
-#include <ns3/oran-near-rt-ric-e2terminator.h>
-#include <ns3/oran-query-trigger.h>
-#include <ns3/oran-reporter.h>
-#include <ns3/pointer.h>
-#include <ns3/string.h>
+#include "ns3/abort.h"
+#include "ns3/boolean.h"
+#include "ns3/enum.h"
+#include "ns3/log.h"
+#include "ns3/oran-cmm.h"
+#include "ns3/oran-data-repository.h"
+#include "ns3/oran-e2-node-terminator.h"
+#include "ns3/oran-lm.h"
+#include "ns3/oran-near-rt-ric-e2terminator.h"
+#include "ns3/oran-query-trigger.h"
+#include "ns3/oran-reporter.h"
+#include "ns3/pointer.h"
+#include "ns3/string.h"
 
 namespace ns3
 {
@@ -79,7 +78,8 @@ OranHelper::GetTypeId()
             .AddAttribute("LmQueryLateCommandPolicy",
                           "The filter to apply on UL CQIs received",
                           EnumValue(OranNearRtRic::DROP),
-                          MakeEnumAccessor<OranNearRtRic::LateCommandPolicy>(&OranHelper::m_ricLmQueryLateCommandPolicy),
+                          MakeEnumAccessor<OranNearRtRic::LateCommandPolicy>(
+                              &OranHelper::m_ricLmQueryLateCommandPolicy),
                           MakeEnumChecker(OranNearRtRic::DROP, "DROP", OranNearRtRic::SAVE, "SAVE"))
             .AddAttribute("E2NodeInactivityThreshold",
                           "The amount of time since an E2 node's last registration request before "

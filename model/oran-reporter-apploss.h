@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -35,7 +34,7 @@
 #include "oran-report.h"
 #include "oran-reporter.h"
 
-#include <ns3/ptr.h>
+#include "ns3/ptr.h"
 
 #include <vector>
 
@@ -46,7 +45,7 @@ class Packet;
 class Address;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * A Reporter that captures the application packet loss of the node.
  */
@@ -56,7 +55,7 @@ class OranReporterAppLoss : public OranReporter
     /**
      * Get the TypeId of the OranReporterAppLoss class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -70,14 +69,14 @@ class OranReporterAppLoss : public OranReporter
     /**
      * Records the transmission of a packet.
      *
-     * \param p The packet.
+     * @param p The packet.
      */
     void AddTx(Ptr<const Packet> p);
     /**
      * Records the reception of a packet from a given address.
      *
-     * \param p The packet.
-     * \param from The address that the packet is from.
+     * @param p The packet.
+     * @param from The address that the packet is from.
      */
     void AddRx(Ptr<const Packet> p, const Address& from);
 
@@ -85,7 +84,7 @@ class OranReporterAppLoss : public OranReporter
     /**
      * Capture the application packet loss and instantiate an OranReportAppLoss.
      *
-     * \return The generated Report.
+     * @return The generated Report.
      */
     std::vector<Ptr<OranReport>> GenerateReports() override;
 

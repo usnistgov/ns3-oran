@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -40,7 +39,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Report with the Cell ID of the serving LTE eNB for an LTE UE.
  */
@@ -50,7 +49,7 @@ class OranReportLteUeCellInfo : public OranReport
     /**
      * Get the TypeId of the OranReportLteUeCellInfo class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -64,7 +63,7 @@ class OranReportLteUeCellInfo : public OranReport
     /**
      * Get a string representation of this Report.
      *
-     * \return A string representation of this Report.
+     * @return A string representation of this Report.
      */
     std::string ToString() const override;
 
@@ -82,13 +81,13 @@ class OranReportLteUeCellInfo : public OranReport
     /**
      * Get the reported cell ID.
      *
-     * \return The reported cell ID.
+     * @return The reported cell ID.
      */
     uint16_t GetCellId() const;
     /**
      * Get the reported RNTI.
      *
-     * \return The reported RNTI.
+     * @return The reported RNTI.
      */
     uint16_t GetRnti() const;
 }; // class OranReportLteUeCellInfo

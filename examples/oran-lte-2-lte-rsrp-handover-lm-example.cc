@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -29,13 +28,13 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/applications-module.h>
-#include <ns3/core-module.h>
-#include <ns3/internet-module.h>
-#include <ns3/lte-module.h>
-#include <ns3/mobility-module.h>
-#include <ns3/oran-module.h>
-#include <ns3/point-to-point-module.h>
+#include "ns3/applications-module.h"
+#include "ns3/core-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/lte-module.h"
+#include "ns3/mobility-module.h"
+#include "ns3/oran-module.h"
+#include "ns3/point-to-point-module.h"
 
 using namespace ns3;
 
@@ -53,45 +52,42 @@ NS_LOG_COMPONENT_DEFINE("OranLte2LteRsrpHandoverExample");
  */
 
 // Tracing rsrp, rsrq, and sinr
-void TraceRsrpRsrqSinr(Ptr<OutputStreamWrapper> stream, uint16_t rnti, uint16_t cellId, double rsrp, double rsrq, uint8_t sinr)
+void
+TraceRsrpRsrqSinr(Ptr<OutputStreamWrapper> stream,
+                  uint16_t rnti,
+                  uint16_t cellId,
+                  double rsrp,
+                  double rsrq,
+                  uint8_t sinr)
 {
-    *stream->GetStream()
-        << Simulator::Now().GetSeconds() << " "
-        << rnti << " "
-        << cellId << " "
-        << rsrp << " "
-        << rsrq << " "
-        << +sinr << " "
-        << std::endl;
+    *stream->GetStream() << Simulator::Now().GetSeconds() << " " << rnti << " " << cellId << " "
+                         << rsrp << " " << rsrq << " " << +sinr << " " << std::endl;
 }
-
 
 // Trace RX'd packets
 void
-RxTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Packet> p, const Address& from, const Address& to)
+RxTrace(Ptr<OutputStreamWrapper> stream,
+        Ptr<const Packet> p,
+        const Address& from,
+        const Address& to)
 {
     uint16_t ueId = (InetSocketAddress::ConvertFrom(to).GetPort() / 1000);
 
-    *stream->GetStream()
-      << Simulator::Now().GetSeconds() << " "
-      << ueId
-      << " RX "
-      << p->GetSize()
-      << std::endl;
+    *stream->GetStream() << Simulator::Now().GetSeconds() << " " << ueId << " RX " << p->GetSize()
+                         << std::endl;
 }
 
 // Trace TX'd packets
 void
-TxTrace(Ptr<OutputStreamWrapper> stream, Ptr<const Packet> p, const Address& from, const Address& to)
+TxTrace(Ptr<OutputStreamWrapper> stream,
+        Ptr<const Packet> p,
+        const Address& from,
+        const Address& to)
 {
     uint16_t ueId = (InetSocketAddress::ConvertFrom(to).GetPort() / 1000);
 
-    *stream->GetStream()
-      << Simulator::Now().GetSeconds() << " "
-      << ueId
-      << " TX "
-      << p->GetSize()
-      << std::endl;
+    *stream->GetStream() << Simulator::Now().GetSeconds() << " " << ueId << " TX " << p->GetSize()
+                         << std::endl;
 }
 
 // Trace each node's location
@@ -101,12 +97,8 @@ PositionTrace(Ptr<OutputStreamWrapper> stream, NodeContainer nodes)
     for (uint32_t i = 0; i < nodes.GetN(); i++)
     {
         Vector pos = nodes.Get(i)->GetObject<MobilityModel>()->GetPosition();
-        *stream->GetStream()
-            << Simulator::Now().GetSeconds() << " "
-            << nodes.Get(i)->GetId() << " "
-            << pos.x << " "
-            << pos.y
-            << std::endl;
+        *stream->GetStream() << Simulator::Now().GetSeconds() << " " << nodes.Get(i)->GetId() << " "
+                             << pos.x << " " << pos.y << std::endl;
     }
 
     Simulator::Schedule(Seconds(1), &PositionTrace, stream, nodes);
@@ -116,12 +108,8 @@ PositionTrace(Ptr<OutputStreamWrapper> stream, NodeContainer nodes)
 void
 HandoverTrace(Ptr<OutputStreamWrapper> stream, uint64_t imsi, uint16_t cellid, uint16_t rnti)
 {
-    *stream->GetStream()
-        << Simulator::Now().GetSeconds() << " "
-        << imsi << " "
-        << cellid << " "
-        << rnti
-        << std::endl;
+    *stream->GetStream() << Simulator::Now().GetSeconds() << " " << imsi << " " << cellid << " "
+                         << rnti << std::endl;
 }
 
 // Output DB queries
@@ -160,7 +148,7 @@ main(int argc, char* argv[])
     uint16_t numberOfUes = 1;
     uint16_t numberOfEnbs = 2;
     Time simTime = Seconds(30);
-    Time maxWaitTime = Seconds(0.010); 
+    Time maxWaitTime = Seconds(0.010);
     std::string processingDelayRv = "ns3::NormalRandomVariable[Mean=0.005|Variance=0.000031]";
     double distance = 50; // distance between eNBs
     Time interval = Seconds(15);
@@ -202,7 +190,7 @@ main(int argc, char* argv[])
     lteHelper->SetSchedulerType("ns3::RrFfMacScheduler");
     lteHelper->SetSchedulerAttribute("HarqEnabled", BooleanValue(true));
     lteHelper->SetHandoverAlgorithmType("ns3::NoOpHandoverAlgorithm");
-    
+
     // Deploy the EPC
     Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>();
     lteHelper->SetEpcHelper(epcHelper);
@@ -232,7 +220,7 @@ main(int argc, char* argv[])
     remoteHostStaticRouting->AddNetworkRouteTo(Ipv4Address("7.0.0.0"), Ipv4Mask("255.0.0.0"), 1);
 
     // Create nodes and node containers
-    NodeContainer ueNodes; 
+    NodeContainer ueNodes;
     NodeContainer enbNodes;
     enbNodes.Create(numberOfEnbs);
     ueNodes.Create(numberOfUes);
@@ -272,7 +260,7 @@ main(int argc, char* argv[])
     // Install LTE Devices in eNB and UEs
     NetDeviceContainer enbLteDevs = lteHelper->InstallEnbDevice(enbNodes);
     NetDeviceContainer ueLteDevs = lteHelper->InstallUeDevice(ueNodes);
- 
+
     internet.Install(ueNodes);
     Ipv4InterfaceContainer ueIpIface;
     ueIpIface = epcHelper->AssignUeIpv4Address(NetDeviceContainer(ueLteDevs));
@@ -285,7 +273,7 @@ main(int argc, char* argv[])
             ipv4RoutingHelper.GetStaticRouting(ueNode->GetObject<Ipv4>());
         ueStaticRouting->SetDefaultRoute(epcHelper->GetUeDefaultGatewayAddress(), 1);
     }
-   
+
     // Attach all UEs to the first eNodeB
     for (uint16_t i = 0; i < numberOfUes; i++)
     {
@@ -307,7 +295,8 @@ main(int argc, char* argv[])
     offTimeRv->SetAttribute("Min", DoubleValue(1.0));
     offTimeRv->SetAttribute("Max", DoubleValue(5.0));
 
-    Ptr<OutputStreamWrapper> packetTraceStream = Create<OutputStreamWrapper>("packet.tr", std::ios::out);
+    Ptr<OutputStreamWrapper> packetTraceStream =
+        Create<OutputStreamWrapper>("packet.tr", std::ios::out);
 
     for (uint16_t i = 0; i < ueNodes.GetN(); i++)
     {
@@ -317,7 +306,8 @@ main(int argc, char* argv[])
                                             InetSocketAddress(Ipv4Address::GetAny(), port));
         ueApps.Add(dlPacketSinkHelper.Install(ueNodes.Get(i)));
         // Enable the tracing of RX packets
-        ueApps.Get(i)->TraceConnectWithoutContext("RxWithAddresses", MakeBoundCallback(&RxTrace, packetTraceStream));
+        ueApps.Get(i)->TraceConnectWithoutContext("RxWithAddresses",
+                                                  MakeBoundCallback(&RxTrace, packetTraceStream));
 
         Ptr<OnOffApplication> streamingServer = CreateObject<OnOffApplication>();
         remoteApps.Add(streamingServer);
@@ -331,7 +321,8 @@ main(int argc, char* argv[])
         streamingServer->SetAttribute("OffTime", PointerValue(offTimeRv));
 
         remoteHost->AddApplication(streamingServer);
-        streamingServer->TraceConnectWithoutContext("TxWithAddresses", MakeBoundCallback(&TxTrace, packetTraceStream));
+        streamingServer->TraceConnectWithoutContext("TxWithAddresses",
+                                                    MakeBoundCallback(&TxTrace, packetTraceStream));
     }
 
     // Inidcate when to start streaming
@@ -343,7 +334,6 @@ main(int argc, char* argv[])
     ueApps.Start(Seconds(1));
     // UE applications stop listening
     ueApps.Stop(simTime + Seconds(15));
-
 
     // ORAN Models -- BEGIN
     Ptr<OranNearRtRic> nearRtRic = nullptr;
@@ -383,8 +373,7 @@ main(int argc, char* argv[])
         Ptr<OranReporterLteUeCellInfo> lteUeCellInfoReporter =
             CreateObject<OranReporterLteUeCellInfo>();
         Ptr<OranReporterLteUeRsrpRsrq> rsrpRsrqReporter = CreateObject<OranReporterLteUeRsrpRsrq>();
-        Ptr<OranE2NodeTerminatorLteUe> lteUeTerminator =
-            CreateObject<OranE2NodeTerminatorLteUe>();
+        Ptr<OranE2NodeTerminatorLteUe> lteUeTerminator = CreateObject<OranE2NodeTerminatorLteUe>();
 
         locationReporter->SetAttribute("Terminator", PointerValue(lteUeTerminator));
 
@@ -394,11 +383,15 @@ main(int argc, char* argv[])
 
         for (uint32_t netDevIdx = 0; netDevIdx < ueNodes.Get(idx)->GetNDevices(); netDevIdx++)
         {
-            Ptr<LteUeNetDevice> lteUeDevice = ueNodes.Get(idx)->GetDevice(netDevIdx)->GetObject<LteUeNetDevice>();
+            Ptr<LteUeNetDevice> lteUeDevice =
+                ueNodes.Get(idx)->GetDevice(netDevIdx)->GetObject<LteUeNetDevice>();
             if (lteUeDevice)
             {
                 Ptr<LteUePhy> uePhy = lteUeDevice->GetPhy();
-                uePhy->TraceConnectWithoutContext("ReportUeMeasurements", MakeCallback(&ns3::OranReporterLteUeRsrpRsrq::ReportRsrpRsrq, rsrpRsrqReporter));
+                uePhy->TraceConnectWithoutContext(
+                    "ReportUeMeasurements",
+                    MakeCallback(&ns3::OranReporterLteUeRsrpRsrq::ReportRsrpRsrq,
+                                 rsrpRsrqReporter));
             }
         }
 
@@ -416,7 +409,7 @@ main(int argc, char* argv[])
 
         Simulator::Schedule(Seconds(1), &OranE2NodeTerminatorLteUe::Activate, lteUeTerminator);
     }
-    
+
     // ENb Nodes setup
     oranHelper->SetE2NodeTerminator("ns3::OranE2NodeTerminatorLteEnb",
                                     "RegistrationIntervalRv",
@@ -437,10 +430,7 @@ main(int argc, char* argv[])
     }
 
     // Activate and the components
-    Simulator::Schedule(Seconds(1),
-                        &OranHelper::ActivateAndStartNearRtRic,
-                        oranHelper,
-                        nearRtRic);
+    Simulator::Schedule(Seconds(1), &OranHelper::ActivateAndStartNearRtRic, oranHelper, nearRtRic);
     Simulator::Schedule(Seconds(1.5),
                         &OranHelper::ActivateE2NodeTerminators,
                         oranHelper,
@@ -452,16 +442,19 @@ main(int argc, char* argv[])
     // ORAN Models -- END
 
     // Trace successful handovers
-    Ptr<OutputStreamWrapper> handoverTraceStream = Create<OutputStreamWrapper>("handover.tr", std::ios::out);
+    Ptr<OutputStreamWrapper> handoverTraceStream =
+        Create<OutputStreamWrapper>("handover.tr", std::ios::out);
     Config::ConnectWithoutContext("/NodeList/*/DeviceList/*/LteEnbRrc/HandoverEndOk",
                                   MakeBoundCallback(&HandoverTrace, handoverTraceStream));
-    
+
     // Periodically trace node positions
-    Ptr<OutputStreamWrapper> positionTraceStream = Create<OutputStreamWrapper>("positions.tr", std::ios::out);
+    Ptr<OutputStreamWrapper> positionTraceStream =
+        Create<OutputStreamWrapper>("positions.tr", std::ios::out);
     Simulator::Schedule(Seconds(1), &PositionTrace, positionTraceStream, ueNodes);
-     
+
     // Trace rsrp, rsrq, and sinr
-    Ptr<OutputStreamWrapper> rsrpRsrqSinrTraceStream = Create<OutputStreamWrapper>("rsrp-rsrq-sinr.tr", std::ios::out);
+    Ptr<OutputStreamWrapper> rsrpRsrqSinrTraceStream =
+        Create<OutputStreamWrapper>("rsrp-rsrq-sinr.tr", std::ios::out);
     for (NetDeviceContainer::Iterator it = ueLteDevs.Begin(); it != ueLteDevs.End(); ++it)
     {
         Ptr<NetDevice> device = *it;
@@ -469,10 +462,12 @@ main(int argc, char* argv[])
         if (lteUeDevice)
         {
             Ptr<LteUePhy> uePhy = lteUeDevice->GetPhy();
-            uePhy->TraceConnectWithoutContext("ReportCurrentCellRsrpSinr", MakeBoundCallback(&TraceRsrpRsrqSinr, rsrpRsrqSinrTraceStream));
+            uePhy->TraceConnectWithoutContext(
+                "ReportCurrentCellRsrpSinr",
+                MakeBoundCallback(&TraceRsrpRsrqSinr, rsrpRsrqSinrTraceStream));
         }
     }
-    
+
     /* Enabling Tracing for the simulation scenario */
     lteHelper->EnablePhyTraces();
     lteHelper->EnableMacTraces();
@@ -483,6 +478,6 @@ main(int argc, char* argv[])
     Simulator::Run();
 
     Simulator::Destroy();
-    
+
     return 0;
 }

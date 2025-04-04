@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -29,12 +28,12 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/core-module.h>
-#include <ns3/internet-module.h>
-#include <ns3/lte-module.h>
-#include <ns3/mobility-module.h>
-#include <ns3/network-module.h>
-#include <ns3/oran-module.h>
+#include "ns3/core-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/lte-module.h"
+#include "ns3/mobility-module.h"
+#include "ns3/network-module.h"
+#include "ns3/oran-module.h"
 
 #include <stdio.h>
 

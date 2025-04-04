@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,13 +33,13 @@
 
 #include "oran-e2-node-terminator.h"
 
-#include <ns3/lte-ue-net-device.h>
+#include "ns3/lte-ue-net-device.h"
 
 namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * E2 Node Terminator for LTE UEs. This Terminator does not process any Commands.
  */
@@ -50,7 +49,7 @@ class OranE2NodeTerminatorLteUe : public OranE2NodeTerminator
     /**
      * Get the TypeId of the OranE2NodeTerminatorLteUe class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -65,19 +64,19 @@ class OranE2NodeTerminatorLteUe : public OranE2NodeTerminator
      * Get the E2 Node Type. For this Terminator, this method always returns
      * the LTE UE node type
      *
-     * \return the E2 Node Type.
+     * @return the E2 Node Type.
      */
     OranNearRtRic::NodeType GetNodeType() const override;
     /**
      * Receive a Command. All Commands are silently ignored.
      *
-     * \param command The received command.
+     * @param command The received command.
      */
     void ReceiveCommand(Ptr<OranCommand> command) override;
     /**
      * Get the NetDevice of the LTE UE.
      *
-     * \return The net device.
+     * @return The net device.
      */
     virtual Ptr<LteUeNetDevice> GetNetDevice() const;
 }; // class OranE2NodeTerminatorLteUe

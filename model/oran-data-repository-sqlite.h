@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,7 +33,7 @@
 
 #include "oran-data-repository.h"
 
-#include <ns3/traced-callback.h>
+#include "ns3/traced-callback.h"
 
 #include <sqlite3.h>
 #include <sstream>
@@ -43,7 +42,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * A Data Repository implementation that uses an SQLite database as
  * the storage backend.
@@ -62,7 +61,7 @@ class OranDataRepositorySqlite : public OranDataRepository
     /**
      * Gets the TypeId of the OranDataRepositorySqlite class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -95,13 +94,13 @@ class OranDataRepositorySqlite : public OranDataRepository
     void SaveLteUeCellInfo(uint64_t e2NodeId, uint16_t cellId, uint16_t rnti, Time t) override;
     void SaveAppLoss(uint64_t e2NodeId, double appLoss, Time t) override;
     void SaveLteUeRsrpRsrq(uint64_t e2NodeId,
-                      Time t,
-                      uint16_t rnti,
-                      uint16_t cellId,
-                      double rsrp,
-                      double rsrq,
-                      bool isServingCell,
-                      uint8_t componentCarrierId) override;
+                           Time t,
+                           uint16_t rnti,
+                           uint16_t cellId,
+                           double rsrp,
+                           double rsrq,
+                           bool isServingCell,
+                           uint8_t componentCarrierId) override;
 
     std::map<Time, Vector> GetNodePositions(uint64_t e2NodeId,
                                             Time fromTime,
@@ -114,7 +113,8 @@ class OranDataRepositorySqlite : public OranDataRepository
     std::vector<uint64_t> GetLteEnbE2NodeIds() override;
     std::vector<std::tuple<uint64_t, Time>> GetLastRegistrationRequests() override;
     double GetAppLoss(uint64_t e2NodeId) override;
-    std::vector<std::tuple<uint16_t, uint16_t, double, double, bool, uint8_t>> GetLteUeRsrpRsrq(uint64_t e2NodeId) override;
+    std::vector<std::tuple<uint16_t, uint16_t, double, double, bool, uint8_t>> GetLteUeRsrpRsrq(
+        uint64_t e2NodeId) override;
 
     void LogCommandE2Terminator(Ptr<OranCommand> cmd) override;
     void LogCommandLm(std::string lm, Ptr<OranCommand> cmd) override;
@@ -125,9 +125,9 @@ class OranDataRepositorySqlite : public OranDataRepository
      * TracedCallback signature for SQL Queries. Traces the queries and the result code
      * (does not trace the returned records).
      *
-     * \param [in] query The SQL prepared statement
-     * \param [in] args The bound arguments (if any)
-     * \param [in] rc The return code
+     * @param [in] query The SQL prepared statement
+     * @param [in] args The bound arguments (if any)
+     * @param [in] rc The return code
      */
     typedef void (*QueryRcTracedCallback)(std::string query, std::string args, int rc);
 
@@ -196,9 +196,9 @@ class OranDataRepositorySqlite : public OranDataRepository
      * Checks that a query was executed successfully. This method checks the return codeof a query,
      * and if there was an error, the simulation is aborted.
      *
-     * \param stmt The query that was executed.
-     * \param rc The return code.
-     * \param boundParmsStr String with the bound parameters (if any). Defaults to empty string.
+     * @param stmt The query that was executed.
+     * @param rc The return code.
+     * @param boundParmsStr String with the bound parameters (if any). Defaults to empty string.
      */
     virtual void CheckQueryReturnCode(sqlite3_stmt* stmt,
                                       int rc,
@@ -209,10 +209,10 @@ class OranDataRepositorySqlite : public OranDataRepository
      * Newer versions of sqlite3 can print prepared statements directly, but using
      * this approach ensures support for older versions.
      *
-     * \param arg1 The first argument
-     * \param args The remaining list of arguments.
+     * @param arg1 The first argument
+     * @param args The remaining list of arguments.
      *
-     * \return A string with the bound arguments separated with commas
+     * @return A string with the bound arguments separated with commas
      */
     template <typename T, typename... BoundArgs>
     std::string FormatBoundArgsList(T arg1, BoundArgs... args) const
@@ -225,9 +225,9 @@ class OranDataRepositorySqlite : public OranDataRepository
     /**
      * Template for the end case of the recursions used to convert bound arguments into a string.
      *
-     * \param arg1 The last argument in the list.
+     * @param arg1 The last argument in the list.
      *
-     * \return The provided argument as a string
+     * @return The provided argument as a string
      */
     template <typename T>
     std::string FormatBoundArgsList(T arg1) const
@@ -246,7 +246,7 @@ class OranDataRepositorySqlite : public OranDataRepository
     /**
      * Indicates if the database connection has been established.
      *
-     * \return True, if the database connection is open; otherwise, false.
+     * @return True, if the database connection is open; otherwise, false.
      */
     virtual bool IsDbOpen() const;
     /**
@@ -294,7 +294,7 @@ class OranDataRepositorySqlite : public OranDataRepository
      * It's only purpose is reduce the repeated code in the initialization
      * of the DB
      *
-     * \param string The string with the SQL CREATE statement to run
+     * @param string The string with the SQL CREATE statement to run
      */
     void RunCreateStatement(std::string string);
 

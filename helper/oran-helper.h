@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -32,18 +31,18 @@
 #ifndef ORAN_HELPER_H
 #define ORAN_HELPER_H
 
-#include <ns3/node-container.h>
-#include <ns3/nstime.h>
-#include <ns3/object-factory.h>
-#include <ns3/object.h>
-#include <ns3/oran-e2-node-terminator-container.h>
-#include <ns3/oran-near-rt-ric.h>
+#include "ns3/node-container.h"
+#include "ns3/nstime.h"
+#include "ns3/object-factory.h"
+#include "ns3/object.h"
+#include "ns3/oran-e2-node-terminator-container.h"
+#include "ns3/oran-near-rt-ric.h"
 
 namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Helper to facilitate the configuration and deployment of O-RAN modules
  */
@@ -53,7 +52,7 @@ class OranHelper : public Object
     /**
      * Gets the TypeId of the OranHelper.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -73,23 +72,23 @@ class OranHelper : public Object
      * method (which should be invoked later) instantiates the LM and associates
      * it with the Near-RT RIC.
      *
-     * \param tid the string representation of the ns3::TypeId associated with the model to set.
-     * \param n0 the name of the attribute to set.
-     * \param v0 the value of the attribute to set.
-     * \param n1 the name of the attribute to set.
-     * \param v1 the value of the attribute to set.
-     * \param n2 the name of the attribute to set.
-     * \param v2 the value of the attribute to set.
-     * \param n3 the name of the attribute to set.
-     * \param v3 the value of the attribute to set.
-     * \param n4 the name of the attribute to set.
-     * \param v4 the value of the attribute to set.
-     * \param n5 the name of the attribute to set.
-     * \param v5 the value of the attribute to set.
-     * \param n6 the name of the attribute to set.
-     * \param v6 the value of the attribute to set.
-     * \param n7 the name of the attribute to set.
-     * \param v7 the value of the attribute to set.
+     * @param tid the string representation of the ns3::TypeId associated with the model to set.
+     * @param n0 the name of the attribute to set.
+     * @param v0 the value of the attribute to set.
+     * @param n1 the name of the attribute to set.
+     * @param v1 the value of the attribute to set.
+     * @param n2 the name of the attribute to set.
+     * @param v2 the value of the attribute to set.
+     * @param n3 the name of the attribute to set.
+     * @param v3 the value of the attribute to set.
+     * @param n4 the name of the attribute to set.
+     * @param v4 the value of the attribute to set.
+     * @param n5 the name of the attribute to set.
+     * @param v5 the value of the attribute to set.
+     * @param n6 the name of the attribute to set.
+     * @param v6 the value of the attribute to set.
+     * @param n7 the name of the attribute to set.
+     * @param v7 the value of the attribute to set.
      */
     void AddLogicModule(std::string tid,
                         std::string n0 = "",
@@ -118,23 +117,23 @@ class OranHelper : public Object
      * instantiates one Reporter of this type with this configuration for each
      * Terminator deployed.
      *
-     * \param tid the string representation of the ns3::TypeId associated with the model to set.
-     * \param n0 the name of the attribute to set.
-     * \param v0 the value of the attribute to set.
-     * \param n1 the name of the attribute to set.
-     * \param v1 the value of the attribute to set.
-     * \param n2 the name of the attribute to set.
-     * \param v2 the value of the attribute to set.
-     * \param n3 the name of the attribute to set.
-     * \param v3 the value of the attribute to set.
-     * \param n4 the name of the attribute to set.
-     * \param v4 the value of the attribute to set.
-     * \param n5 the name of the attribute to set.
-     * \param v5 the value of the attribute to set.
-     * \param n6 the name of the attribute to set.
-     * \param v6 the value of the attribute to set.
-     * \param n7 the name of the attribute to set.
-     * \param v7 the value of the attribute to set.
+     * @param tid the string representation of the ns3::TypeId associated with the model to set.
+     * @param n0 the name of the attribute to set.
+     * @param v0 the value of the attribute to set.
+     * @param n1 the name of the attribute to set.
+     * @param v1 the value of the attribute to set.
+     * @param n2 the name of the attribute to set.
+     * @param v2 the value of the attribute to set.
+     * @param n3 the name of the attribute to set.
+     * @param v3 the value of the attribute to set.
+     * @param n4 the name of the attribute to set.
+     * @param v4 the value of the attribute to set.
+     * @param n5 the name of the attribute to set.
+     * @param v5 the value of the attribute to set.
+     * @param n6 the name of the attribute to set.
+     * @param v6 the value of the attribute to set.
+     * @param n7 the name of the attribute to set.
+     * @param v7 the value of the attribute to set.
      */
     void AddReporter(std::string tid,
                      std::string n0 = "",
@@ -163,24 +162,24 @@ class OranHelper : public Object
      * should be invoked later) instantiates one trigger of this type with this
      * configuration.
      *
-     * \param name The name of the query trigger.
-     * \param tid the string representation of the ns3::TypeId associated with the model to set.
-     * \param n0 the name of the attribute to set.
-     * \param v0 the value of the attribute to set.
-     * \param n1 the name of the attribute to set.
-     * \param v1 the value of the attribute to set.
-     * \param n2 the name of the attribute to set.
-     * \param v2 the value of the attribute to set.
-     * \param n3 the name of the attribute to set.
-     * \param v3 the value of the attribute to set.
-     * \param n4 the name of the attribute to set.
-     * \param v4 the value of the attribute to set.
-     * \param n5 the name of the attribute to set.
-     * \param v5 the value of the attribute to set.
-     * \param n6 the name of the attribute to set.
-     * \param v6 the value of the attribute to set.
-     * \param n7 the name of the attribute to set.
-     * \param v7 the value of the attribute to set.
+     * @param name The name of the query trigger.
+     * @param tid the string representation of the ns3::TypeId associated with the model to set.
+     * @param n0 the name of the attribute to set.
+     * @param v0 the value of the attribute to set.
+     * @param n1 the name of the attribute to set.
+     * @param v1 the value of the attribute to set.
+     * @param n2 the name of the attribute to set.
+     * @param v2 the value of the attribute to set.
+     * @param n3 the name of the attribute to set.
+     * @param v3 the value of the attribute to set.
+     * @param n4 the name of the attribute to set.
+     * @param v4 the value of the attribute to set.
+     * @param n5 the name of the attribute to set.
+     * @param v5 the value of the attribute to set.
+     * @param n6 the name of the attribute to set.
+     * @param v6 the value of the attribute to set.
+     * @param n7 the name of the attribute to set.
+     * @param v7 the value of the attribute to set.
      */
     void AddQueryTrigger(std::string name,
                          std::string tid,
@@ -208,23 +207,23 @@ class OranHelper : public Object
      * received parameters so the CreateNearRtRic method (which should be invoked
      * later) instantiates the CMM and associates it with the Near-RT RIC.
      *
-     * \param tid the string representation of the ns3::TypeId associated with the model to set.
-     * \param n0 the name of the attribute to set.
-     * \param v0 the value of the attribute to set.
-     * \param n1 the name of the attribute to set.
-     * \param v1 the value of the attribute to set.
-     * \param n2 the name of the attribute to set.
-     * \param v2 the value of the attribute to set.
-     * \param n3 the name of the attribute to set.
-     * \param v3 the value of the attribute to set.
-     * \param n4 the name of the attribute to set.
-     * \param v4 the value of the attribute to set.
-     * \param n5 the name of the attribute to set.
-     * \param v5 the value of the attribute to set.
-     * \param n6 the name of the attribute to set.
-     * \param v6 the value of the attribute to set.
-     * \param n7 the name of the attribute to set.
-     * \param v7 the value of the attribute to set.
+     * @param tid the string representation of the ns3::TypeId associated with the model to set.
+     * @param n0 the name of the attribute to set.
+     * @param v0 the value of the attribute to set.
+     * @param n1 the name of the attribute to set.
+     * @param v1 the value of the attribute to set.
+     * @param n2 the name of the attribute to set.
+     * @param v2 the value of the attribute to set.
+     * @param n3 the name of the attribute to set.
+     * @param v3 the value of the attribute to set.
+     * @param n4 the name of the attribute to set.
+     * @param v4 the value of the attribute to set.
+     * @param n5 the name of the attribute to set.
+     * @param v5 the value of the attribute to set.
+     * @param n6 the name of the attribute to set.
+     * @param v6 the value of the attribute to set.
+     * @param n7 the name of the attribute to set.
+     * @param v7 the value of the attribute to set.
      */
     void SetConflictMitigationModule(std::string tid,
                                      std::string n0 = "",
@@ -251,23 +250,23 @@ class OranHelper : public Object
      * received parameters so the CreateNearRtRic method (which should be invoked
      * later) instantiates the DR and associates it with the Near-RT RIC.
      *
-     * \param tid the string representation of the ns3::TypeId associated with the model to set.
-     * \param n0 the name of the attribute to set.
-     * \param v0 the value of the attribute to set.
-     * \param n1 the name of the attribute to set.
-     * \param v1 the value of the attribute to set.
-     * \param n2 the name of the attribute to set.
-     * \param v2 the value of the attribute to set.
-     * \param n3 the name of the attribute to set.
-     * \param v3 the value of the attribute to set.
-     * \param n4 the name of the attribute to set.
-     * \param v4 the value of the attribute to set.
-     * \param n5 the name of the attribute to set.
-     * \param v5 the value of the attribute to set.
-     * \param n6 the name of the attribute to set.
-     * \param v6 the value of the attribute to set.
-     * \param n7 the name of the attribute to set.
-     * \param v7 the value of the attribute to set.
+     * @param tid the string representation of the ns3::TypeId associated with the model to set.
+     * @param n0 the name of the attribute to set.
+     * @param v0 the value of the attribute to set.
+     * @param n1 the name of the attribute to set.
+     * @param v1 the value of the attribute to set.
+     * @param n2 the name of the attribute to set.
+     * @param v2 the value of the attribute to set.
+     * @param n3 the name of the attribute to set.
+     * @param v3 the value of the attribute to set.
+     * @param n4 the name of the attribute to set.
+     * @param v4 the value of the attribute to set.
+     * @param n5 the name of the attribute to set.
+     * @param v5 the value of the attribute to set.
+     * @param n6 the name of the attribute to set.
+     * @param v6 the value of the attribute to set.
+     * @param n7 the name of the attribute to set.
+     * @param v7 the value of the attribute to set.
      */
     void SetDataRepository(std::string tid,
                            std::string n0 = "",
@@ -294,23 +293,23 @@ class OranHelper : public Object
      * received parameters so the CreateNearRtRic method (which should be invoked
      * later) instantiates the LM and associates it with the Near-RT RIC.
      *
-     * \param tid the string representation of the ns3::TypeId associated with the model to set.
-     * \param n0 the name of the attribute to set.
-     * \param v0 the value of the attribute to set.
-     * \param n1 the name of the attribute to set.
-     * \param v1 the value of the attribute to set.
-     * \param n2 the name of the attribute to set.
-     * \param v2 the value of the attribute to set.
-     * \param n3 the name of the attribute to set.
-     * \param v3 the value of the attribute to set.
-     * \param n4 the name of the attribute to set.
-     * \param v4 the value of the attribute to set.
-     * \param n5 the name of the attribute to set.
-     * \param v5 the value of the attribute to set.
-     * \param n6 the name of the attribute to set.
-     * \param v6 the value of the attribute to set.
-     * \param n7 the name of the attribute to set.
-     * \param v7 the value of the attribute to set.
+     * @param tid the string representation of the ns3::TypeId associated with the model to set.
+     * @param n0 the name of the attribute to set.
+     * @param v0 the value of the attribute to set.
+     * @param n1 the name of the attribute to set.
+     * @param v1 the value of the attribute to set.
+     * @param n2 the name of the attribute to set.
+     * @param v2 the value of the attribute to set.
+     * @param n3 the name of the attribute to set.
+     * @param v3 the value of the attribute to set.
+     * @param n4 the name of the attribute to set.
+     * @param v4 the value of the attribute to set.
+     * @param n5 the name of the attribute to set.
+     * @param v5 the value of the attribute to set.
+     * @param n6 the name of the attribute to set.
+     * @param v6 the value of the attribute to set.
+     * @param n7 the name of the attribute to set.
+     * @param v7 the value of the attribute to set.
      */
     void SetDefaultLogicModule(std::string tid,
                                std::string n0 = "",
@@ -338,23 +337,23 @@ class OranHelper : public Object
      * DeployTerminators is invoked, the factory will be used to instantiate the
      * E2 Node Terminators.
      *
-     * \param tid the string representation of the ns3::TypeId associated with the model to set.
-     * \param n0 the name of the attribute to set.
-     * \param v0 the value of the attribute to set.
-     * \param n1 the name of the attribute to set.
-     * \param v1 the value of the attribute to set.
-     * \param n2 the name of the attribute to set.
-     * \param v2 the value of the attribute to set.
-     * \param n3 the name of the attribute to set.
-     * \param v3 the value of the attribute to set.
-     * \param n4 the name of the attribute to set.
-     * \param v4 the value of the attribute to set.
-     * \param n5 the name of the attribute to set.
-     * \param v5 the value of the attribute to set.
-     * \param n6 the name of the attribute to set.
-     * \param v6 the value of the attribute to set.
-     * \param n7 the name of the attribute to set.
-     * \param v7 the value of the attribute to set.
+     * @param tid the string representation of the ns3::TypeId associated with the model to set.
+     * @param n0 the name of the attribute to set.
+     * @param v0 the value of the attribute to set.
+     * @param n1 the name of the attribute to set.
+     * @param v1 the value of the attribute to set.
+     * @param n2 the name of the attribute to set.
+     * @param v2 the value of the attribute to set.
+     * @param n3 the name of the attribute to set.
+     * @param v3 the value of the attribute to set.
+     * @param n4 the name of the attribute to set.
+     * @param v4 the value of the attribute to set.
+     * @param n5 the name of the attribute to set.
+     * @param v5 the value of the attribute to set.
+     * @param n6 the name of the attribute to set.
+     * @param v6 the value of the attribute to set.
+     * @param n7 the name of the attribute to set.
+     * @param v7 the value of the attribute to set.
      */
     void SetE2NodeTerminator(std::string tid,
                              std::string n0 = "",
@@ -381,19 +380,19 @@ class OranHelper : public Object
      * Terminator. These components can be configured by calling the appropriate
      * Set*Module methods before invoking this method.
      *
-     * \return A pointer to the Near-RT RIC created.
+     * @return A pointer to the Near-RT RIC created.
      */
     Ptr<OranNearRtRic> CreateNearRtRic();
     /**
      * Activates and Starts a Near-RT RIC.
      *
-     * \param nearRtRic The Near-RT RIC to activate and start.
+     * @param nearRtRic The Near-RT RIC to activate and start.
      */
     void ActivateAndStartNearRtRic(Ptr<OranNearRtRic> nearRtRic);
     /**
      * Deactivates and Stops the Near-RT RIC.
      *
-     * \param nearRtRic The Near-RT RIC to deactivate and stop.
+     * @param nearRtRic The Near-RT RIC to deactivate and stop.
      */
     void DeactivateAndStopNearRtRic(Ptr<OranNearRtRic> nearRtRic);
     /**
@@ -406,11 +405,11 @@ class OranHelper : public Object
      * After this method is complete, the list of Reporters to instantiate with the
      * next E2 Node Terminator is empied.
      *
-     * \param nearRtRic The Near-RT RIC to associate termintors with.
-     * \param nodes The nodes to deploy terminators on.
-     * \param netDeviceIndex The index of the net devices to attach to.
+     * @param nearRtRic The Near-RT RIC to associate termintors with.
+     * @param nodes The nodes to deploy terminators on.
+     * @param netDeviceIndex The index of the net devices to attach to.
      *
-     * \return The collection of created terminators.
+     * @return The collection of created terminators.
      */
     OranE2NodeTerminatorContainer DeployTerminators(Ptr<OranNearRtRic> nearRtRic,
                                                     NodeContainer nodes,
@@ -418,13 +417,13 @@ class OranHelper : public Object
     /**
      * Activates all the E2 Node Terminators in a container.
      *
-     * \param e2NodeTerminators The terminators.
+     * @param e2NodeTerminators The terminators.
      */
     void ActivateE2NodeTerminators(OranE2NodeTerminatorContainer e2NodeTerminators);
     /**
      * Deactivates all the E2 Node Terminators in a container.
      *
-     * \param e2NodeTerminators The terminators.
+     * @param e2NodeTerminators The terminators.
      */
     void DeactivateE2NodeTerminators(OranE2NodeTerminatorContainer e2NodeTerminators);
 

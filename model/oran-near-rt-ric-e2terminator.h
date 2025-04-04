@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -36,8 +35,8 @@
 #include "oran-data-repository.h"
 #include "oran-report.h"
 
-#include <ns3/object.h>
-#include <ns3/random-variable-stream.h>
+#include "ns3/object.h"
+#include "ns3/random-variable-stream.h"
 
 #include <map>
 #include <vector>
@@ -49,7 +48,7 @@ class OranNearRtRic;
 class OranE2NodeTerminator;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * The E2 Terminator of the Near-RT RIC.
  */
@@ -59,7 +58,7 @@ class OranNearRtRicE2Terminator : public Object
     /**
      * Get the TypeId of the OranNearRtRicE2 class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -81,7 +80,7 @@ class OranNearRtRicE2Terminator : public Object
     /**
      * Get the active status of this E2 Terminator.
      *
-     * \return True if this E2 Terminator is active; otherwise, false.
+     * @return True if this E2 Terminator is active; otherwise, false.
      */
     bool IsActive() const;
     /**
@@ -90,9 +89,9 @@ class OranNearRtRicE2Terminator : public Object
      * node E2 Terminator to the map (so that it knows where to send future
      * commands), and 'sends' the registration response.
      *
-     * \param type The type of node
-     * \param id The unique ID for the node
-     * \param terminator the Node E2 Terminator
+     * @param type The type of node
+     * @param id The unique ID for the node
+     * @param terminator the Node E2 Terminator
      */
     void ReceiveRegistrationRequest(OranNearRtRic::NodeType type,
                                     uint64_t id,
@@ -101,13 +100,13 @@ class OranNearRtRicE2Terminator : public Object
      * Receive a deregistration request. This method logs the deregistration
      * in the data repository, and removes the node E2 Terminator from the map.
      *
-     * \param e2NodeId The E2NodeId to deregister.
+     * @param e2NodeId The E2NodeId to deregister.
      */
     void ReceiveDeregistrationRequest(uint64_t e2NodeId);
     /**
      * Receive a Report and log the report in the Data Repository.
      *
-     * \param report The Report from the Reporter.
+     * @param report The Report from the Reporter.
      */
     void ReceiveReport(Ptr<OranReport> report);
     /**
@@ -115,13 +114,13 @@ class OranNearRtRicE2Terminator : public Object
      * directly to the target Terminator using the map of registered Terminators
      * with the Target E2 Node indicated in the Command.
      *
-     * \param command The Command to send.
+     * @param command The Command to send.
      */
     void SendCommand(Ptr<OranCommand> command);
     /**
      * Send multiple commands to the corresponding E2 Node Terminators.
      *
-     * \param commands A vector with the Commands to send.
+     * @param commands A vector with the Commands to send.
      */
     void ProcessCommands(std::vector<Ptr<OranCommand>> commands);
 

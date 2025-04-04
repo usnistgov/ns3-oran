@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -40,7 +39,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Report with the application packet loss of a node at a given time.
  */
@@ -50,7 +49,7 @@ class OranReportAppLoss : public OranReport
     /**
      * Get the TypeId of the OranReportAppLoss class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -64,13 +63,13 @@ class OranReportAppLoss : public OranReport
     /**
      * Get a string representation of this Report
      *
-     * \return A string representation of this Report.
+     * @return A string representation of this Report.
      */
     std::string ToString() const override;
     /**
      * Gets the reported application packet loss.
      *
-     * \return The reported application packet loss.
+     * @return The reported application packet loss.
      */
     double GetLoss() const;
 

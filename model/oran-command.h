@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -32,7 +31,7 @@
 #ifndef ORAN_COMMAND_H
 #define ORAN_COMMAND_H
 
-#include <ns3/object.h>
+#include "ns3/object.h"
 
 #include <string>
 
@@ -40,7 +39,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Base class of a Command. This class provides the implementation of
  * the GetTargetE2NodeId method for all the Commands. This base class can
@@ -53,7 +52,7 @@ class OranCommand : public Object
     /**
      * Gets the TypeId of the OranCommand class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -67,13 +66,13 @@ class OranCommand : public Object
     /**
      * Get a string representation of this command.
      *
-     * \return A string representation of this command.
+     * @return A string representation of this command.
      */
     virtual std::string ToString() const;
     /**
      * Get the target E2 Node ID.
      *
-     * \return The target E2 Node Id.
+     * @return The target E2 Node Id.
      */
     uint64_t GetTargetE2NodeId() const;
 

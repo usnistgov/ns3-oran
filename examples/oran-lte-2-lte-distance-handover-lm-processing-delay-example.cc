@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -29,12 +28,12 @@
  * employees is not subject to copyright protection within the United States.
  */
 
-#include <ns3/core-module.h>
-#include <ns3/internet-module.h>
-#include <ns3/lte-module.h>
-#include <ns3/mobility-module.h>
-#include <ns3/network-module.h>
-#include <ns3/oran-module.h>
+#include "ns3/core-module.h"
+#include "ns3/internet-module.h"
+#include "ns3/lte-module.h"
+#include "ns3/mobility-module.h"
+#include "ns3/network-module.h"
+#include "ns3/oran-module.h"
 
 #include <stdio.h>
 
@@ -126,23 +125,28 @@ main(int argc, char* argv[])
 
     /*--- lte and epc helper ---*/
     Ptr<LteHelper> lteHelper = CreateObject<LteHelper>(); // create lteHelper
-    Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>(); // create epcHelper
-    lteHelper->SetEpcHelper(epcHelper); // connect lte to the evolved packet core, which is the core network
-    lteHelper->SetSchedulerType("ns3::RrFfMacScheduler"); // Round-robin Frequency-first Mac Scheduler for resource distribution
+    Ptr<PointToPointEpcHelper> epcHelper =
+        CreateObject<PointToPointEpcHelper>(); // create epcHelper
+    lteHelper->SetEpcHelper(
+        epcHelper); // connect lte to the evolved packet core, which is the core network
+    lteHelper->SetSchedulerType("ns3::RrFfMacScheduler"); // Round-robin Frequency-first Mac
+                                                          // Scheduler for resource distribution
     lteHelper->SetHandoverAlgorithmType("ns3::NoOpHandoverAlgorithm"); // disable automatic handover
 
-    // Getting the PGW node; it acts as a gateway between LTE and external network, such as- internet.
+    // Getting the PGW node; it acts as a gateway between LTE and external network, such as-
+    // internet.
     Ptr<Node> pgw = epcHelper->GetPgwNode(); // PGW: Packet Data Network Gateway
 
-    
     /*---- Creating RAN nodes using NodeContainer ----*/
-    NodeContainer ueNodes; 
+    NodeContainer ueNodes;
     NodeContainer enbNodes;
     enbNodes.Create(numberOfEnbs);
     ueNodes.Create(numberOfUes);
 
     // Install Mobility Model
-    Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>(); // ListPositionAllocator class defines x,y,z position for network node
+    Ptr<ListPositionAllocator> positionAlloc =
+        CreateObject<ListPositionAllocator>(); // ListPositionAllocator class defines x,y,z position
+                                               // for network node
     for (uint16_t i = 0; i < numberOfEnbs; i++)
     {
         positionAlloc->Add(Vector(distance * i, 0, 20));

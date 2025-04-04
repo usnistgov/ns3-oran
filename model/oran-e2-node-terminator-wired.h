@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -38,7 +37,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * E2 Node Terminator for Wired Nodes. No Commands are processed by this Terminator.
  */
@@ -48,7 +47,7 @@ class OranE2NodeTerminatorWired : public OranE2NodeTerminator
     /**
      * Get the TypeId of the OranE2NodeTerminatorWired class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -63,7 +62,7 @@ class OranE2NodeTerminatorWired : public OranE2NodeTerminator
      * Get the E2 Node Type. For this Terminator this method always returns the
      * WIRED node type
      *
-     * \return the E2 Node Type.
+     * @return the E2 Node Type.
      */
     OranNearRtRic::NodeType GetNodeType() const override;
     /**
@@ -71,7 +70,7 @@ class OranE2NodeTerminatorWired : public OranE2NodeTerminator
      *
      * Currently this terminator silently discards received commands.
      *
-     * \param command The received command.
+     * @param command The received command.
      */
     void ReceiveCommand(Ptr<OranCommand> command) override;
 }; // class OranE2NodeTerminatorWired

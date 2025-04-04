@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -32,8 +31,8 @@
 #ifndef ORAN_REPORT_H
 #define ORAN_REPORT_H
 
-#include <ns3/nstime.h>
-#include <ns3/object.h>
+#include "ns3/nstime.h"
+#include "ns3/object.h"
 
 #include <string>
 
@@ -41,7 +40,7 @@ namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * Base class for the Reports sent by the nodes to the Near-RT RIC
  * to report on the state of the network.
@@ -55,7 +54,7 @@ class OranReport : public Object
     /**
      * Get the TypeId of the OranReport class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -69,19 +68,19 @@ class OranReport : public Object
     /**
      * Get a string representation of this Report.
      *
-     * \return A string representation of this Report.
+     * @return A string representation of this Report.
      */
     virtual std::string ToString() const;
     /**
      * Get the E2 Node ID of the reporter.
      *
-     * \return The E2 Node ID of the reporter.
+     * @return The E2 Node ID of the reporter.
      */
     uint64_t GetReporterE2NodeId() const;
     /**
      * Get the Time at which the Report was generated.
      *
-     * \return The Time at which the Report was generated.
+     * @return The Time at which the Report was generated.
      */
     Time GetTime() const;
 

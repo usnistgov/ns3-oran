@@ -4,7 +4,7 @@
 O-RAN Usage
 -----------
 
-In this Chapter we will review how to use the provided O-RAN models in an scenario, as well as how to implement our own models. The working examples provided with the release demonstrate all the required operations and configurations needed to use the models. 
+In this Chapter we will review how to use the provided O-RAN models in an scenario, as well as how to implement our own models. The working examples provided with the release demonstrate all the required operations and configurations needed to use the models.
 
 
 Deployment in Scenario
@@ -45,7 +45,7 @@ Once the Data Repository has been configured, the next step is to instantiate an
   myLm->SetName ("MyNoopLm");
   myLm->SetAttribute ("NearRtRic", PointerValue (nearRtRic));
   myLm->SetAttribute ("Verbose", BooleanValue (true));
-  myLm->SetAttribute ("ProcessingDelayRv", 
+  myLm->SetAttribute ("ProcessingDelayRv",
       StringValue ("ns3::ConstantRandomVariable[Constant=0.005]"));
 
 The same process and attributes to instantiate and configure the LMs applies to the Conflict Mitigation Modules::
@@ -65,7 +65,7 @@ The last module we need to instantiate is the E2 Terminator for the RIC. The con
   Ptr<OranNearRtRicE2Terminator> nearRtRicE2Terminator = CreateObject<OranNearRtRicE2Terminator> ();
   nearRtRicE2Terminator->SetAttribute ("NearRtRic", PointerValue (nearRtRic));
   nearRtRicE2Terminator->SetAttribute ("DataRepository", PointerValue (dataRepository));
-  nearRtRicE2Terminator->SetAttribute ("TransmissionDelayRv", 
+  nearRtRicE2Terminator->SetAttribute ("TransmissionDelayRv",
       StringValue ("ns3::ConstantRandomVariable[Constant=0.001]"));
 
 All of these modules can also be activated and deactivated individually, but in most cases we will want to activate and deactivate the whole RIC at once, which can be done once we configure the object created earlier.
@@ -92,7 +92,7 @@ Finally, line 27 shows the scheduling of the activation and start of operations 
   nearRtRic->SetAttribute ("ConflictMitigationModule", PointerValue (cmm));
 
   nearRtRic->SetAttribute ("E2NodeInactivityThreshold", TimeValue (Seconds (2)));
-  nearRtRic->SetAttribute ("E2NodeInactivityIntervalRv", 
+  nearRtRic->SetAttribute ("E2NodeInactivityIntervalRv",
       StringValue ("ns3::ConstantRandomVariable[Constant=2]"));
 
   nearRtRic->SetAttribute ("LmQueryMaxWaitTime", TimeValue (Seconds (0.5)));
@@ -126,7 +126,7 @@ After the Node E2 Terminator has been configured, the next step is to instantiat
   // ....
   Ptr<OranReporterLocation> lteCellInfoReporter = CreateObject<OranReporterLteUeCellInfo> ();
   lteCellInfoReporter->SetAttribute ("Terminator", PointerValue (lteUeTerminator));
-  lteCellInfoReporter->SetAttribute ("Trigger", 
+  lteCellInfoReporter->SetAttribute ("Trigger",
       StringValue ("ns3::OranReportTriggerLteUeHandover[InitialReport=true]"));
 
   lteUeTerminator->AddReporter (lteCellInfoReporter);
@@ -174,14 +174,14 @@ The configuration and instantiation of the nodes using the helper must be done i
       "RegistrationIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=5]"),
       "SendIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
 
-  oranHelper->AddReporter ("ns3::OranReporterLocation", 
+  oranHelper->AddReporter ("ns3::OranReporterLocation",
       "Trigger", StringValue ("ns3::OranReportTriggerPeriodic"));
-  oranHelper->AddReporter ("ns3::OranReporterLteUeCellInfo", 
+  oranHelper->AddReporter ("ns3::OranReporterLteUeCellInfo",
       "Trigger", StringValue ("ns3::OranReportTriggerLteUeHandover[InitialReport=true]"));
 
   e2NodeTermsUes.Add (oranHelper->DeployTerminators (nearRtRic, ueNodes));
 
-  // Wired nodes get only Location Reporter 
+  // Wired nodes get only Location Reporter
   oranHelper->SetE2NodeTerminator ("ns3::OranE2NodeTerminatorWired",
       "RegistrationIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=5]"),
       "SendIntervalRv", StringValue ("ns3::ConstantRandomVariable[Constant=1]"));
@@ -263,7 +263,7 @@ The next listing shows the shell of a custom Logic Module. Besides the construct
 
   } // namespace ns3
 
-                                                               
+
 
 Query Trigger
 =============
@@ -310,7 +310,7 @@ The next listing shows the shell of a custom Query Trigger. The core of a Query 
 
     bool queryLms = false;
 
-    // Check type and contents of report, and, if needed, change the 
+    // Check type and contents of report, and, if needed, change the
     // value of queryLms
 
     return queryLms;
@@ -372,7 +372,7 @@ Similar to the Logic Modules, a custom Conflict Mitigation Module (like the one 
 
   std::vector<Ptr<OranCommand> >
   MyCmm::Filter (
-    std::map<std::tuple<std::string, bool>, 
+    std::map<std::tuple<std::string, bool>,
     std::vector<Ptr<OranCommand> > > inputCommands)
   {
     NS_LOG_FUNCTION (this);
@@ -388,7 +388,7 @@ Similar to the Logic Modules, a custom Conflict Mitigation Module (like the one 
     else
       {
         // This module is not active. Just copy the same set of commands as output
-        for (auto commandSet : inputCommands) 
+        for (auto commandSet : inputCommands)
           {
             commands.insert (commands.end (), commandSet.second.begin (), commandSet.second.end ());
           }
@@ -616,7 +616,7 @@ Finally, the next listing shows how, similarly to the other custom modules, cust
 
      if (m_active)
        {
-         // TODO: Filter the commands we can process using the TypeId 
+         // TODO: Filter the commands we can process using the TypeId
          // TODO: Add processing of the receive commands.
        }
    }

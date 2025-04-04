@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,13 +33,13 @@
 
 #include "oran-e2-node-terminator.h"
 
-#include <ns3/lte-enb-net-device.h>
+#include "ns3/lte-enb-net-device.h"
 
 namespace ns3
 {
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * E2 Node Terminator for LTE eNBs. This Terminator can process LTE Handover
  * Commands
@@ -51,7 +50,7 @@ class OranE2NodeTerminatorLteEnb : public OranE2NodeTerminator
     /**
      * Get the TypeId of the OranE2NodeTerminatorLteEnb class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -66,20 +65,20 @@ class OranE2NodeTerminatorLteEnb : public OranE2NodeTerminator
      * Get the E2 Node Type. For this Terminator, this method
      * always returns the LTE eNB type.
      *
-     * \return the E2 Node Type.
+     * @return the E2 Node Type.
      */
     OranNearRtRic::NodeType GetNodeType() const override;
     /**
      * Receive and process a command. If the Command is an LTE Handover Command
      * it will be processed. All other types of Commands are silently discarded..
      *
-     * \param command The received command.
+     * @param command The received command.
      */
     void ReceiveCommand(Ptr<OranCommand> command) override;
     /**
      * Get the NetDevice of the LTE eNB.
      *
-     * \return The net device.
+     * @return The net device.
      */
     virtual Ptr<LteEnbNetDevice> GetNetDevice() const;
 }; // class OranE2NodeTermiantorLteEnb

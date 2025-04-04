@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -37,21 +36,21 @@
 #include "oran-e2-node-terminator-lte-ue.h"
 #include "oran-e2-node-terminator.h"
 #include "oran-near-rt-ric.h"
-#include "oran-report.h"
 #include "oran-report-apploss.h"
 #include "oran-report-location.h"
 #include "oran-report-lte-ue-cell-info.h"
 #include "oran-report-lte-ue-rsrp-rsrq.h"
+#include "oran-report.h"
 
-#include <ns3/abort.h>
-#include <ns3/log.h>
-#include <ns3/lte-enb-net-device.h>
-#include <ns3/lte-enb-rrc.h>
-#include <ns3/lte-ue-net-device.h>
-#include <ns3/lte-ue-rrc.h>
-#include <ns3/pointer.h>
-#include <ns3/simulator.h>
-#include <ns3/string.h>
+#include "ns3/abort.h"
+#include "ns3/log.h"
+#include "ns3/lte-enb-net-device.h"
+#include "ns3/lte-enb-rrc.h"
+#include "ns3/lte-ue-net-device.h"
+#include "ns3/lte-ue-rrc.h"
+#include "ns3/pointer.h"
+#include "ns3/simulator.h"
+#include "ns3/string.h"
 
 namespace ns3
 {
@@ -220,17 +219,18 @@ OranNearRtRicE2Terminator::ReceiveReport(Ptr<OranReport> report)
                                 appLossRpt->GetLoss(),
                                 appLossRpt->GetTime());
         }
-        else if (report->GetInstanceTypeId() == TypeId::LookupByName("ns3::OranReportLteUeRsrpRsrq"))
+        else if (report->GetInstanceTypeId() ==
+                 TypeId::LookupByName("ns3::OranReportLteUeRsrpRsrq"))
         {
             Ptr<OranReportLteUeRsrpRsrq> rsrpRsrqRpt = report->GetObject<OranReportLteUeRsrpRsrq>();
             m_data->SaveLteUeRsrpRsrq(rsrpRsrqRpt->GetReporterE2NodeId(),
-                                rsrpRsrqRpt->GetTime(),
-                                rsrpRsrqRpt->GetRnti(),
-                                rsrpRsrqRpt->GetCellId(),
-                                rsrpRsrqRpt->GetRsrp(),
-                                rsrpRsrqRpt->GetRsrq(),
-                                rsrpRsrqRpt->GetIsServingCell(),
-                                rsrpRsrqRpt->GetComponentCarrierId());
+                                      rsrpRsrqRpt->GetTime(),
+                                      rsrpRsrqRpt->GetRnti(),
+                                      rsrpRsrqRpt->GetCellId(),
+                                      rsrpRsrqRpt->GetRsrp(),
+                                      rsrpRsrqRpt->GetRsrq(),
+                                      rsrpRsrqRpt->GetIsServingCell(),
+                                      rsrpRsrqRpt->GetComponentCarrierId());
         }
 
         m_nearRtRic->NotifyReportReceived(report);

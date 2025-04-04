@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -35,7 +34,7 @@
 #include "oran-report.h"
 #include "oran-reporter.h"
 
-#include <ns3/ptr.h>
+#include "ns3/ptr.h"
 
 #include <vector>
 
@@ -46,7 +45,7 @@ class Packet;
 class Address;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * A Reporter that captures the LTE UE RSRP and RSRQ of the node.
  */
@@ -56,7 +55,7 @@ class OranReporterLteUeRsrpRsrq : public OranReporter
     /**
      * Get the TypeId of the OranReporterLteUeRsrpRsrq class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -70,12 +69,12 @@ class OranReporterLteUeRsrpRsrq : public OranReporter
     /**
      * Reports the RSRP and RSRQ for an LTE UE.
      *
-     * \param rnti The RNTI of the UE.
-     * \param cellId The cell ID.
-     * \param rsrp The RSRP.
-     * \param rsrq The RSRQ.
-     * \param isServingCell A flag that indicates if this is the serving cell.
-     * \param componentCarrierId The component carrier ID.
+     * @param rnti The RNTI of the UE.
+     * @param cellId The cell ID.
+     * @param rsrp The RSRP.
+     * @param rsrq The RSRQ.
+     * @param isServingCell A flag that indicates if this is the serving cell.
+     * @param componentCarrierId The component carrier ID.
      */
     void ReportRsrpRsrq(uint16_t rnti,
                         uint16_t cellId,
@@ -88,7 +87,7 @@ class OranReporterLteUeRsrpRsrq : public OranReporter
     /**
      * Returns the genrated OranReportLteUeRsrpRsrq.
      *
-     * \return The generated Report.
+     * @return The generated Report.
      */
     std::vector<Ptr<OranReport>> GenerateReports() override;
 

@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -34,10 +33,10 @@
 
 #include "oran-report-trigger.h"
 
-#include <ns3/event-id.h>
-#include <ns3/object.h>
-#include <ns3/ptr.h>
-#include <ns3/random-variable-stream.h>
+#include "ns3/event-id.h"
+#include "ns3/object.h"
+#include "ns3/ptr.h"
+#include "ns3/random-variable-stream.h"
 
 #include <string>
 
@@ -47,7 +46,7 @@ namespace ns3
 class OranReporter;
 
 /**
- * \ingroup oran
+ * @ingroup oran
  *
  * A class that periodically triggers reports based on a random variable.
  */
@@ -57,7 +56,7 @@ class OranReportTriggerPeriodic : public OranReportTrigger
     /**
      * Get the TypeId of the OranReportTriggerPeriodic class.
      *
-     * \return The TypeId.
+     * @return The TypeId.
      */
     static TypeId GetTypeId();
     /**
@@ -70,7 +69,7 @@ class OranReportTriggerPeriodic : public OranReportTrigger
     ~OranReportTriggerPeriodic() override;
     /**
      * Activates this trigger for the given reporter.
-     * \param reporter The reporter to link to.
+     * @param reporter The reporter to link to.
      */
     void Activate(Ptr<OranReporter> reporter) override;
     /**

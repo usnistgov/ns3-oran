@@ -1,4 +1,3 @@
-/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /**
  * NIST-developed software is provided by NIST as a public service. You may
  * use, copy and distribute copies of the software in any medium, provided that
@@ -33,13 +32,13 @@
 
 #include "oran-command-lte-2-lte-handover.h"
 
-#include <ns3/abort.h>
-#include <ns3/log.h>
-#include <ns3/lte-enb-net-device.h>
-#include <ns3/lte-enb-rrc.h>
-#include <ns3/node.h>
-#include <ns3/pointer.h>
-#include <ns3/string.h>
+#include "ns3/abort.h"
+#include "ns3/log.h"
+#include "ns3/lte-enb-net-device.h"
+#include "ns3/lte-enb-rrc.h"
+#include "ns3/node.h"
+#include "ns3/pointer.h"
+#include "ns3/string.h"
 
 namespace ns3
 {
