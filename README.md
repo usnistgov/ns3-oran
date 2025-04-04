@@ -35,6 +35,7 @@ model behavior based on the [O-RAN](https://www.o-ran.org) specifications.
   * [Data Repository Example](#data-repository-example)
   * [Multiple Network Devices Example](#multiple-network-devices-example)
   * [LTE to LTE ML Handover Example](#lte-to-lte-ml-handover-example)
+  * [LTE to LTE RSRP Handover LM Example](#lte-to-lte-rsrp-handover-lm-example)
 
 # Project Overview
 This project has been developed by the National Institute of Standards and Technology (NIST)
@@ -105,7 +106,7 @@ This release of the `oran` module contains the following features:
   [PyTorch](https://pytorch.org/) to support Machine Learning (ML)
 
 # Minimum Requirements
-* ns-3.41
+* ns-3.42
 * SQLite 3.7.17
 
 ## Optional Dependencies
@@ -355,9 +356,6 @@ of the extracted library to the `LIBONNXPATH` environment variable. For
 example,
 
 ```shell
-# Change to home directory
-cd ~
-
 # Download the library files
 wget "https://github.com/microsoft/onnxruntime/releases/download/v1.14.1/onnxruntime-linux-x64-1.14.1.tgz"
 
@@ -366,7 +364,7 @@ tar xzf onnxruntime-linux-x64-1.14.1.tgz
 
 # Create environment variable with library location so that cmake knows where
 # to find it
-export LIBONNXPATH="/home/$(whoami)/onnxruntime-linux-x64-1.14.1"
+export LIBONNXPATH="$(pwd)/onnxruntime-linux-x64-1.14.1"
 
 ```
 
@@ -391,9 +389,6 @@ download the PyTorch libraries that are distrubited on the PyTorch webiste
 extracted library to the `LIBTORCHPATH` environment variable. For example,
 
 ```shell
-# Change to home directory
-cd ~
-
 # Download the library files
 wget "https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.2.2%2Bcpu.zip"
 
@@ -402,7 +397,7 @@ unzip libtorch-cxx11-abi-shared-with-deps-2.2.2+cpu.zip
 
 # Create environment variable with library location so that cmake knows where
 # to find it
-export LIBTORCHPATH="/home/$(whoami)/libtorch"
+export LIBTORCHPATH="$(pwd)/libtorch"
 
 ```
 At this point, the accessibility of the library can be verified by navigating
@@ -568,3 +563,11 @@ Furthermore, once the training data has been generated, the file
 "oran-lte-2-lte-ml-handover-example-classifier.py" that is also included in
 the example folder, can be used to produce a PyTorch ML model using the
 training data that is generated.
+
+## LTE to LTE RSRP Handover LM Example
+In this scenario the Near-RT RIC is configured with an LM that uses RSRP
+measurements that are reported by the UE to trigger handovers.
+
+```shell
+./ns3 run "oran-lte-2-lte-rsrp-handover-lm-example"
+```
