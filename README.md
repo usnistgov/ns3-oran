@@ -7,7 +7,7 @@ model behavior based on the [O-RAN](https://www.o-ran.org) specifications.
   * [Contact](#contact)
 * [Model Description](#model-description)
 * [Features](#features)
-* [Minimum Requirements](#requirements)
+* [Minimum Requirements](#minimum-requirements)
   * [Optional Dependencies](#optional-dependencies)
 * [Installation](#installation)
   * [Clone (Recommended)](#clone-recommended)
