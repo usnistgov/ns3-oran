@@ -1,6 +1,8 @@
 # ORAN ns-3 Module
 A module that can be used in [ns-3](https://www.nsnam.org/) to simulate and
 model behavior based on the [O-RAN](https://www.o-ran.org) specifications.
+A conference paper that describes the model and its use in a case study can
+be found here: [https://doi.org/10.1145/3592149.3592157](https://doi.org/10.1145/3592149.3592157)
 
 # Table of Contents
 * [Project Overview](#project-overview)
