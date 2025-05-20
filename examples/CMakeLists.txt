@@ -120,3 +120,14 @@ build_lib_example(
     ${libmobility}
 )
 
+build_lib_example(
+  NAME uav-oran-communication
+  SOURCE_FILES uav-oran-communication.cc
+  LIBRARIES_TO_LINK
+    ${liboran}
+    ${libmobility}
+    ${libnetanim}
+    ${libnetwork}
+    ${libinternet}
+    ${libapplications}
+)

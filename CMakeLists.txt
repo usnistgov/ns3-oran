@@ -150,6 +150,13 @@ build_lib(
     model/oran-query-trigger-noop.cc
     model/oran-query-trigger-custom.cc
     helper/oran-helper.cc
+    model/uav-application.cc
+    model/ru-application.cc
+    model/du-application.cc
+    model/cu-cp-application.cc
+    model/cu-up-application.cc
+    helper/oran-helper.cc
+
     ${oran_onnxruntime_sources}
     ${oran_torch_sources}
   HEADER_FILES
@@ -189,6 +196,11 @@ build_lib(
     model/oran-query-trigger.h
     model/oran-query-trigger-custom.h
     helper/oran-helper.h
+    model/ru-application.h
+    model/du-application.h
+    model/uav-application.h
+    model/cu-cp-application.h
+    model/cu-up-application.h
     ${oran_onnxruntime_headers}
     ${oran_torch_headers}
   LIBRARIES_TO_LINK
