@@ -141,7 +141,7 @@ OranReportLteUeRsrpRsrq::GetRsrq() const
 {
     NS_LOG_FUNCTION(this);
 
-    return m_rsrp;
+    return m_rsrq;
 }
 
 bool
