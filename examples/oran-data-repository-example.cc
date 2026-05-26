@@ -61,8 +61,8 @@ main(int argc, char* argv[])
     // Register three nodes
     // Register wired node
     uint64_t wiredE2NodeId = repository->RegisterNode(OranNearRtRic::NodeType::WIRED, 1);
-    // Registere LTE eNB with
-    repository->RegisterNodeLteUe(2, 1);
+    // Register LTE eNB
+    repository->RegisterNodeLteEnb(2, 1);
     // Register LTE UE
     uint64_t lteUeE2NodeId = repository->RegisterNodeLteUe(3, 1);
 
